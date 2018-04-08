@@ -1,0 +1,11 @@
+br\usp\poli\repository\SimioDistances.class
+br\usp\poli\ServletInitializer.class
+br\usp\poli\utils\GraphUtil.class
+br\usp\poli\model\Simio.class
+br\usp\poli\utils\TestsUtil.class
+br\usp\poli\repository\Simios.class
+br\usp\poli\service\SimioDistanceService.class
+br\usp\poli\service\SimioService.class
+br\usp\poli\utils\Point.class
+br\usp\poli\SimiosApplication.class
+br\usp\poli\model\SimioDistance.class

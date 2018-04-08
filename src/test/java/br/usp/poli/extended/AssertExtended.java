@@ -1,10 +1,12 @@
-package br.usp.poli.utils;
+package br.usp.poli.extended;
 
 import java.util.List;
 
-import org.junit.Assert;
+import br.usp.poli.utils.Point;
 
-public class AssertExtended extends Assert{
+import static org.junit.Assert.*;
+
+public class AssertExtended {
 	
 	public static void assertPointListEquals(List<Point> expecteds, List<Point> actuals) {
 		

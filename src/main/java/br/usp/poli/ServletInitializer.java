@@ -1,7 +1,7 @@
 package br.usp.poli;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.boot.context.web.SpringBootServletInitializer;
 
 public class ServletInitializer extends SpringBootServletInitializer {
 

@@ -7,8 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import br.usp.poli.model.Simio;
 
-
 @Repository
-public interface Simios extends JpaRepository<Simio, Long> {
+public interface SimioRepository extends JpaRepository<Simio, Long> {
 	List<Simio> findByTemperatureGreaterThan(int temperature);
 }

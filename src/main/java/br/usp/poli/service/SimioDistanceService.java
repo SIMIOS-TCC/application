@@ -1,7 +1,6 @@
 package br.usp.poli.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -31,9 +30,9 @@ public class SimioDistanceService {
 		return simioDistances.findAll();
 	}
 	
-	public Optional<SimioDistance> readById(Long id) {
+	public SimioDistance readById(Long id) {
 		try {
-			return simioDistances.findById(id);
+			return simioDistances.findOne(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new IllegalArgumentException("Invalid id for simio distance");
 		}
@@ -51,7 +50,7 @@ public class SimioDistanceService {
 	//Delete
 	public void delete(Long id) {
 		try {
-			simioDistances.deleteById(id);
+			simioDistances.delete(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new IllegalArgumentException("Invalid simio distance - cannot be deleted on db");
 		}

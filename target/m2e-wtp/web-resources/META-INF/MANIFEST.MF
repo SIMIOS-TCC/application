@@ -4,7 +4,6 @@ Implementation-Version: 0.0.1-SNAPSHOT
 Built-By: laris
 Implementation-Vendor-Id: br.usp.poli
 Build-Jdk: 1.8.0_161
-Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
- ot-starter-parent/simios
 Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
 
