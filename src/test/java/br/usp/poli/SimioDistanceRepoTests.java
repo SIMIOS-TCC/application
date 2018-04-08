@@ -1,10 +1,9 @@
 package br.usp.poli;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
-import org.junit.Assert;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,9 +14,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import br.usp.poli.model.Simio;
 import br.usp.poli.model.SimioDistance;
+import br.usp.poli.repository.SimioDistanceRepository;
 import br.usp.poli.repository.SimioRepository;
 import br.usp.poli.service.SimioDistanceService;
-import br.usp.poli.service.SimioService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = SimiosApplication.class)
@@ -25,58 +24,56 @@ import br.usp.poli.service.SimioService;
 public class SimioDistanceRepoTests {
 	
 	@Autowired
-	SimioService simioService;
+	SimioDistanceService simioDistanceService;
+	@Autowired
+	SimioDistanceRepository simioDistanceRepository;
 	@Autowired
 	SimioRepository simioRepository;
 	
-	@Autowired
-	SimioDistanceService simioDistanceService;
-	
-	private Simio simio1 = new Simio();
-	private Simio simio2 = new Simio();
+	private Simio simio = new Simio();
 	private SimioDistance simioDistance = new SimioDistance();
 
 	@Before
 	public void loadContext() {
-		simio1.setDistances(new ArrayList<SimioDistance>());
-		simio1.setTemperature(35);
-		simioService.create(simio1);
+		
+		simioRepository.save(simio);
+		
+		simioDistance.setSimio(simio);
+		simioDistance.setDistance(1D);
+		simioDistance.setSimio2_id(2L);
+		simioDistance.setTimestamp(new Date());
+		
+		simioDistanceService.create(simioDistance);
 	}
 	
 	@After
 	public void cleanContext() {
-		simioRepository.delete(simio1);
+		simioDistanceRepository.delete(simioDistance);
+		simioRepository.delete(simio);
 	}
 	
 	//Create
 	@Test
 	public void createSimioTest() {
-		Assert.assertEquals(simio1, simioRepository.findOne(simio1.getId()));
+		Assert.assertEquals(simioDistance, simioDistanceRepository.findOne(simioDistance.getId()));
 	}
 	//Update
 	@Test
 	public void updateSimioTest() {
-		simio1.setTemperature(40);
-		simioService.update(simio1);		
-		Assert.assertEquals(simio1, simioRepository.findOne(simio1.getId()));
+		simioDistance.setDistance(2D);
+		simioDistanceService.update(simioDistance);		
+		Assert.assertEquals(simioDistance, simioDistanceRepository.findOne(simioDistance.getId()));
 	}
 	//Read
 	@Test
 	public void readSimioTest() {	
-		Assert.assertEquals(simioService.readById(simio1.getId()), simioRepository.findOne(simio1.getId()));
-	}
-	@Test
-	public void readTemperatureSimioTest() {	
-		int temperature = simio1.getTemperature()-1;
-		List<Simio> expectedSimios = new ArrayList<Simio>();
-		expectedSimios.add(simio1);
-		Assert.assertEquals(expectedSimios, simioService.readTemperatureGreaterThan(temperature));
+		Assert.assertEquals(simioDistanceService.readById(simioDistance.getId()), simioDistanceRepository.findOne(simioDistance.getId()));
 	}
 	//Delete
 	@Test
 	public void deleteSimioTest() {
-		Long id = simio1.getId();
-		simioService.delete(id);		
-		Assert.assertNull(simioRepository.findOne(id));
+		Long id = simioDistance.getId();
+		simioDistanceService.delete(id);		
+		Assert.assertNull(simioDistanceRepository.findOne(id));
 	}
 }

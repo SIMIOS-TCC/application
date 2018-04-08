@@ -2,7 +2,6 @@ package br.usp.poli.model;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,7 +18,7 @@ public class Simio {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@OneToMany(mappedBy = "simio", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "simio", fetch = FetchType.EAGER)
 	private List<SimioDistance> distances;
 	
 	private int temperature;

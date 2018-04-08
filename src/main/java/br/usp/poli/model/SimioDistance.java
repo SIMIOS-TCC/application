@@ -2,6 +2,7 @@ package br.usp.poli.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,21 +34,6 @@ public class SimioDistance {
 	@NotNull(message="Timestamp was not found.")
 	@Temporal(TemporalType.DATE)
 	private Date timestamp;
-
-	
-	//Constructors
-	public SimioDistance() {
-		super();
-	}
-
-	public SimioDistance(Simio simio, Long simio2_id, Double distance,
-			@NotNull(message = "Timestamp was not found.") Date timestamp) {
-		super();
-		this.simio = simio;
-		this.simio2_id = simio2_id;
-		this.distance = distance;
-		this.timestamp = timestamp;
-	}
 
 	//Getter and Setters
 	public Long getId() {

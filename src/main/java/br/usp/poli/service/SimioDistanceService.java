@@ -7,19 +7,19 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.usp.poli.model.SimioDistance;
-import br.usp.poli.repository.SimioDistances;
+import br.usp.poli.repository.SimioDistanceRepository;
 
 
 @Service
 public class SimioDistanceService {
 	
 	@Autowired
-	private SimioDistances simioDistances;
+	private SimioDistanceRepository simioDistanceRepository;
 	
 	//Create
 	public void create(SimioDistance simioDistance) {
 		try {
-			simioDistances.save(simioDistance);
+			simioDistanceRepository.save(simioDistance);
 		} catch (DataIntegrityViolationException e) {
 			throw new IllegalArgumentException("Invalid simio distance - cannot be created on db");
 		}
@@ -27,12 +27,12 @@ public class SimioDistanceService {
 	
 	//Read
 	public List<SimioDistance> readAll(){
-		return simioDistances.findAll();
+		return simioDistanceRepository.findAll();
 	}
 	
 	public SimioDistance readById(Long id) {
 		try {
-			return simioDistances.findOne(id);
+			return simioDistanceRepository.findOne(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new IllegalArgumentException("Invalid id for simio distance");
 		}
@@ -41,7 +41,7 @@ public class SimioDistanceService {
 	//Update
 	public void update(SimioDistance simioDistance) {
 		try {
-			simioDistances.save(simioDistance);
+			simioDistanceRepository.save(simioDistance);
 		} catch (DataIntegrityViolationException e) {
 			throw new IllegalArgumentException("Invalid simio distance - cannot be updated on db");
 		}
@@ -50,7 +50,7 @@ public class SimioDistanceService {
 	//Delete
 	public void delete(Long id) {
 		try {
-			simioDistances.delete(id);
+			simioDistanceRepository.delete(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new IllegalArgumentException("Invalid simio distance - cannot be deleted on db");
 		}

@@ -7,6 +7,6 @@ import br.usp.poli.model.SimioDistance;
 
 
 @Repository
-public interface SimioDistances extends JpaRepository<SimioDistance, Long> {
+public interface SimioDistanceRepository extends JpaRepository<SimioDistance, Long> {
 
 }

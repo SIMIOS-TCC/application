@@ -28,48 +28,48 @@ public class SimioRepoTests {
 	@Autowired
 	SimioRepository simioRepository;
 	
-	private Simio simio1 = new Simio();
+	private Simio simio = new Simio();
 
 	@Before
 	public void loadContext() {
-		simio1.setDistances(new ArrayList<SimioDistance>());
-		simio1.setTemperature(35);
-		simioService.create(simio1);
+		simio.setDistances(new ArrayList<SimioDistance>());
+		simio.setTemperature(35);
+		simioService.create(simio);
 	}
 	
 	@After
 	public void cleanContext() {
-		simioRepository.delete(simio1);
+		simioRepository.delete(simio);
 	}
 	
 	//Create
 	@Test
 	public void createSimioTest() {
-		Assert.assertEquals(simio1, simioRepository.findOne(simio1.getId()));
+		Assert.assertEquals(simio, simioRepository.findOne(simio.getId()));
 	}
 	//Update
 	@Test
 	public void updateSimioTest() {
-		simio1.setTemperature(40);
-		simioService.update(simio1);		
-		Assert.assertEquals(simio1, simioRepository.findOne(simio1.getId()));
+		simio.setTemperature(40);
+		simioService.update(simio);		
+		Assert.assertEquals(simio, simioRepository.findOne(simio.getId()));
 	}
 	//Read
 	@Test
 	public void readSimioTest() {	
-		Assert.assertEquals(simioService.readById(simio1.getId()), simioRepository.findOne(simio1.getId()));
+		Assert.assertEquals(simioService.readById(simio.getId()), simioRepository.findOne(simio.getId()));
 	}
 	@Test
 	public void readTemperatureSimioTest() {	
-		int temperature = simio1.getTemperature()-1;
+		int temperature = simio.getTemperature()-1;
 		List<Simio> expectedSimios = new ArrayList<Simio>();
-		expectedSimios.add(simio1);
+		expectedSimios.add(simio);
 		Assert.assertEquals(expectedSimios, simioService.readTemperatureGreaterThan(temperature));
 	}
 	//Delete
 	@Test
 	public void deleteSimioTest() {
-		Long id = simio1.getId();
+		Long id = simio.getId();
 		simioService.delete(id);		
 		Assert.assertNull(simioRepository.findOne(id));
 	}
