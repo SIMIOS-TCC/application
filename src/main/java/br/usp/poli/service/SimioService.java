@@ -45,7 +45,8 @@ public class SimioService {
 	}
 	
 	public List<Simio> readTemperatureGreaterThan(int temperature) {
-		return simioRepository.findByTemperatureGreaterThan(temperature);
+		List<Simio> lista = simioRepository.findByTemperatureGreaterThan(temperature);
+		return lista;
 	}
 	
 	//Update
