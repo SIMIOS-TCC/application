@@ -1,3 +1,6 @@
+#graphCanvas {
+	border : 1px solid #000000;
+}
 /*Tela grande*/
 @media(min-width: 768px) {
 	.panel-default {

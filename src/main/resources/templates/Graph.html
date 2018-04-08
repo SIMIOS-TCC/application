@@ -17,8 +17,19 @@
 		</div>
 			
 		<div class="panel-body">			
-			
+			<canvas id="graphCanvas" width="400" height="200"></canvas>
 		</div>
 	</div>
+	
+	<script>
+		(function(){
+			var canvas = document.getElementById("graphCanvas");
+			var context = canvas.getContext("2D");
+			
+			context.moveTo(0, 0);
+			context.lineTo(200, 100);
+			context.stroke();
+		});
+	</script>
 </section>  
 </html>
