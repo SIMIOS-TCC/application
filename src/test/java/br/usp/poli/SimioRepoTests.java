@@ -32,6 +32,7 @@ public class SimioRepoTests {
 
 	@Before
 	public void loadContext() {
+		simio.setName("Simio");
 		simio.setDistances(new ArrayList<SimioDistance>());
 		simio.setTemperature(35);
 		simioService.create(simio);

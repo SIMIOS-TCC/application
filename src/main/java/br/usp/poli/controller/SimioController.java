@@ -57,7 +57,7 @@ public class SimioController {
 	@RequestMapping("/menu/search")
 	public ModelAndView pesquisar(@RequestParam(defaultValue = "%") String name) {
 		ModelAndView mav = new ModelAndView(SEARCH_VIEW);
-		List<Simio> allSimios = simioService.readAll();
+		List<Simio> allSimios = simioService.readName(name);
 		mav.addObject("allSimios",allSimios);
 		return mav;
 	}

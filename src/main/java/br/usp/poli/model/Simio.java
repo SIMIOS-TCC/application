@@ -9,6 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 public class Simio {
@@ -17,6 +20,10 @@ public class Simio {
 	@Column(name="simio_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@NotBlank(message="Name cannot be blank.")
+	@Size(max=15, message="Name cannot contain more than 15 characters.")
+	private String name;
 	
 	@OneToMany(mappedBy = "simio", fetch = FetchType.EAGER)
 	private List<SimioDistance> distances;
@@ -30,6 +37,14 @@ public class Simio {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public List<SimioDistance> getDistances() {

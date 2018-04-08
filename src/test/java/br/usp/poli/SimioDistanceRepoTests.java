@@ -35,7 +35,7 @@ public class SimioDistanceRepoTests {
 
 	@Before
 	public void loadContext() {
-		
+		simio.setName("Simio");
 		simioRepository.save(simio);
 		
 		simioDistance.setSimio(simio);
