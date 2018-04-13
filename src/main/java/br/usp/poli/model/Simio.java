@@ -1,14 +1,10 @@
 package br.usp.poli.model;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -25,10 +21,9 @@ public class Simio {
 	@Size(max=15, message="Name cannot contain more than 15 characters.")
 	private String name;
 	
-	@OneToMany(mappedBy = "simio", fetch = FetchType.EAGER)
-	private List<SimioDistance> distances;
-	
 	private int temperature;
+	
+	//private Point location;
 
 	//Getters and Setters
 	public Long getId() {
@@ -47,14 +42,6 @@ public class Simio {
 		this.name = name;
 	}
 
-	public List<SimioDistance> getDistances() {
-		return distances;
-	}
-
-	public void setDistances(List<SimioDistance> distances) {
-		this.distances = distances;
-	}
-
 	public int getTemperature() {
 		return temperature;
 	}
@@ -62,6 +49,15 @@ public class Simio {
 	public void setTemperature(int temperature) {
 		this.temperature = temperature;
 	}
+
+	/**
+	public Point getLocation() {
+		return location;
+	}
+
+	public void setLocation(Point location) {
+		this.location = location;
+	}**/
 
 	//Hash and Equals
 	@Override

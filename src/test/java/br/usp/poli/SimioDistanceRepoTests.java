@@ -1,7 +1,5 @@
 package br.usp.poli;
 
-import java.util.Date;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -30,26 +28,28 @@ public class SimioDistanceRepoTests {
 	@Autowired
 	SimioRepository simioRepository;
 	
-	private Simio simio = new Simio();
+	private Simio simio1 = new Simio();
+	private Simio simio2 = new Simio();
 	private SimioDistance simioDistance = new SimioDistance();
 
 	@Before
 	public void loadContext() {
-		simio.setName("Simio");
-		simioRepository.save(simio);
+		simio1.setName("Simio1");
+		simioRepository.save(simio1);
 		
-		simioDistance.setSimio(simio);
-		simioDistance.setDistance(1D);
-		simioDistance.setSimio2_id(2L);
-		simioDistance.setTimestamp(new Date());
+		simio2.setName("Simio2");
+		simioRepository.save(simio2);
+		
+		simioDistance.setDistance(10D);
+		simioDistance.setSimioIds(simio1.getId(), simio2.getId());
 		
 		simioDistanceService.create(simioDistance);
 	}
 	
 	@After
 	public void cleanContext() {
-		simioDistanceRepository.delete(simioDistance);
-		simioRepository.delete(simio);
+		//simioDistanceRepository.delete(simioDistance);
+		//simioRepository.delete(simio);
 	}
 	
 	//Create
@@ -60,7 +60,7 @@ public class SimioDistanceRepoTests {
 	//Update
 	@Test
 	public void updateSimioTest() {
-		simioDistance.setDistance(2D);
+		simioDistance.setDistance(20D);
 		simioDistanceService.update(simioDistance);		
 		Assert.assertEquals(simioDistance, simioDistanceRepository.findOne(simioDistance.getId()));
 	}

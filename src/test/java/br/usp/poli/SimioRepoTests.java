@@ -14,7 +14,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import br.usp.poli.model.Simio;
-import br.usp.poli.model.SimioDistance;
 import br.usp.poli.repository.SimioRepository;
 import br.usp.poli.service.SimioService;
 
@@ -33,7 +32,6 @@ public class SimioRepoTests {
 	@Before
 	public void loadContext() {
 		simio.setName("Simio");
-		simio.setDistances(new ArrayList<SimioDistance>());
 		simio.setTemperature(35);
 		simioService.create(simio);
 	}

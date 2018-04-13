@@ -38,6 +38,26 @@ public class SimioDistanceService {
 		}
 	}
 	
+	public SimioDistance readBySimioPair(Long simioId1, Long simioId2){
+		if(simioId2 < simioId1) {
+			simioId1 = simioId2;
+			simioId2 = simioId1;
+		}	
+		List<SimioDistance> simioDistances = simioDistanceRepository.findBySimioId1AndSimioId2(simioId1, simioId2);
+		try {
+			if (simioDistances.size() > 1) {
+				//TODO: log ("More than one match found for simio distance");
+			}
+			return simioDistances.get(0);
+		} catch (DataIntegrityViolationException e) {
+			throw new IllegalArgumentException("No match found for simio distance");
+		}
+	}
+	
+	public List<SimioDistance> readBySimioId(Long simioId) {
+		return simioDistanceRepository.findBySimioId1OrSimioId2(simioId, simioId);
+	}
+	
 	//Update
 	public void update(SimioDistance simioDistance) {
 		try {

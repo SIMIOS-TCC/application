@@ -50,5 +50,4 @@ public class GraphUtil {
 		return new Point(x,y);
 	}
 	
-	
 }

@@ -1,18 +1,10 @@
 package br.usp.poli.model;
 
-import java.util.Date;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -23,17 +15,13 @@ public class SimioDistance {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "simio_id")
-	private Simio simio;
+	@NotNull
+	private Long simioId1;
 	
-	private Long simio2_id;
+	@NotNull
+	private Long simioId2;
 	
 	private Double distance;
-	
-	@NotNull(message="Timestamp was not found.")
-	@Temporal(TemporalType.DATE)
-	private Date timestamp;
 
 	//Getter and Setters
 	public Long getId() {
@@ -43,31 +31,41 @@ public class SimioDistance {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public Simio getSimio() {
-		return simio;
+	
+	public void setSimioId1(Long simioId1) {
+		this.simioId1 = simioId1;
 	}
 
-	public void setSimio(Simio simio) {
-		this.simio = simio;
+	public void setSimioId2(Long simioId2) {
+		this.simioId2 = simioId2;
 	}
 
-	public Long getSimio2_id() {
-		return simio2_id;
+	public void setSimioIds(Long simioId1, Long simioId2) {
+		if(simioId2 > simioId1) {
+			this.simioId1 = simioId1;
+			this.simioId2 = simioId2;
+		}
+		else {
+			this.simioId1 = simioId2;
+			this.simioId2 = simioId1;
+		}		
 	}
 
-	public void setSimio2_id(Long simio2_id) {
-		this.simio2_id = simio2_id;
+	public Long getSimioId1() {
+		return simioId1;
 	}
-
-	public Date getTimestamp() {
-		return timestamp;
+	
+	public Long getSimioId2() {
+		return simioId2;
 	}
-
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
+	
+	public Long getPairedSimioId(Long mainSimioId) {
+		if(mainSimioId == simioId1) return simioId2;
+		if(mainSimioId == simioId2) return simioId1;
+		return 0L;
+		//TODO: throw new Exception("Invalid simio Id - not paired");
 	}
-
+	
 	public Double getDistance() {
 		return distance;
 	}
