@@ -48,8 +48,8 @@ public class SimioDistanceRepoTests {
 	
 	@After
 	public void cleanContext() {
-		//simioDistanceRepository.delete(simioDistance);
-		//simioRepository.delete(simio);
+		simioDistanceRepository.deleteAll();
+		simioRepository.deleteAll();
 	}
 	
 	//Create

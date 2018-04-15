@@ -11,4 +11,5 @@ import br.usp.poli.model.Simio;
 public interface SimioRepository extends JpaRepository<Simio, Long> {
 	List<Simio> findByTemperatureGreaterThan(int temperature);
 	List<Simio> findByNameContaining(String name);
+	List<Simio> findByNameOrTemperature(String name, int temperature);
 }

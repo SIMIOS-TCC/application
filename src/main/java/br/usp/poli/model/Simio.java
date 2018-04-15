@@ -23,7 +23,16 @@ public class Simio {
 	
 	private int temperature;
 	
-	//private Point location;
+	public Simio() {
+		super();
+	}
+
+	public Simio(Long id, String name, int temperature) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.temperature = temperature;
+	}
 
 	//Getters and Setters
 	public Long getId() {
@@ -49,15 +58,6 @@ public class Simio {
 	public void setTemperature(int temperature) {
 		this.temperature = temperature;
 	}
-
-	/**
-	public Point getLocation() {
-		return location;
-	}
-
-	public void setLocation(Point location) {
-		this.location = location;
-	}**/
 
 	//Hash and Equals
 	@Override

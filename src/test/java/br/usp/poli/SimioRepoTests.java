@@ -38,7 +38,7 @@ public class SimioRepoTests {
 	
 	@After
 	public void cleanContext() {
-		simioRepository.delete(simio);
+		simioRepository.deleteAll();
 	}
 	
 	//Create

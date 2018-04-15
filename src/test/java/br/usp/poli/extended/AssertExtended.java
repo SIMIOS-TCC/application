@@ -1,12 +1,21 @@
 package br.usp.poli.extended;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
+import java.util.Map;
 
 import br.usp.poli.utils.Point;
-
-import static org.junit.Assert.*;
+import br.usp.poli.utils.TestsUtil;
 
 public class AssertExtended {
+	
+	public static void assertMappingEquals(Map<Long, Point> mapExpected, Map<Long, Point> mapActual) {
+		assertEquals(mapExpected.keySet(), mapActual.keySet());
+		for(Long id : mapExpected.keySet()) {
+			assertPointEquals(mapExpected.get(id), mapActual.get(id));
+		}
+	}
 	
 	public static void assertPointListEquals(List<Point> expecteds, List<Point> actuals) {
 		
@@ -21,7 +30,7 @@ public class AssertExtended {
 	}
 
 	public static void assertPointEquals(Point expected, Point actual) {
-		
+		actual = TestsUtil.trimPointToPrecision(actual);
 		assertEquals(expected.x, actual.x);
 		assertEquals(expected.y, actual.y);
 		

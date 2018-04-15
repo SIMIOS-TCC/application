@@ -50,4 +50,11 @@ public class GraphUtil {
 		return new Point(x,y);
 	}
 	
+	public static Double getDistance(Point p1, Point p2) {
+		Double deltaX = Math.abs(p1.x-p2.x);
+		Double deltaY = Math.abs(p1.y-p2.y);
+		Double distance = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+		return distance;
+	}
+	
 }

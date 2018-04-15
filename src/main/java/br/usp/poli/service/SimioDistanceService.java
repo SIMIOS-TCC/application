@@ -40,8 +40,9 @@ public class SimioDistanceService {
 	
 	public SimioDistance readBySimioPair(Long simioId1, Long simioId2){
 		if(simioId2 < simioId1) {
+			Long aux = simioId1;
 			simioId1 = simioId2;
-			simioId2 = simioId1;
+			simioId2 = aux;
 		}	
 		List<SimioDistance> simioDistances = simioDistanceRepository.findBySimioId1AndSimioId2(simioId1, simioId2);
 		try {
@@ -55,7 +56,8 @@ public class SimioDistanceService {
 	}
 	
 	public List<SimioDistance> readBySimioId(Long simioId) {
-		return simioDistanceRepository.findBySimioId1OrSimioId2(simioId, simioId);
+		List<SimioDistance> lista =  simioDistanceRepository.findBySimioId1OrSimioId2(simioId, simioId);
+		return lista;
 	}
 	
 	//Update

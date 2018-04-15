@@ -2,28 +2,27 @@ package br.usp.poli.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import br.usp.poli.model.Simio;
 import br.usp.poli.model.SimioDistance;
 import br.usp.poli.service.SimioDistanceService;
 
+@Component
 public class Graph {
 	
 	@Autowired
-	private SimioDistanceService simioDistanceService;
-
-	private Map<Long, Point> mapping;
-	
-	public Graph() {
-		
-	}
+	SimioDistanceService simioDistanceService;
 	
 	//TODO: refactor
-	public void createGraph(Simio simio) {
+	public Map<Long, Point> createGraph(Simio simio) {
+		Map<Long, Point> mapping = new HashMap<Long, Point>();
+		
 		Long mainSimioId = simio.getId();
 		mapping.put(mainSimioId, new Point(0D, 0D));
 		
@@ -37,7 +36,8 @@ public class Graph {
 		List<Long> mainSimioIds = getSimioIds(mainSimioId, simioDistances);
 		
 		//get Reference
-		Double a = simioDistanceService.readBySimioPair(mainSimioIds.get(0), mainSimioIds.get(1)).getDistance(); //TODO: check null
+		//TODO: check null
+		Double a = simioDistanceService.readBySimioPair(mainSimioIds.get(0), mainSimioIds.get(1)).getDistance(); 
 		Double b = simioDistanceService.readBySimioPair(mainSimioId, mainSimioIds.get(0)).getDistance();
 		Double c = simioDistanceService.readBySimioPair(mainSimioId, mainSimioIds.get(1)).getDistance();
 		List<Double> referenceSides = Arrays.asList(new Double[] {a, b, c});
@@ -50,14 +50,15 @@ public class Graph {
 		for(int i = 2; i < mainSimioIds.size(); i++) {
 			Long simioId = mainSimioIds.get(i);
 			Double r1 = simioDistanceService.readBySimioPair(mainSimioId, simioId).getDistance();
-			Double r2 = simioDistanceService.readBySimioPair(mainSimioIds.get(0), mainSimioIds.get(0)).getDistance();
-			Double r3 = simioDistanceService.readBySimioPair(mainSimioIds.get(1), mainSimioIds.get(1)).getDistance();
+			Double r2 = simioDistanceService.readBySimioPair(mainSimioIds.get(0), simioId).getDistance();
+			Double r3 = simioDistanceService.readBySimioPair(mainSimioIds.get(1), simioId).getDistance();
 			List<Double> distances = Arrays.asList(new Double[] {r1, r2, r3});
 			Point position = GraphUtil.getRelativePosition(reference, distances);
 			
 			mapping.put(simioId, position);
 		}
 		
+		return mapping;
 	}
 	
 	private List<Long> getSimioIds(Long mainSimioId, List<SimioDistance> simioDistances) {

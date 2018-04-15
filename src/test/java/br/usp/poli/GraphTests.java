@@ -1,102 +1,88 @@
 package br.usp.poli;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import br.usp.poli.extended.AssertExtended;
+import br.usp.poli.model.Simio;
+import br.usp.poli.model.SimioDistance;
+import br.usp.poli.repository.SimioDistanceRepository;
+import br.usp.poli.repository.SimioRepository;
+import br.usp.poli.service.SimioDistanceService;
+import br.usp.poli.service.SimioService;
+import br.usp.poli.utils.Graph;
 import br.usp.poli.utils.GraphUtil;
 import br.usp.poli.utils.Point;
-import br.usp.poli.utils.TestsUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = SimiosApplication.class)
 @WebAppConfiguration
 public class GraphTests {
+		
+	@Autowired
+	SimioService simioService;
+	@Autowired
+	SimioDistanceService simioDistanceService;
+	@Autowired
+	SimioRepository simioRepository;
+	@Autowired
+	SimioDistanceRepository simioDistanceRepository;
 	
-	private static final Double sqrt200 = 10*Math.sqrt(2);
-	private static final Double sqrt500 = 10*Math.sqrt(5);
+	@Autowired
+	private Graph graph;
 	
-	private List<Point> refListExpected;
+	private Map<Long, Point> mapExpected;
+	
+	private Long mainSimioId;
 	
 	@Before
 	public void loadContext() {
-		//Mocka pontos de referencia fixos
-		Point p1 = new Point(0D,0D);
-		Point p2 = new Point(10D,0D);
-		Point p3 = new Point(10D,10D);
-		
-		refListExpected = new ArrayList<Point>();
-		refListExpected.add(p1);
-		refListExpected.add(p2);
-		refListExpected.add(p3);	
-	}
-	
-	@Test
-	public void getReferenceTriangleTest() {
-		
-		//{ a, b, c }
-		Double[] sidesArray = new Double[] {10D, 10D, sqrt200};
-		List<Double> sidesList = Arrays.asList(sidesArray);
-		List<Point> referenceActual = GraphUtil.getReferenceTriangle(sidesList);
-		
-		for (Point p : referenceActual) {
-			p = TestsUtil.trimPointToPrecision(p);
+		//insere os simios no banco
+		for(int i = 1; i < 5; i++) {
+			Simio simio = new Simio();
+			simio.setName("Simio" + i);
+			simio.setTemperature(35);
+			simioService.create(simio);
+			if(i == 1) mainSimioId = simio.getId();
 		}
 		
-		AssertExtended.assertPointListEquals(refListExpected, referenceActual);
+		mapExpected = new HashMap<Long, Point>();
+		mapExpected.put(mainSimioId, new Point(0D, 0D));
+		mapExpected.put(mainSimioId + 3L, new Point(10D, 0D));
+		mapExpected.put(mainSimioId + 2L, new Point(10D, 10D));
+		mapExpected.put(mainSimioId + 1L, new Point(0D, 10D));
+		//mapExpected.put(5L, new Point(20D, 0D));
+		
+		//Insere os simio distances no banco
+		for(Long i = mainSimioId; i < mainSimioId + 4L; i++) {
+			for (Long j = mainSimioId + 3L; j > i; j--) {
+				SimioDistance sd = new SimioDistance();
+				sd.setDistance(GraphUtil.getDistance(mapExpected.get(i), mapExpected.get(j)));
+				sd.setSimioIds(i, j);
+				simioDistanceService.create(sd);
+			}
+		}
+	}
+	
+	@After
+	public void cleanContext() {
+		simioDistanceRepository.deleteAll();
+		simioRepository.deleteAll();
 	}
 	
 	@Test
-	public void getRelativePositionTest_Quadrant1() {
-		
-		Point pxExpected = new Point(0D,10D);
-
-		//{ r1, r2, r3 }
-		Double[] distancesArray = new Double[] {10D, sqrt200, 10D};
-		List<Double> distancesList = Arrays.asList(distancesArray);
-		
-		Point pxActual = GraphUtil.getRelativePosition(refListExpected, distancesList);
-		pxActual = TestsUtil.trimPointToPrecision(pxActual);
-		
-		AssertExtended.assertPointEquals(pxExpected, pxActual);
-	}
-	
-	@Test
-	public void getRelativePositionTest_Quadrant2() {
-		
-		Point pxExpected = new Point(-10D,10D);
-
-		//{ r1, r2, r3 }
-		Double[] distancesArray = new Double[] {sqrt200, sqrt500, 20D};
-		List<Double> distancesList = Arrays.asList(distancesArray);
-		
-		Point pxActual = GraphUtil.getRelativePosition(refListExpected, distancesList);
-		pxActual = TestsUtil.trimPointToPrecision(pxActual);
-		
-		AssertExtended.assertPointEquals(pxExpected, pxActual);
-	}
-	
-	@Test
-	public void getRelativePositionTest_Quadrant3() {
-		
-		Point pxExpected = new Point(0D,-10D);
-
-		//{ r1, r2, r3 }
-		Double[] distancesArray = new Double[] {10D, sqrt200, sqrt500};
-		List<Double> distancesList = Arrays.asList(distancesArray);
-		
-		Point pxActual = GraphUtil.getRelativePosition(refListExpected, distancesList);
-		pxActual = TestsUtil.trimPointToPrecision(pxActual);
-		
-		AssertExtended.assertPointEquals(pxExpected, pxActual);
+	public void getGraph() {
+		Map<Long, Point> mapActuals = graph.createGraph(simioService.readById(mainSimioId));
+		AssertExtended.assertMappingEquals(mapExpected, mapActuals);
 	}
 	
 }
