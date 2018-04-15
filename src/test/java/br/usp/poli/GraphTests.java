@@ -75,8 +75,8 @@ public class GraphTests {
 	
 	@After
 	public void cleanContext() {
-		simioDistanceRepository.deleteAll();
-		simioRepository.deleteAll();
+		//simioDistanceRepository.deleteAll();
+		//simioRepository.deleteAll();
 	}
 	
 	@Test

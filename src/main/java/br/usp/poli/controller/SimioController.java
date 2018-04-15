@@ -1,6 +1,7 @@
 package br.usp.poli.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -14,9 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
+
 import br.usp.poli.model.Simio;
 import br.usp.poli.service.SimioDistanceService;
 import br.usp.poli.service.SimioService;
+import br.usp.poli.utils.Graph;
+import br.usp.poli.utils.Point;
 
 @Controller
 @RequestMapping
@@ -31,6 +36,8 @@ public class SimioController {
 	private SimioService simioService;
 	@Autowired
 	private SimioDistanceService simioDistanceService;
+	@Autowired
+	private Graph graph;
 	
 
 	@RequestMapping("/menu")
@@ -42,7 +49,10 @@ public class SimioController {
 	@RequestMapping("/menu/graph/{id}")
 	public ModelAndView graph(@PathVariable("id") Simio simio) {
 		ModelAndView mav = new ModelAndView(GRAPH_VIEW);
-		mav.addObject(simio);
+		
+		Gson gson = new Gson();
+		Map<Long, Point> mapping = graph.createGraph(simio);
+		mav.addObject("mapping", gson.toJson(mapping));
 		return mav;
 	}
 	

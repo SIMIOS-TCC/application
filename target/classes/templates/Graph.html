@@ -16,20 +16,20 @@
 			<a class="btn btn-link aw-link-panel" th:href="@{/menu}">Back</a>
 		</div>
 			
-		<div class="panel-body">			
-			<canvas id="graphCanvas" width="400" height="200"></canvas>
+		<div class="panel-body">
+			<div id="graphDiv" th:attr="data-mapping=${mapping}">			
+				<canvas id="graphCanvas" width="800" height="400" ></canvas>
+			</div>
 		</div>
 	</div>
 	
 	<script>
-		(function(){
+		window.onload = function(){
 			var canvas = document.getElementById("graphCanvas");
-			var context = canvas.getContext("2D");
-			
-			context.moveTo(0, 0);
-			context.lineTo(200, 100);
-			context.stroke();
-		});
+			var context = canvas.getContext("2d");
+			var mapping = $('#graphDiv').data('mapping');
+			alert(mapping);
+		};
 	</script>
 </section>  
 </html>
