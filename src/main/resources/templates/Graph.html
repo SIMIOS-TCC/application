@@ -9,6 +9,7 @@
 </head>
 
 <section layout:fragment="content">
+	<img id="icon-simio" th:src="@{/images/icon-simio.jpg}" height="40" width="40" style="display: none;"/>
 	
 	<div class="panel panel-default">
 		<div class="panel-heading clearfix">
@@ -25,10 +26,7 @@
 	
 	<script>
 		window.onload = function(){
-			var canvas = document.getElementById("graphCanvas");
-			var context = canvas.getContext("2d");
 			var mapping = $('#graphDiv').data('mapping');
-			alert(mapping.simios);
 			
 			var index = 0;
 			mapping.simios.forEach(function(simio) {
@@ -39,8 +37,22 @@
 		};
 		
 		var drawSimio = function(point) {
+			var canvas = document.getElementById("graphCanvas");
+			var context = canvas.getContext("2d");
+			
 			alert(point.x + ", " + point.y);
+			
+			var image = document.getElementById("icon-simio");
+			
+			var x = canvas.width/2 + point.x*10;
+			var y = canvas.height/2 - point.y*10;
+			context.drawImage(image, x, y);
+			
+			
 		}
+		
+
+		
 	</script>
 </section>  
 </html>
