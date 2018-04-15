@@ -5,7 +5,7 @@
 	layout:decorator="LayoutPattern">
 	
 <head>
-<title>Graph</title>
+<title>Map</title>
 </head>
 
 <section layout:fragment="content">
@@ -13,8 +13,8 @@
 	
 	<div class="panel panel-default">
 		<div class="panel-heading clearfix">
-			<h1 class="panel-title aw-titulo-panel">Localization Graph</h1>
-			<a class="btn btn-link aw-link-panel" th:href="@{/menu}">Back</a>
+			<h1 class="panel-title aw-titulo-panel">Localization Map</h1>
+			<a class="btn btn-link aw-link-panel" th:href="@{/menu/search}">Back</a>
 		</div>
 			
 		<div class="panel-body">
@@ -30,19 +30,14 @@
 			
 			var index = 0;
 			mapping.simios.forEach(function(simio) {
-				if(index != 0) {
-					drawSimio(mapping.positions[index], simio);
-				}
+				drawSimio(mapping.positions[index], simio);
 			    index++;
 			});
-			drawSimio(mapping.positions[0], mapping.simios[0]);
 		};
 		
 		var drawSimio = function(point, simio) {
 			var canvas = document.getElementById("graphCanvas");
 			var context = canvas.getContext("2d");
-			
-			alert(point.x + ", " + point.y);
 			
 			var image = document.getElementById("icon-simio");
 			
