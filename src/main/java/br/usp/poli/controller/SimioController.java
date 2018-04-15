@@ -21,6 +21,7 @@ import br.usp.poli.model.Simio;
 import br.usp.poli.service.SimioDistanceService;
 import br.usp.poli.service.SimioService;
 import br.usp.poli.utils.Graph;
+import br.usp.poli.utils.GraphUtil;
 import br.usp.poli.utils.Point;
 
 @Controller
@@ -36,9 +37,11 @@ public class SimioController {
 	private SimioService simioService;
 	@Autowired
 	private SimioDistanceService simioDistanceService;
+	
 	@Autowired
 	private Graph graph;
-	
+	@Autowired
+	private GraphUtil graphUtil;
 
 	@RequestMapping("/menu")
 	public ModelAndView menu() {
@@ -51,8 +54,9 @@ public class SimioController {
 		ModelAndView mav = new ModelAndView(GRAPH_VIEW);
 		
 		Gson gson = new Gson();
-		Map<Long, Point> mapping = graph.createGraph(simio);
-		mav.addObject("mapping", gson.toJson(mapping));
+		graphUtil.createGraph(simio);
+		String json = gson.toJson(graph);
+		mav.addObject("mapping", json);
 		return mav;
 	}
 	

@@ -19,7 +19,6 @@ import br.usp.poli.repository.SimioDistanceRepository;
 import br.usp.poli.repository.SimioRepository;
 import br.usp.poli.service.SimioDistanceService;
 import br.usp.poli.service.SimioService;
-import br.usp.poli.utils.Graph;
 import br.usp.poli.utils.GraphUtil;
 import br.usp.poli.utils.Point;
 
@@ -38,7 +37,7 @@ public class GraphTests {
 	SimioDistanceRepository simioDistanceRepository;
 	
 	@Autowired
-	private Graph graph;
+	private GraphUtil graphUtil;
 	
 	private Map<Long, Point> mapExpected;
 	
@@ -81,7 +80,8 @@ public class GraphTests {
 	
 	@Test
 	public void getGraph() {
-		Map<Long, Point> mapActuals = graph.createGraph(simioService.readById(mainSimioId));
+		graphUtil.createGraph(simioService.readById(mainSimioId));
+		Map<Long, Point> mapActuals = graphUtil.mapping;
 		AssertExtended.assertMappingEquals(mapExpected, mapActuals);
 	}
 	

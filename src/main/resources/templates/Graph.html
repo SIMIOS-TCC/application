@@ -28,8 +28,19 @@
 			var canvas = document.getElementById("graphCanvas");
 			var context = canvas.getContext("2d");
 			var mapping = $('#graphDiv').data('mapping');
-			alert(mapping);
+			alert(mapping.simios);
+			
+			var index = 0;
+			mapping.simios.forEach(function(simio) {
+				drawSimio(mapping.positions[index]);
+			    index++;
+			});
+
 		};
+		
+		var drawSimio = function(point) {
+			alert(point.x + ", " + point.y);
+		}
 	</script>
 </section>  
 </html>

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import br.usp.poli.utils.Point;
-import br.usp.poli.utils.TestsUtil;
 
 public class AssertExtended {
 	
@@ -30,7 +29,7 @@ public class AssertExtended {
 	}
 
 	public static void assertPointEquals(Point expected, Point actual) {
-		actual = TestsUtil.trimPointToPrecision(actual);
+		actual = actual.trimPointToPrecision();
 		assertEquals(expected.x, actual.x);
 		assertEquals(expected.y, actual.y);
 		
