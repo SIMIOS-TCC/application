@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import br.usp.poli.model.Simio;
+import lombok.Data;
 
+@Data
 @Component
 public class Graph {
 	
@@ -14,18 +16,6 @@ public class Graph {
 	
 	public Graph() {
 		super();
-	}
-	public List<Simio> getSimios() {
-		return simios;
-	}
-	public void setSimios(List<Simio> simios) {
-		this.simios = simios;
-	}
-	public List<Point> getPositions() {
-		return positions;
-	}
-	public void setPositions(List<Point> positions) {
-		this.positions = positions;
 	}
 	
 }

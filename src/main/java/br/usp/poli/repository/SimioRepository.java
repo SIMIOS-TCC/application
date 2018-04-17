@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.usp.poli.model.Simio;
+import br.usp.poli.entity.SimioEntity;
 
 @Repository
-public interface SimioRepository extends JpaRepository<Simio, Long> {
-	List<Simio> findByTemperatureGreaterThan(int temperature);
-	List<Simio> findByNameContaining(String name);
-	List<Simio> findByNameOrTemperature(String name, int temperature);
+public interface SimioRepository extends JpaRepository<SimioEntity, Long> {
+	List<SimioEntity> findByTemperatureGreaterThan(int temperature);
+	List<SimioEntity> findByNameContaining(String name);
+	List<SimioEntity> findByNameOrTemperature(String name, int temperature);
 }

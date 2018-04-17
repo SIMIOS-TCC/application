@@ -12,9 +12,9 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import br.usp.poli.extended.AssertExtended;
 import br.usp.poli.model.Simio;
 import br.usp.poli.model.SimioDistance;
+import br.usp.poli.extended.AssertExtended;
 import br.usp.poli.repository.SimioDistanceRepository;
 import br.usp.poli.repository.SimioRepository;
 import br.usp.poli.service.SimioDistanceService;
@@ -50,7 +50,7 @@ public class GraphTests {
 			Simio simio = new Simio();
 			simio.setName("Simio" + i);
 			simio.setTemperature(35);
-			simioService.create(simio);
+			simio.setId(simioService.create(simio));
 			if(i == 1) mainSimioId = simio.getId();
 		}
 		

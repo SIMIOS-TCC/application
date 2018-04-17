@@ -1,5 +1,6 @@
 package br.usp.poli.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,13 +8,14 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import br.usp.poli.entity.SimioEntity;
 import br.usp.poli.model.Simio;
 import br.usp.poli.repository.SimioRepository;
 
 
 @Service
 @Configurable
-public class SimioService {
+public class SimioService implements BaseService<Simio>{
 	
 	@Autowired
 	private SimioRepository simioRepository;
@@ -23,9 +25,11 @@ public class SimioService {
 	}
 
 	//Create
-	public void create(Simio simio) {
+	public Long create(Simio simio) {
 		try {
-			simioRepository.save(simio);
+			SimioEntity simioEntity = modelToEntity(simio);
+			simioRepository.save(simioEntity);
+			return simioEntity.getId();
 		} catch (DataIntegrityViolationException e) {
 			throw new IllegalArgumentException("Invalid simio - cannot be created on db");
 		}
@@ -33,29 +37,48 @@ public class SimioService {
 	
 	//Read
 	public List<Simio> readAll(){
-		return simioRepository.findAll();
+		
+		List<Simio> simios = new ArrayList<Simio>();
+		
+		simioRepository.findAll().forEach(simioEntity -> {
+			simios.add(entityToModel(simioEntity));
+		});
+		
+		return simios;
 	}
 	
 	public Simio readById(Long id) {
-		try {
-			return simioRepository.findOne(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new IllegalArgumentException("Invalid id for simio");
-		}
+		SimioEntity simioEntity = simioRepository.findOne(id);
+		if(simioEntity != null) return entityToModel(simioEntity);
+		return null;
 	}
 	
 	public List<Simio> readTemperatureGreaterThan(int temperature) {
-		return simioRepository.findByTemperatureGreaterThan(temperature);
+		
+		List<Simio> simios = new ArrayList<Simio>();
+		
+		simioRepository.findByTemperatureGreaterThan(temperature).forEach(simioEntity -> {
+			simios.add(entityToModel(simioEntity));
+		});
+		
+		return simios;
 	}
 	
-	public List<Simio> readName(String name) {
-		return simioRepository.findByNameContaining(name);
+	public List<Simio> readByName(String name) {
+		
+		List<Simio> simios = new ArrayList<Simio>();
+		
+		simioRepository.findByNameContaining(name).forEach(simioEntity -> {
+			simios.add(entityToModel(simioEntity));
+		});
+		
+		return simios;
 	}
 	
 	//Update
 	public void update(Simio simio) {
 		try {
-			simioRepository.save(simio);
+			simioRepository.save(modelToEntity(simio));
 		} catch (DataIntegrityViolationException e) {
 			throw new IllegalArgumentException("Invalid simio - cannot be updated on db");
 		}
@@ -68,5 +91,26 @@ public class SimioService {
 		} catch (DataIntegrityViolationException e) {
 			throw new IllegalArgumentException("Invalid simio - cannot be deleted on db");
 		}
+	}
+	
+	//Model - Entity
+	public Simio entityToModel(SimioEntity simioEntity) {
+		Simio simio = Simio.builder()
+				.id(simioEntity.getId())
+				.name(simioEntity.getName())
+				.temperature(simioEntity.getTemperature())
+				.build();
+
+		return simio;
+	}
+	
+	public SimioEntity modelToEntity(Simio simio) {
+		SimioEntity simioEntity = SimioEntity.builder()
+				.id(simio.getId())
+				.name(simio.getName())
+				.temperature(simio.getTemperature())
+				.build();
+		
+		return simioEntity;
 	}
 }

@@ -16,8 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 
+import br.usp.poli.entity.SimioEntity;
 import br.usp.poli.model.Simio;
-import br.usp.poli.service.SimioDistanceService;
 import br.usp.poli.service.SimioService;
 import br.usp.poli.utils.Graph;
 import br.usp.poli.utils.GraphUtil;
@@ -33,8 +33,6 @@ public class SimioController {
 		
 	@Autowired
 	private SimioService simioService;
-	@Autowired
-	private SimioDistanceService simioDistanceService;
 	
 	@Autowired
 	private Graph graph;
@@ -48,11 +46,11 @@ public class SimioController {
 	}
 	
 	@RequestMapping("/menu/graph/{id}")
-	public ModelAndView graph(@PathVariable("id") Simio simio) {
+	public ModelAndView graph(@PathVariable("id") SimioEntity simioEntity) {
 		ModelAndView mav = new ModelAndView(GRAPH_VIEW);
 		
 		Gson gson = new Gson();
-		graphUtil.createGraph(simio);
+		graphUtil.createGraph(simioService.entityToModel(simioEntity));
 		String json = gson.toJson(graph);
 		mav.addObject("mapping", json);
 		return mav;
@@ -61,7 +59,7 @@ public class SimioController {
 	@RequestMapping("/menu/new")
 	public ModelAndView insert() {
 		ModelAndView mav = new ModelAndView(INSERT_VIEW);
-		mav.addObject(new Simio());
+		mav.addObject(new SimioEntity());
 		return mav;
 	}
 	
@@ -69,7 +67,7 @@ public class SimioController {
 	@RequestMapping("/menu/search")
 	public ModelAndView pesquisar(@RequestParam(defaultValue = "%") String name) {
 		ModelAndView mav = new ModelAndView(SEARCH_VIEW);
-		List<Simio> allSimios = simioService.readName(name);
+		List<Simio> allSimios = simioService.readByName(name);
 		mav.addObject("allSimios",allSimios);
 		return mav;
 	}
@@ -92,7 +90,7 @@ public class SimioController {
 	}
 	
 	@RequestMapping("/menu/new/{id}")
-	public ModelAndView update(@PathVariable("id") Simio simio) {
+	public ModelAndView update(@PathVariable("id") SimioEntity simio) {
 		ModelAndView mav = new ModelAndView(INSERT_VIEW);
 		mav.addObject(simio);
 		return mav;
