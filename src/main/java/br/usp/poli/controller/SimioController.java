@@ -1,7 +1,6 @@
 package br.usp.poli.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -22,7 +21,6 @@ import br.usp.poli.service.SimioDistanceService;
 import br.usp.poli.service.SimioService;
 import br.usp.poli.utils.Graph;
 import br.usp.poli.utils.GraphUtil;
-import br.usp.poli.utils.Point;
 
 @Controller
 @RequestMapping
