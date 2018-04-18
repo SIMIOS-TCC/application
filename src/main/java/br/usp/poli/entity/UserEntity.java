@@ -62,4 +62,7 @@ public class UserEntity {
 	@ManyToMany(cascade ={ CascadeType.PERSIST, CascadeType.MERGE})	
 	private List<RoleEntity> roles;
  
+	public boolean isActive() {
+		return active;
+	}
 }

@@ -6,7 +6,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 
-import br.usp.poli.entity.RoleEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,6 +33,7 @@ public class User {
  
     @JoinColumn(name = "id_role")
 	@ManyToMany(cascade ={ CascadeType.PERSIST, CascadeType.MERGE})	
-	private List<RoleEntity> roles;
+	private List<Role> roles;
+   
  
 }

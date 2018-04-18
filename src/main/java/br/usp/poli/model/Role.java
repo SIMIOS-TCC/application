@@ -3,7 +3,6 @@ package br.usp.poli.model;
 import java.util.List;
 
 import br.usp.poli.entity.PermissionEntity;
-import br.usp.poli.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +20,15 @@ public class Role {
 	private String name;
 	private String description;
  
-	private List<UserEntity> users;
+	private List<User> users;
  
-	private List<PermissionEntity> permissions; 
+	private List<PermissionEntity> permissions;
+
+	public Role(Long id, String name, String description) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+	} 
+	
 }
