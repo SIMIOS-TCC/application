@@ -13,4 +13,10 @@ public class LoginController {
 		ModelAndView modelAndView = new ModelAndView("Login");
 		return modelAndView;
 	}
+	
+	@RequestMapping(value="/acess-denied", method= RequestMethod.GET)
+	public String acessoNegado(){
+ 
+		return "access-denied";
+	}
 }

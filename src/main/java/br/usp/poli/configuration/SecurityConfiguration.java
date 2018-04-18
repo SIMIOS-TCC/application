@@ -23,9 +23,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		
 		http.authorizeRequests()
 		
-				.antMatchers("/user/new").permitAll()
+				.antMatchers("/user/new").authenticated()
 				
-				.antMatchers("/user/search").access("hasRole('ADMIN')")
+				.antMatchers("/user/search").hasAuthority("ADMIN")
 				
 				.antMatchers("/menu").authenticated()
 				
@@ -38,9 +38,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and()
 					.logout()
 					.logoutUrl("/logout").logoutSuccessUrl("/")
-					.permitAll()
-					.and()
-						.exceptionHandling().accessDeniedPage("/access-denied");
+					.permitAll();
+		
+		http.exceptionHandling().accessDeniedPage("/acess-denied");
 	}
 	
 	@Override
@@ -56,4 +56,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
  
     }
 
+	 /* CRIPTOGRAFANDO A SENHA PARA TESTE
+	public static void main(String[] args) {
+		String password = new BCryptPasswordEncoder().encode("123456");
+		return;
+	}*/
+	
 }

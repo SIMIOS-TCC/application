@@ -132,6 +132,7 @@ public class UserService implements UserDetailsService{
 		
 		UserModel user = UserModel.builder()
 				.id(userEntity.getId())
+				.password(userEntity.getPassword())
 				.name(userEntity.getName())
 				.email(userEntity.getEmail())
 				.login(userEntity.getLogin())

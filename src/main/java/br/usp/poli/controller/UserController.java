@@ -44,6 +44,7 @@ public class UserController {
 		ModelAndView mav = new ModelAndView("RegisterUser");
 		
 		mav.addObject("user", user);
+		
  
 	    return mav;
 	}
@@ -105,6 +106,9 @@ public class UserController {
 		return "redirect:/user/search";
 	}
 	
-	
+	@ModelAttribute("roles")
+	public List<Role> roles(){
+		return roleService.readAll();
+	}
  
 }

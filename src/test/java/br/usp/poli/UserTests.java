@@ -75,7 +75,7 @@ public class UserTests {
 				.name("Name")
 				.email("email@email.com")
 				.login("username")
-				.password("123456")
+				.password("$2a$10$aGJP0j77LL3RxYveVRvEceiT9rE3P7aWdlK2KgwodfE0zwmZbAt6a")
 				.active(true)
 				.roles(Arrays.asList(role))
 				.build();
