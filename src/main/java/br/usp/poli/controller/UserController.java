@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.usp.poli.model.Role;
-import br.usp.poli.model.User;
+import br.usp.poli.model.UserModel;
 import br.usp.poli.service.RoleService;
 import br.usp.poli.service.UserService;
  
@@ -40,7 +40,7 @@ public class UserController {
 	
 	//---------------- CRUD -------------------------
 	@RequestMapping(value="/new", method= RequestMethod.GET)	
-	public ModelAndView newUser(User user) {
+	public ModelAndView newUser(UserModel user) {
 		ModelAndView mav = new ModelAndView("RegisterUser");
 		
 		mav.addObject("user", user);
@@ -49,7 +49,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value="/new", method= RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute @Valid User user, final BindingResult result, RedirectAttributes redirectAttributes){
+	public ModelAndView save(@ModelAttribute @Valid UserModel user, final BindingResult result, RedirectAttributes redirectAttributes){
 		if(result.hasErrors()){
 			List<Role> roles = roleService.readAll();			
 			roles.forEach(role ->{
@@ -79,7 +79,7 @@ public class UserController {
 	@RequestMapping(value="/{id}", method= RequestMethod.GET)		
 	public ModelAndView update(@PathVariable Long id) {
  
-		User user = this.userService.readById(id);
+		UserModel user = this.userService.readById(id);
  
 		List<Role> roles = roleService.readAll();			
 		roles.forEach(role ->{

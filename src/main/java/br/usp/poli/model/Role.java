@@ -21,7 +21,7 @@ public class Role {
 	private String description;
 	private boolean checked;
  
-	private List<User> users;
+	private List<UserModel> users;
  
 	private List<PermissionEntity> permissions;
 

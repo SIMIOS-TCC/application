@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 @Builder
-public class User {
+public class UserModel {
  
 	private Long id;
  
