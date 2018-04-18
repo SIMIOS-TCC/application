@@ -23,7 +23,7 @@ import br.usp.poli.utils.Graph;
 import br.usp.poli.utils.GraphUtil;
 
 @Controller
-@RequestMapping
+@RequestMapping("/simio")
 public class SimioController {
 	
 	private static final String MENU_VIEW = "Menu";
@@ -39,13 +39,13 @@ public class SimioController {
 	@Autowired
 	private GraphUtil graphUtil;
 
-	@RequestMapping("/menu")
+	@RequestMapping
 	public ModelAndView menu() {
 		ModelAndView mav = new ModelAndView(MENU_VIEW);
 		return mav;
 	}
 	
-	@RequestMapping("/menu/graph/{id}")
+	@RequestMapping("/graph/{id}")
 	public ModelAndView graph(@PathVariable("id") SimioEntity simioEntity) {
 		ModelAndView mav = new ModelAndView(GRAPH_VIEW);
 		
@@ -56,7 +56,7 @@ public class SimioController {
 		return mav;
 	}
 	
-	@RequestMapping("/menu/new")
+	@RequestMapping("/new")
 	public ModelAndView insert() {
 		ModelAndView mav = new ModelAndView(INSERT_VIEW);
 		mav.addObject(new SimioEntity());
@@ -64,7 +64,7 @@ public class SimioController {
 	}
 	
 	//TODO:implementar nome dos macacos e filtro por nome
-	@RequestMapping("/menu/search")
+	@RequestMapping("/search")
 	public ModelAndView pesquisar(@RequestParam(defaultValue = "%") String name) {
 		ModelAndView mav = new ModelAndView(SEARCH_VIEW);
 		List<Simio> allSimios = simioService.readByName(name);
@@ -75,7 +75,7 @@ public class SimioController {
 	
 	//---------------- CRUD -------------------------
 	
-	@RequestMapping(value="/menu/new", method=RequestMethod.POST)
+	@RequestMapping(value="/new", method=RequestMethod.POST)
 	public String create(@Valid Simio simio, BindingResult result, RedirectAttributes attributes) {
 		if(result.hasErrors()) {
 			System.out.println("Erro: " + result.toString());
@@ -86,10 +86,10 @@ public class SimioController {
 		
 		attributes.addFlashAttribute("message", "Simio was successfully saved!");
 		
-		return "redirect:/menu/new";
+		return "redirect:/simio/new";
 	}
 	
-	@RequestMapping("/menu/new/{id}")
+	@RequestMapping("/new/{id}")
 	public ModelAndView update(@PathVariable("id") SimioEntity simio) {
 		ModelAndView mav = new ModelAndView(INSERT_VIEW);
 		mav.addObject(simio);
@@ -100,6 +100,6 @@ public class SimioController {
 	public String delete(@PathVariable Long id, RedirectAttributes attributes) {
 		simioService.delete(id);
 		attributes.addFlashAttribute("mensagem", "Simio was successfully deleted.");
-		return "redirect:/menu/search";
+		return "redirect:/simio/search";
 	}
 }
