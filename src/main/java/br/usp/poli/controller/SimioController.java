@@ -22,15 +22,14 @@ import br.usp.poli.service.SimioService;
 import br.usp.poli.utils.Graph;
 import br.usp.poli.utils.GraphUtil;
 
+import static br.usp.poli.utils.ConstantsFile.SIMIO_SEARCH;
+import static br.usp.poli.utils.ConstantsFile.SIMIO_REGISTER;
+import static br.usp.poli.utils.ConstantsFile.SIMIO_GRAPH;
+
 @Controller
 @RequestMapping("/simio")
 public class SimioController {
 	
-	private static final String MENU_VIEW = "Menu";
-	private static final String GRAPH_VIEW = "Graph";
-	private static final String INSERT_VIEW = "InsertSimio";
-	private static final String SEARCH_VIEW = "SearchSimio";
-		
 	@Autowired
 	private SimioService simioService;
 	
@@ -38,16 +37,10 @@ public class SimioController {
 	private Graph graph;
 	@Autowired
 	private GraphUtil graphUtil;
-
-	@RequestMapping
-	public ModelAndView menu() {
-		ModelAndView mav = new ModelAndView(MENU_VIEW);
-		return mav;
-	}
 	
 	@RequestMapping("/graph/{id}")
 	public ModelAndView graph(@PathVariable("id") SimioEntity simioEntity) {
-		ModelAndView mav = new ModelAndView(GRAPH_VIEW);
+		ModelAndView mav = new ModelAndView(SIMIO_GRAPH);
 		
 		Gson gson = new Gson();
 		graphUtil.createGraph(simioService.entityToModel(simioEntity));
@@ -58,7 +51,7 @@ public class SimioController {
 	
 	@RequestMapping("/new")
 	public ModelAndView insert() {
-		ModelAndView mav = new ModelAndView(INSERT_VIEW);
+		ModelAndView mav = new ModelAndView(SIMIO_REGISTER);
 		mav.addObject(new SimioEntity());
 		return mav;
 	}
@@ -66,7 +59,7 @@ public class SimioController {
 	//TODO:implementar nome dos macacos e filtro por nome
 	@RequestMapping("/search")
 	public ModelAndView pesquisar(@RequestParam(defaultValue = "%") String name) {
-		ModelAndView mav = new ModelAndView(SEARCH_VIEW);
+		ModelAndView mav = new ModelAndView(SIMIO_SEARCH);
 		List<Simio> allSimios = simioService.readByName(name);
 		mav.addObject("allSimios",allSimios);
 		return mav;
@@ -79,7 +72,7 @@ public class SimioController {
 	public String create(@Valid Simio simio, BindingResult result, RedirectAttributes attributes) {
 		if(result.hasErrors()) {
 			System.out.println("Erro: " + result.toString());
-			return INSERT_VIEW;
+			return SIMIO_REGISTER;
 		}
 		
 		simioService.create(simio);
@@ -91,7 +84,7 @@ public class SimioController {
 	
 	@RequestMapping("/new/{id}")
 	public ModelAndView update(@PathVariable("id") SimioEntity simio) {
-		ModelAndView mav = new ModelAndView(INSERT_VIEW);
+		ModelAndView mav = new ModelAndView(SIMIO_REGISTER);
 		mav.addObject(simio);
 		return mav;
 	}

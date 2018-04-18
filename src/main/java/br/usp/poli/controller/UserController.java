@@ -19,6 +19,9 @@ import br.usp.poli.model.Role;
 import br.usp.poli.model.UserModel;
 import br.usp.poli.service.RoleService;
 import br.usp.poli.service.UserService;
+
+import static br.usp.poli.utils.ConstantsFile.USER_SEARCH;
+import static br.usp.poli.utils.ConstantsFile.USER_REGISTER;
  
 @Controller
 @RequestMapping("/user") 
@@ -35,13 +38,13 @@ public class UserController {
  
 		model.addAttribute("users", this.userService.readAll());
  
-	    return new ModelAndView("SearchUser");
+	    return new ModelAndView(USER_SEARCH);
 	}
 	
 	//---------------- CRUD -------------------------
 	@RequestMapping(value="/new", method= RequestMethod.GET)	
 	public ModelAndView newUser(UserModel user) {
-		ModelAndView mav = new ModelAndView("RegisterUser");
+		ModelAndView mav = new ModelAndView(USER_REGISTER);
 		
 		mav.addObject("user", user);
 		
