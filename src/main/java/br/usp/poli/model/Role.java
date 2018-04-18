@@ -19,6 +19,7 @@ public class Role {
 	private Long id;
 	private String name;
 	private String description;
+	private boolean checked;
  
 	private List<User> users;
  

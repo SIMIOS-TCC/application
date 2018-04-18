@@ -97,7 +97,7 @@ public class SimioController {
 	}
 	
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
-	public String deletar(@PathVariable Long id, RedirectAttributes attributes) {
+	public String delete(@PathVariable Long id, RedirectAttributes attributes) {
 		simioService.delete(id);
 		attributes.addFlashAttribute("mensagem", "Simio was successfully deleted.");
 		return "redirect:/menu/search";

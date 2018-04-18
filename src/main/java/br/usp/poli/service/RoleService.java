@@ -19,7 +19,7 @@ public class RoleService {
 	private RoleRepository roleRepository;
  
 	@Transactional(readOnly = true)
-	public List<Role> readRoles(){
+	public List<Role> readAll(){
  
 		List<Role> roles =  new ArrayList<Role>();
  

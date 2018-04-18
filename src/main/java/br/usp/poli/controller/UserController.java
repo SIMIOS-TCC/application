@@ -8,270 +8,103 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.model.GrupoModel;
-import com.example.demo.model.UsuarioModel;
-import com.example.demo.service.GrupoService;
-import com.example.demo.service.UsuarioService;
+import br.usp.poli.model.Role;
+import br.usp.poli.model.User;
+import br.usp.poli.service.RoleService;
+import br.usp.poli.service.UserService;
  
-/**
- * 
- * @author Cícero Ednilson
- * 
- *OBJETO RESPONSÁVEL POR REALIZAR AS ROTINAS DE USUÁRIO.
- * 
- */
 @Controller
-@RequestMapping("/usuario") 
+@RequestMapping("/user") 
 public class UserController {
  
-	/**INJETANDO O OBJETO GrupoService*/
 	@Autowired
-	private RoleService grupoService;
+	private RoleService roleService;
  
-	/**INJETANDO O OBJETO UsuarioService*/
 	@Autowired 
-	private UserService usuarioService;
+	private UserService userService;
+
+	@RequestMapping(value="/search", method= RequestMethod.GET)	
+	public ModelAndView search(Model model) {
  
+		model.addAttribute("users", this.userService.readAll());
  
- 
-	/***
-	 * CHAMA A FUNCIONALIDADE PARA CADASTRAR UM NOVO USUÁRIO NO SISTEMA
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value="/novoCadastro", method= RequestMethod.GET)	
-	public ModelAndView novoCadastro(Model model) {
- 
-		/*LISTA DE GRUPOS QUE VAMOS MOSTRAR NA PÁGINA*/
-		model.addAttribute("grupos", grupoService.consultarGrupos());
- 
-		/*OBJETO QUE VAMOS ATRIBUIR OS VALORES DOS CAMPOS*/
-		model.addAttribute("usuarioModel", new UsuarioModel());
- 
-	    return new ModelAndView("novoCadastro");
+	    return new ModelAndView("SearchUser");
 	}
+	
+	//---------------- CRUD -------------------------
+	@RequestMapping(value="/new", method= RequestMethod.GET)	
+	public ModelAndView newUser(User user) {
+		ModelAndView mav = new ModelAndView("RegisterUser");
+		
+		mav.addObject("user", user);
  
- 
- 
-	/***
-	 * SALVA UM NOVO USUÁRIO NO SISTEMA
-	 * @param usuarioModel
-	 * @param result
-	 * @param model
-	 * @param redirectAttributes
-	 * @return
-	 */
-	@RequestMapping(value="/salvarUsuario", method= RequestMethod.POST)
-	public ModelAndView salvarUsuario(@ModelAttribute 
-								@Valid UsuarioModel usuarioModel, 
-								final BindingResult result,
-								Model model,
-								RedirectAttributes redirectAttributes){
- 
-		/*VERIFICA SE TEM ALGUM ERRO (@NotEmpty),
-		 *SE TIVER ALGUM ERRO DEVEMOS RETORNAR PARA A MESMA PÁGINA PARA O USUÁRIO CORRIGIR*/
+	    return mav;
+	}
+
+	@RequestMapping(value="/new", method= RequestMethod.POST)
+	public ModelAndView save(@ModelAttribute @Valid User user, final BindingResult result, RedirectAttributes redirectAttributes){
 		if(result.hasErrors()){
- 
- 
- 
-			List<GrupoModel> gruposModel =grupoService.consultarGrupos();			
- 
-			/*POSICIONANDO OS CKECKBOX SELECIONADOS
-			 * 
-			 * SE O SISTEMA ENCONTROU ALGUM ERRO DE VALIDAÇÃO DEVEMOS 
-			 * BUSCAR OS GRUPOS E MARCAR COMO SELECIONADO NOVAMENTE 
-			 * PARA MOSTRAR NÁ PÁGINAS DA FORMA QUE O USUÁRIO ENVIO A REQUEST*/
-			gruposModel.forEach(grupo ->{
- 
-				if(usuarioModel.getGrupos() != null && usuarioModel.getGrupos().size() >0){
- 
-					usuarioModel.getGrupos().forEach(grupoSelecionado->{
- 
-						/*DEVEMOS MOSTRAR NA PÁGINA OS GRUPOS COM O CHECKBOX SELECIONADO*/
-						if(grupoSelecionado!= null){
-							if(grupo.getCodigo().equals(grupoSelecionado))
-								grupo.setChecked(true);
+			List<Role> roles = roleService.readAll();			
+			roles.forEach(role ->{
+				if(user.getRoles() != null && user.getRoles().size() > 0){
+					user.getRoles().forEach(selectedRole->{
+						if(selectedRole!= null){
+							if(role.getId().equals(selectedRole.getId()))
+								role.setChecked(true);
 						}					
 					});				
 				}
- 
 			});
- 
-			/*ADICIONA O GRUPOS QUE VÃO SER MOSTRADOS NA PÁGINA*/
-			model.addAttribute("grupos", gruposModel);
- 
-			/*ADICIONA OS DADOS DO USUÁRIO PARA COLOCAR NO FORMULÁRIO*/
-			model.addAttribute("usuarioModel", usuarioModel);
- 
-			/*RETORNA A VIEW*/
-			return new ModelAndView("novoCadastro");	
+			
+			user.setRoles(roles);
+			
+			return newUser(user);	
 		}
-		else{
+		
+		userService.create(user);
  
-			/*SALVANDO UM NOVO REGISTRO*/
-			usuarioService.salvarUsuario(usuarioModel);
- 
-		}
- 
- 
-		ModelAndView modelAndView = new ModelAndView("redirect:/usuario/novoCadastro");
- 
-		/*PASSANDO O ATRIBUTO PARA O ModelAndView QUE VAI REALIZAR 
-		 * O REDIRECIONAMENTO COM A MENSAGEM DE SUCESSO*/
-		redirectAttributes.addFlashAttribute("msg_resultado", "Registro salvo com sucesso!");
- 
-		/*REDIRECIONANDO PARA UM NOVO CADASTRO*/
+		ModelAndView modelAndView = new ModelAndView("redirect:/user/new");
+		redirectAttributes.addFlashAttribute("message", "User was successfully registered!");
+		
 		return modelAndView;
 	}
 	
-	/***
-	 * CONSULTA TODOS USUÁRIOS CADASTRADOS NO SISTEMA
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value="/consultar", method= RequestMethod.GET)	
-	public ModelAndView consultar(Model model) {
+	@RequestMapping(value="/{id}", method= RequestMethod.GET)		
+	public ModelAndView update(@PathVariable Long id) {
  
-		/*CONSULTA USUÁRIOS CADASTRADOS*/
-		model.addAttribute("usuariosModel", this.usuarioService.consultarUsuarios());
+		User user = this.userService.readById(id);
  
-		/*RETORNA A VIEW*/
-	    return new ModelAndView("consultarCadastros");
-	}
-	
-	/***
-	 * EXCLUI UM REGISTRO DO SISTEMA PELO CÓDIGO
-	 * @param codigoUsuario
-	 * @return
-	 */
-	@RequestMapping(value="/excluir", method= RequestMethod.POST)
-	public ModelAndView excluir(@RequestParam("codigoUsuario") Long codigoUsuario){
- 
-		ModelAndView modelAndView = new ModelAndView("redirect:/usuario/consultar");
- 
-		/*EXCLUINDO O REGISTRO*/
-		this.usuarioService.excluir(codigoUsuario);
- 
-		/*RETORNANDO A VIEW*/
-		return modelAndView;
-	}
-	
-	/***
-	 * CONSULTA UM USUÁRIO PELO CÓDIGO PARA REALIZAR ALTERAÇÕES NAS INFORAMÇÕES CADASTRADAS.
-	 * @param codigoUsuario
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value="/editarCadastro", method= RequestMethod.GET)		
-	public ModelAndView editarCadastro(@RequestParam("codigoUsuario") Long codigoUsuario, Model model) {
- 
-		/*CONSULTA OS GRUPOS CADASTRADOS*/
-		List<GrupoModel> gruposModel =grupoService.consultarGrupos();			
- 
-		/*CONSULTA O USUÁRIO PELO CÓDIGO*/
-		UsuarioModel usuarioModel = this.usuarioService.consultarUsuario(codigoUsuario);
- 
-		/*DEIXA SELECIONADO OS GRUPOS CADASTRADOS PARA O USUÁRIO*/
-		gruposModel.forEach(grupo ->{
- 
-		    usuarioModel.getGrupos().forEach(grupoCadastrado->{
- 
-		 	if(grupoCadastrado!= null){
-			    if(grupo.getCodigo().equals(grupoCadastrado))
-				grupo.setChecked(true);
-			}					
-		    });				
- 
+		List<Role> roles = roleService.readAll();			
+		roles.forEach(role ->{
+			if(user.getRoles() != null && user.getRoles().size() > 0){
+				user.getRoles().forEach(selectedRole->{
+					if(selectedRole!= null){
+						if(role.getId().equals(selectedRole.getId()))
+							role.setChecked(true);
+					}					
+				});				
+			}
 		});
  
+		user.setRoles(roles);
  
-		/*ADICIONANDO GRUPOS PARA MOSTRAR NA PÁGINA(VIEW)*/
-		model.addAttribute("grupos", gruposModel);
- 
-		/*ADICIONANDO INFORMAÇÕES DO USUÁRIO PARA MOSTRAR NA PÁGINA(VIEW)*/
-		model.addAttribute("usuarioModel", usuarioModel);
- 
-		/*CHAMA A VIEW /src/main/resources/templates/editarCadastro.html*/
-	    return new ModelAndView("editarCadastro");
+	    return newUser(user);
 	 }
- 
-         /***
-	 * SALVA AS ALTERAÇÕES REALIZADAS NO CADASTRO DO USUÁRIO
-	 * @param usuarioModel
-	 * @param result
-	 * @param model
-	 * @param redirectAttributes
-	 * @return
-	 */
-	@RequestMapping(value="/salvarAlteracao", method= RequestMethod.POST)
-	public ModelAndView salvarAlteracao(@ModelAttribute 
-					    @Valid UsuarioModel usuarioModel, 
-					    final BindingResult result,
-					    Model model,
-					   RedirectAttributes redirectAttributes){
- 
-		boolean isErroNullCampos = false;
- 
-		/*AQUI ESTAMOS VERIFICANDO SE TEM ALGUM CAMPO QUE NÃO ESTÁ PREENCHIDO,
-		 * MENOS O CAMPO DA SENHA, POIS SE O USUÁRIO NÃO INFORMAR VAMOS MANTER A
-		 * SENHA JÁ CADASTRADA*/
-		for (FieldError fieldError : result.getFieldErrors()) {
-		    if(!fieldError.getField().equals("senha")){
-		 	isErroNullCampos = true;	
-		    }	
-		}
- 
-		/*SE ENCONTROU ERRO DEVEMOS RETORNAR PARA A VIEW PARA QUE O 
-		 * USUÁRIO TERMINE DE INFORMAR OS DADOS*/
-		//TODO:colocar conversão no service modelToEntity, EntityToModel
-		if(isErroNullCampos){
- 
-		    List<GrupoModel> gruposModel =grupoService.consultarGrupos();			
- 
-		    gruposModel.forEach(grupo ->{
- 
-		         if(usuarioModel.getGrupos() != null && usuarioModel.getGrupos().size() >0){
- 
-			     /*DEIXA CHECADO OS GRUPOS QUE O USUÁRIO SELECIONOU*/
-			     usuarioModel.getGrupos().forEach(grupoSelecionado->{
- 
-			         if(grupoSelecionado!= null){
-				    if(grupo.getCodigo().equals(grupoSelecionado))
-				        grupo.setChecked(true);
-			         }					
-		             });				
-			  }
- 
-		     });
- 
-		     /*ADICIONANDO GRUPOS PARA MOSTRAR NA PÁGINA(VIEW)*/
-		     model.addAttribute("grupos", gruposModel);
- 
-		     /*ADICIONANDO O OBJETO usuarioModel PARA MOSTRAR NA PÁGINA(VIEW) AS INFORMAÇÕES DO USUÁRIO*/
-		     model.addAttribute("usuarioModel", usuarioModel);
- 
-		     /*RETORNANDO A VIEW*/
-		     return new ModelAndView("editarCadastro");	
-		}
-		else{
- 
-		     /*SALVANDO AS INFORMAÇÕES ALTERADAS DO USUÁRIO*/
-		     usuarioService.alterarUsuario(usuarioModel);
- 
-		}
- 
-		/*APÓS SALVAR VAMOS REDIRICIONAR O USUÁRIO PARA A PÁGINA DE CONSULTA*/
-		ModelAndView modelAndView = new ModelAndView("redirect:/usuario/consultar");
- 
-		/*RETORNANDO A VIEW*/
-		return modelAndView;
+	
+	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
+	public String delete(@PathVariable Long id, RedirectAttributes attributes) {
+		userService.delete(id);
+		attributes.addFlashAttribute("message", "User was successfully deleted.");
+		return "redirect:/user/search";
 	}
+	
+	
+ 
 }
