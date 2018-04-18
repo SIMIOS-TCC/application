@@ -36,12 +36,7 @@ public class RoleEntity {
  
 	private String description;
  
-	@ManyToMany
-	@JoinTable(
-	name="tb_user_role",
-	joinColumns=@JoinColumn(name="id_role", referencedColumnName="id_role"),
-	inverseJoinColumns=@JoinColumn(name="id_user", referencedColumnName="id_user")
-	)
+	@ManyToMany(mappedBy = "roles")
 	private List<UserEntity> users;
  
 	@ManyToMany

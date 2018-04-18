@@ -2,7 +2,6 @@ package br.usp.poli.entity;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -59,7 +58,7 @@ public class UserEntity {
 		    	joinColumns = {@JoinColumn(name = "id_user", referencedColumnName = "id_user")}, 
 			inverseJoinColumns = {@JoinColumn(name = "id_role", referencedColumnName = "id_role")}
 		        )
-	@ManyToMany(cascade ={ CascadeType.PERSIST, CascadeType.MERGE})	
+	@ManyToMany
 	private List<RoleEntity> roles;
  
 	public boolean isActive() {
