@@ -52,7 +52,7 @@ public class SimioController {
 	@RequestMapping("/new")
 	public ModelAndView insert() {
 		ModelAndView mav = new ModelAndView(SIMIO_REGISTER);
-		mav.addObject(new SimioEntity());
+		mav.addObject("simio", new SimioEntity());
 		return mav;
 	}
 	
@@ -71,7 +71,6 @@ public class SimioController {
 	@RequestMapping(value="/new", method=RequestMethod.POST)
 	public String create(@Valid Simio simio, BindingResult result, RedirectAttributes attributes) {
 		if(result.hasErrors()) {
-			System.out.println("Erro: " + result.toString());
 			return SIMIO_REGISTER;
 		}
 		
@@ -85,7 +84,7 @@ public class SimioController {
 	@RequestMapping("/new/{id}")
 	public ModelAndView update(@PathVariable("id") SimioEntity simio) {
 		ModelAndView mav = new ModelAndView(SIMIO_REGISTER);
-		mav.addObject(simio);
+		mav.addObject("simio", simio);
 		return mav;
 	}
 	

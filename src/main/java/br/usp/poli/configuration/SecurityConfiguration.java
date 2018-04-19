@@ -33,7 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				
 				.and()			
 					.formLogin()
-					.loginPage("/").defaultSuccessUrl("/menu",true)
+					.loginPage("/login").defaultSuccessUrl("/menu")
 					.permitAll()
 				.and()
 					.logout()
@@ -41,6 +41,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 					.permitAll();
 		
 		http.exceptionHandling().accessDeniedPage("/acess-denied");
+		
+		//http.csrf().disable();
 	}
 	
 	@Override

@@ -5,11 +5,11 @@
 	layout:decorator="LayoutPattern">
 	
 <head>
-<title>Insert Simio</title>
+<title>Register Simio</title>
 </head>
 
 <section layout:fragment="content">
-    <form class="form-horizontal" method="POST" th:action="@{/menu/new}" th:object="${simio}">
+    <form class="form-horizontal" method="POST" th:action="@{/simio/new}" th:object="${simio}">
     	
     	<div layout:include="Alert"></div>
     	
@@ -22,7 +22,7 @@
     	<div class="panel panel-default">
     		<div class="panel-heading clearfix">
 				<h1 class="panel-title aw-titulo-panel">New Simio</h1>
-				<a class="btn btn-link aw-link-panel" th:href="@{/menu/search}">Back</a>
+				<a class="btn btn-link aw-link-panel" th:href="@{/simio/search}">Back</a>
 			</div>
     		
     		<div class="panel-body">

@@ -7,13 +7,13 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class LoginController {
 	
-	@RequestMapping(value={"/", "home"})
+	@RequestMapping(value={"/", "/home"})
 	public ModelAndView home(){
 		ModelAndView modelAndView = new ModelAndView("Home");
 		return modelAndView;
 	}
 	
-	@RequestMapping(value="menu")
+	@RequestMapping(value="/menu")
 	public ModelAndView menu(){
 		ModelAndView modelAndView = new ModelAndView("Menu");
 		return modelAndView;

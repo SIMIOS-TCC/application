@@ -1,74 +1,100 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="LayoutPattern">
+
 <head>
-   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
- 
-	<title>Consultar Registros</title>
+	<title>Users</title>
+	<meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
+
 <body>
- 
 <section layout:fragment="content">
- 
-    <!-- MONTANDO O GRID PARA POSICIONAR O FORMULÁRIO NO CENTRO -->   
-   <div class="mdl-grid">   
-    <div class="mdl-layout-spacer"></div>    
-    <section class="section--center mdl-grid mdl-shadow--4dp mdl-color--white">
- 
-    <div class="mdl-cell mdl-cell--12-col">
-       <div class="alinhar-centro">
-	   <i class="material-icons mdl-list__item-avatar">person</i>
-	   <span style="padding-left:5px;">Consultar Usuários Cadastrados</span>			  
-       </div>
- 
-       <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-       <!-- CABEÇALHO DA TABELA -->
-       <thead>
-	  <tr>
-	    <th>Código</th>
-	    <th class="mdl-data-table__cell--non-numeric">Nome</th>
-	    <th class="mdl-data-table__cell--non-numeric">Login</th>
-	    <th class="mdl-data-table__cell--non-numeric">Ativo</th>
-	    <th class="mdl-data-table__cell--non-numeric">Editar</th>
-	    <th class="mdl-data-table__cell--non-numeric">Excluir</th>
-	   </tr>
-	</thead>
-	<tbody>
-	<!-- PREENCHENDO A TABELA COM OS USUÁRIOS CADASTRADOS-->
-	<th:block th:each="usuarioModel : ${usuariosModel}">
-	   <tr>
-	    <td th:text="${usuarioModel.codigo}"></td>
-	    <td th:text="${usuarioModel.nome}" class="mdl-data-table__cell--non-numeric"></td>
-	    <td th:text="${usuarioModel.login}" class="mdl-data-table__cell--non-numeric"></td>
-	    <td th:if="${usuarioModel.ativo}" th:text="Sim" class="mdl-data-table__cell--non-numeric"></td>
-	    <td th:unless="${usuarioModel.ativo}" th:text="Não" class="mdl-data-table__cell--non-numeric"></td>
-	    <td>
-		<!-- REALIZANDO A REQUEST PARA EDITAR UM CADASTRO -->
-		<form action="#" th:action="@{../usuario/editarCadastro}" method="get">
-		  <input type="hidden" name="codigoUsuario" th:value="${usuarioModel.codigo}" />					   			
-		  <button type="submit"  class="mdl-chip__action"><i class="material-icons">create</i></button>
-		</form>
-	    </td>
-            <td>
-		<!-- EXCLUINDO UM REGISTRO CADASTRADO -->
-		<form action="#" th:action="@{../usuario/excluir}" method="post">					   			 
-		  <input type="hidden" name="codigoUsuario" th:value="${usuarioModel.codigo}" />								 					   			 
-		  <button type="submit"  class="mdl-chip__action" onclick="return confirm('Deseja realmente excluir esse registro?');"><i class="material-icons">delete</i></button>
-		</form>
-	    </td>
-         </tr>
-      </th:block>	
-   </tbody>	
-</table>
- 
- 
-</div>
- 
-</section>	
-<div class="mdl-layout-spacer"></div>
-</div>
- 
+
+ 	<div layout:include="Alert"></div>
+ 	
+ 	<div class="panel panel-default">
+		<div class="panel-heading clearfix">
+			<h1 class="panel-title aw-titulo-panel">Users</h1>
+			<a class="btn btn-link aw-link-panel" th:href="@{/menu}">Back to Menu</a>
+		</div>
+			
+		<div class="panel-body">
+		
+			<form method="GET" class="form-horizontal">
+				<div class="form-group">
+					<div class="col-sm-4">
+						<div class="input-group">
+							<input class="form-control" placeholder="Search" autofocus="autofocus"
+								name="name"></input>
+							<span class="input-group-btn">
+								<button type="submit" class="btn btn-default">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</form>
+			
+			<div class="table-responsive">
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th class="text-center col-md-1">#</th>
+							<th class="text-left col-md-2">Name</th>
+							<th class="text-center col-md-1">Username</th>
+							<th class="text-center col-md-2">Email</th>
+							<th class="text-center col-md-1">Active</th>
+							<th class="text-center col-md-2">Roles</th>
+							<th class="col-md-1"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="user : ${allUsers}">
+							<td class="text-center" th:text="${user.id}"></td>
+							<td class="text-left" th:text="${user.name}"></td>
+							<td class="text-center" th:text="${user.login}"></td>
+							<td class="text-center" th:text="${user.email}"></td>
+							<td class="text-center" th:attr="data-rule=${user.id}">
+								<span class="label" th:text="${user.active} ? 'Active' : 'Inactive'"
+									th:classappend="${user.active} ? label-success : label-danger"></span>
+							</td>
+							<td class="text-center">
+								<span th:each="role : ${user.roles}">
+									<span class="label label-info" th:text="${role.name}"></span>
+								</span>
+							</td>
+							<td class="text-center" >
+								<a class="btn btn-link btn-xs" th:href="@{/user/new/{id}(id=${user.id})}"
+									title="Edit" rel="tooltip" data-placement="top">
+									<span class="glyphicon glyphicon-pencil"></span>
+								</a>
+								<a class="btn btn-link btn-xs js-toggle-active"
+									th:href="@{/user/{id}/activate(id=${user.id})}" 
+									th:attr="data-id=${user.id}, data-active=${user.active}"
+									title="Toggle" rel="tooltip" data-placement="top">
+									<span class="glyphicon glyphicon-check"></span>
+								</a>
+								<a class="btn btn-link btn-xs" data-toggle="modal" data-target="#confirmExclusionModal"
+									th:attr="data-id=${user.id}, data-name=${user.name}"
+									title="Exclude" rel="tooltip" data-placement="top">
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+							</td>
+						</tr>
+						<tr th:if="${#lists.isEmpty(allUsers)}">
+							<td colspan="6">No users were found</td>						
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div layout:include="ConfirmExclusionDialog"></div>
+		
+	</div>
 </section>
- 
 </body>
 </html>

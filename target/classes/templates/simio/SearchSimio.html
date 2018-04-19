@@ -52,7 +52,7 @@
 							<td class="text-left" th:text="${simio.name}"></td>
 							<td class="text-right" th:text="${simio.temperature}"></td>
 							<td class="text-center" >
-								<a class="btn btn-link btn-xs" th:href="@{/menu/new/{id}(id=${simio.id})}"
+								<a class="btn btn-link btn-xs" th:href="@{/simio/new/{id}(id=${simio.id})}"
 									title="Edit" rel="tooltip" data-placement="top">
 									<span class="glyphicon glyphicon-pencil"></span>
 								</a>
@@ -61,8 +61,8 @@
 									title="Exclude" rel="tooltip" data-placement="top">
 									<span class="glyphicon glyphicon-remove"></span>
 								</a>
-								<a class="btn btn-link btn-xs js-atualizar-status"
-									th:href="@{/menu/graph/{id}(id=${simio.id})}"
+								<a class="btn btn-link btn-xs"
+									th:href="@{/simio/graph/{id}(id=${simio.id})}"
 									title="Graph" rel="tooltip" data-placement="top">
 									<span class="glyphicon glyphicon-check"></span>
 								</a>

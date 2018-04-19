@@ -20,6 +20,7 @@ import br.usp.poli.model.Role;
 import br.usp.poli.model.SecurityUser;
 import br.usp.poli.model.UserModel;
 import br.usp.poli.repository.PermissionRepository;
+import br.usp.poli.repository.RoleRepository;
 import br.usp.poli.repository.UserRepository;
  
 @Component
@@ -27,6 +28,9 @@ public class UserService implements UserDetailsService{
  
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
  
 	@Autowired
 	private RoleService roleService; 
@@ -40,7 +44,14 @@ public class UserService implements UserDetailsService{
 		UserEntity userEntity = readByLogin(login);
 		
 		return new SecurityUser(entityToModel(userEntity),
-				readRolesPermissions(userEntity.getRoles()));
+				readUserAuthorities(userEntity));
+	}
+	
+	public boolean toggleActive(Long id){
+		UserEntity userEntity = userRepository.findOne(id);
+		userEntity.setActive(!userEntity.isActive());
+		userRepository.save(userEntity);
+		return userEntity.isActive();
 	}
  
 	//Create
@@ -60,8 +71,15 @@ public class UserService implements UserDetailsService{
  
 		return userEntity;
 	}
+	
+	public List<GrantedAuthority> readUserAuthorities(UserEntity userEntity) {
+		 
+		List<RoleEntity> roles = roleRepository.findByUsersIn(userEntity);
  
-	private List<GrantedAuthority> readRolesPermissions(List<RoleEntity> roles) {
+		return this.readRolesAuthorities(roles);
+	}
+ 
+	private List<GrantedAuthority> readRolesAuthorities(List<RoleEntity> roles) {
 		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
 		
 		for (RoleEntity role: roles) {
@@ -113,9 +131,9 @@ public class UserService implements UserDetailsService{
 	public UserEntity modelToEntity(UserModel user) {
 		
 		List<RoleEntity> rolesEntity = new ArrayList<RoleEntity>();
-		for (Role role : user.getRoles()){
+		user.getRoles().forEach(role -> {
 			rolesEntity.add(roleService.modelToEntity(role));
-		}
+		});
 		
 		UserEntity userEntity =  UserEntity.builder()
 				.active(true)
@@ -130,6 +148,11 @@ public class UserService implements UserDetailsService{
  
 	public UserModel entityToModel(UserEntity userEntity) {
 		
+		List<Role> roles = new ArrayList<Role>();
+		for (RoleEntity roleEntity : roleRepository.findByUsersIn(userEntity)){
+			roles.add(roleService.entityToModel(roleEntity));
+		}
+		
 		UserModel user = UserModel.builder()
 				.id(userEntity.getId())
 				.password(userEntity.getPassword())
@@ -137,6 +160,7 @@ public class UserService implements UserDetailsService{
 				.email(userEntity.getEmail())
 				.login(userEntity.getLogin())
 				.active(userEntity.isActive())
+				.roles(roles)
 				.build();
 		
 		return user;

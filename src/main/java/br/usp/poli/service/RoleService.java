@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.usp.poli.entity.RoleEntity;
 import br.usp.poli.model.Role;
+import br.usp.poli.repository.PermissionRepository;
 import br.usp.poli.repository.RoleRepository;
  
 @Service
@@ -17,6 +18,9 @@ public class RoleService {
  
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private PermissionRepository permissionRepository;
  
 	@Transactional(readOnly = true)
 	public List<Role> readAll(){
@@ -39,7 +43,20 @@ public class RoleService {
 				.description(role.getDescription())
 				.build();
 		
+		roleEntity.setPermissions(permissionRepository.findByRolesIn(roleEntity));
+		
 		return roleEntity;
+	}
+	
+	public Role entityToModel(RoleEntity roleEntity) {
+		Role role = Role.builder()
+				.id(roleEntity.getId())
+				.name(roleEntity.getName())
+				.description(roleEntity.getDescription())
+				.permissions(permissionRepository.findByRolesIn(roleEntity))
+				.build();
+		
+		return role;
 	}
  
 }
