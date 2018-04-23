@@ -56,7 +56,8 @@ public class UserService implements UserDetailsService{
  
 	//Create
 	public void create(UserModel user){
-		this.userRepository.save(modelToEntity(user));
+		if(user.getId() != null) update(user);
+		else userRepository.save(modelToEntity(user));
 	}
 	
 	//Read
@@ -119,7 +120,8 @@ public class UserService implements UserDetailsService{
 	
 	//Update
 	public void update(UserModel user){
-		this.userRepository.saveAndFlush(modelToEntity(user));
+		UserEntity userEntity = userRepository.findOne(user.getId());
+		this.userRepository.saveAndFlush(userEntity);
 	}
 	
 	//Delete
@@ -136,6 +138,7 @@ public class UserService implements UserDetailsService{
 		});
 		
 		UserEntity userEntity =  UserEntity.builder()
+				.name(user.getName())
 				.active(true)
 				.login(user.getLogin())
 				.email(user.getEmail())

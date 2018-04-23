@@ -1,8 +1,7 @@
 $('#confirmExclusionModal').on('show.bs.modal', function(event) {
 	var button = $(event.relatedTarget);
 	
-	var simioId = button.data('id');
-	var simioName = button.data('name');
+	var id = button.data('id');
 	
 	var modal = $(this);
 	var form = modal.find('form');
@@ -10,21 +9,35 @@ $('#confirmExclusionModal').on('show.bs.modal', function(event) {
 	if (!action.endsWith('/')) {
 		action += '/';
 	}
-	form.attr('action', action + simioId);
+	form.attr('action', action + id);
+});
+
+$('#js-confirm-exclusion').on('click', function(event) {
+	var modal = $('#confirmExclusionModal');
+	var form = modal.find('form');
+	var action = form.data('url-base');
+	var method = form.attr('method');
 	
-	modal.find('.modal-header h4').html('Are you sure you want to delete simio <strong>' + simioName + '</strong>?');
+	var token = $("meta[name='_csrf']").attr("content");
+	var header = $("meta[name='_csrf_header']").attr("content");
+	alert(token);
+	var response = $.ajax({
+		url: action,
+		type: method,
+		beforeSend: function(xhr) { xhr.setRequestHeader(header, token); }
+	});
 });
 
 $('.js-toggle-active').on('click', function(event){
 	event.preventDefault();
 	var button = $(event.currentTarget);
-	var urlReceber = button.attr('href');
+	var urlBase = button.attr('href');
 	
 	var token = $("meta[name='_csrf']").attr("content");
 	var header = $("meta[name='_csrf_header']").attr("content");
 	
 	var response = $.ajax({
-		url: urlReceber,
+		url: urlBase,
 		type: 'PUT',
 		beforeSend: function(xhr) { xhr.setRequestHeader(header, token); }
 	});

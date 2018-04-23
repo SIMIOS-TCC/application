@@ -62,8 +62,15 @@ public class UserTests {
 		List<PermissionEntity> permissions = permissionRepository.findAll();
 		
 		roleRepository.save(RoleEntity.builder()
-			.name("ADMIN")
+			.name("Administrator")
+			.description("Complete access to all system features")
 			.permissions(permissions)
+			.build());
+		
+		roleRepository.save(RoleEntity.builder()
+			.name("Common User")
+			.description("Access to simio features")
+			.permissions(Arrays.asList(permissions.get(1)))
 			.build());
 	}
 	
