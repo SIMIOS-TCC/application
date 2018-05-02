@@ -18,6 +18,7 @@ import br.usp.poli.entity.UserEntity;
 import br.usp.poli.repository.PermissionRepository;
 import br.usp.poli.repository.RoleRepository;
 import br.usp.poli.repository.UserRepository;
+import org.junit.Assert;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = SimiosApplication.class)
@@ -44,8 +45,18 @@ public class UserTests {
 	}
 	
 	@Test
-	public void createUser() {
+	public void updateUser() {
+		UserEntity user = userRepository.findAll().get(0);
+		String username = user.getLogin();
 		
+		user.setLogin("usernameTest");
+		userRepository.saveAndFlush(user);
+		
+		user = userRepository.findOne(user.getId());
+		Assert.assertEquals("usernameTest", user.getLogin());
+		
+		user.setLogin(username);
+		userRepository.saveAndFlush(user);
 	}
 	
 	private void insertPermissions() {

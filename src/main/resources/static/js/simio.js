@@ -15,15 +15,15 @@ $('#confirmExclusionModal').on('show.bs.modal', function(event) {
 $('#js-confirm-exclusion').on('click', function(event) {
 	var modal = $('#confirmExclusionModal');
 	var form = modal.find('form');
-	var action = form.data('url-base');
+	var action = form.attr('action');
 	var method = form.attr('method');
 	
 	var token = $("meta[name='_csrf']").attr("content");
 	var header = $("meta[name='_csrf_header']").attr("content");
-	alert(token);
+
 	var response = $.ajax({
 		url: action,
-		type: method,
+		type: 'DELETE',
 		beforeSend: function(xhr) { xhr.setRequestHeader(header, token); }
 	});
 });

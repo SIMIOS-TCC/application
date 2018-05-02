@@ -57,7 +57,8 @@ public class UserService implements UserDetailsService{
 	//Create
 	public void create(UserModel user){
 		if(user.getId() != null) update(user);
-		else userRepository.save(modelToEntity(user));
+		else
+			userRepository.save(modelToEntity(null, user));
 	}
 	
 	//Read
@@ -121,7 +122,7 @@ public class UserService implements UserDetailsService{
 	//Update
 	public void update(UserModel user){
 		UserEntity userEntity = userRepository.findOne(user.getId());
-		this.userRepository.saveAndFlush(userEntity);
+		this.userRepository.saveAndFlush(modelToEntity(userEntity, user));
 	}
 	
 	//Delete
@@ -130,21 +131,21 @@ public class UserService implements UserDetailsService{
 	}
  
 	//Model - Entity
-	public UserEntity modelToEntity(UserModel user) {
+	public UserEntity modelToEntity(UserEntity userEntity, UserModel user) {
 		
 		List<RoleEntity> rolesEntity = new ArrayList<RoleEntity>();
 		user.getRoles().forEach(role -> {
 			rolesEntity.add(roleService.modelToEntity(role));
 		});
 		
-		UserEntity userEntity =  UserEntity.builder()
-				.name(user.getName())
-				.active(true)
-				.login(user.getLogin())
-				.email(user.getEmail())
-				.password(new BCryptPasswordEncoder().encode(user.getPassword()))
-				.roles(rolesEntity)
-				.build();
+		if(userEntity == null) userEntity = new UserEntity();
+		
+		userEntity.setName(user.getName());
+		userEntity.setActive(true);
+		userEntity.setLogin(user.getLogin());
+		userEntity.setEmail(user.getEmail());
+		userEntity.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+		userEntity.setRoles(rolesEntity);
 		
 		return userEntity;
 	}
