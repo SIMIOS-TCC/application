@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Implementation-Title: SIMIOS
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: larissa.amaral
+Built-By: laris
 Implementation-Vendor-Id: br.usp.poli
 Build-Jdk: 1.8.0_161
 Created-By: Maven Integration for Eclipse
