@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<nav class="navbar navbar-ontop navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/home}">
+               	<img alt="SIMIO" th:src="@{/images/simios-logo.png}" height="42" width="63" />
+            </a>
+            <a class="navbar-brand" th:href="@{/simio/data}">
+					<span class="glyphicon glyphicon-signal"> DATA</span>
+            </a>
+            <a class="navbar-brand" th:href="@{/simio/graph}">
+					<span class="glyphicon glyphicon-map-marker"> MAP</span>
+            </a>
+            <a class="navbar-brand" th:href="@{/simio/search}">
+					<span class="glyphicon glyphicon-piggy-bank"> MONKEYS</span>
+            </a>
+            <a class="navbar-brand" th:href="@{/user/search}">
+					<span class="glyphicon glyphicon-user"> USERS</span>
+            </a>
+            
+            
+            <a class="navbar-brand" th:href="@{/login}">
+					<span class="glyphicon glyphicon-user"></span>
+            </a>
+            <a class="navbar-brand" th:href="@{/logout}">
+					<span class="glyphicon glyphicon-log-out"></span>
+            </a>
+        </div>
+    </div>
+</nav>
+    
+</html>

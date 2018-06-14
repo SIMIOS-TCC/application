@@ -1,6 +1,7 @@
 #graphCanvas {
 	border : 1px solid #000000;
 }
+
 /*Tela grande*/
 @media(min-width: 768px) {
 	.panel-default {
@@ -27,3 +28,25 @@
 	float : right;
 	padding : 0px;
 }
+	
+.navbar-ontop {
+ background: #e69138ff;
+ box-shadow: 0 0 5px #333;
+ border-bottom: 1px solid #058840;
+ border-top: 1px solid #058840; }
+.navbar span {
+  color: black; }
+.navbar .navbar-brand {
+  font-size: 20px;
+  line-height: 50px;
+  text-align: center;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  padding: 0 15p;
+  font-weight: 300; }
+.navbar li > a > i {
+  margin-right: 2px;
+  color: #87c587; }
+.navbar .dropdown-menu {
+  background-color: #eee !important; }
+ .navbar .dropdown-menu .nav-link {
+   color: #058840 !important; }

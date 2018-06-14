@@ -10,6 +10,14 @@
 
 <section layout:fragment="content">
 
+	<nav class="navbar navbar-default navbar-static-top">
+	    <div class="container-fluid">
+	        <div class="navbar-header">
+				<span class="glyphicon glyphicon-piggy-bank"> MONKEYS</span>
+	        </div>
+	    </div>
+	</nav>
+
 	<div layout:include="Alert"></div>
 	
 	<div class="panel panel-default">
@@ -41,15 +49,21 @@
 					<thead>
 						<tr>
 							<th class="text-center col-md-1">#</th>
-							<th class="text-left col-md-2">Name</th>
+							<th class="text-left col-md-4">Name</th>
+							<th class="text-left col-md-1">Gender</th>
+							<th class="text-left col-md-1">Age</th>
+							<th class="text-left col-md-1">Group</th>
 							<th class="text-right col-md-1">Temperature</th>
-							<th class="col-md-1"></th>
+							<th class="col-md-2"></th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="simio : ${allSimios}">
 							<td class="text-center" th:text="${simio.id}"></td>
 							<td class="text-left" th:text="${simio.name}"></td>
+							<td class="text-center" th:text="1"></td>
+							<td class="text-center" th:text="M"></td>
+							<td class="text-center" th:text="1"></td>
 							<td class="text-right" th:text="${simio.temperature}"></td>
 							<td class="text-center" >
 								<a class="btn btn-link btn-xs" th:href="@{/simio/new/{id}(id=${simio.id})}"
