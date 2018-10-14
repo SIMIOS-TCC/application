@@ -9,16 +9,16 @@
             <a class="navbar-brand" th:href="@{/home}">
                	<img alt="SIMIOS" th:src="@{/images/simios-logo.png}" height="42" width="63" />
             </a>
-            <a class="navbar-brand" th:href="@{/simio/data}">
+            <a class="navbar-brand" th:href="@{/simio/data}" th:classappend="${activeData} ? active">
 					<i class="fa fa-chart-line" aria-hidden="true"></i> DATA
             </a>
-            <a class="navbar-brand" th:href="@{/simio/graph}">
+            <a class="navbar-brand" th:href="@{/simio/graph}" th:classappend="${activeMap} ? active">
 					<i class="fa fa-mountain" aria-hidden="true"></i> MAP
             </a>
-            <a class="navbar-brand" th:href="@{/simio/search}">
+            <a class="navbar-brand" th:href="@{/simio/search}" th:classappend="${activeMonkeys} ? active">
 					<i class="fa fa-paw" aria-hidden="true"></i> MONKEYS
             </a>
-            <a class="navbar-brand" th:href="@{/user/search}">
+            <a class="navbar-brand" th:href="@{/user/search}" th:classappend="${activeUsers} ? active">
 					<i class="fa fa-users-cog" aria-hidden="true"></i> USERS
             </a>
             
