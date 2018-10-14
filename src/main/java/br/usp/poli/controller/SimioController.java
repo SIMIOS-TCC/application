@@ -48,9 +48,9 @@ public class SimioController {
 	
 	//TODO:implementar nome dos macacos e filtro por nome
 	@RequestMapping("/search")
-	public ModelAndView pesquisar(@RequestParam(defaultValue = "%") String name, Simio simio) {
+	public ModelAndView pesquisar(Simio simio) {
 		ModelAndView mav = new ModelAndView(SIMIO_SEARCH);
-		List<Simio> allSimios = simioService.readByName(name);
+		List<Simio> allSimios = simioService.readAll();
 		mav.addObject("allSimios",allSimios);
 		
 		if(simio == null) {
@@ -68,7 +68,7 @@ public class SimioController {
 		if(result.hasErrors()) {
 			model.addAttribute("simio", simio);
 			
-			List<Simio> allSimios = simioService.readByName("%");
+			List<Simio> allSimios = simioService.readAll();
 			model.addAttribute("allSimios",allSimios);
 			
 			return SIMIO_SEARCH;
@@ -86,7 +86,7 @@ public class SimioController {
 		ModelAndView mav = new ModelAndView(SIMIO_SEARCH);
 		mav.addObject("simio", simio);
 		
-		List<Simio> allSimios = simioService.readByName("%");
+		List<Simio> allSimios = simioService.readAll();
 		mav.addObject("allSimios",allSimios);
 		
 		mav.addObject("isEdit", true);

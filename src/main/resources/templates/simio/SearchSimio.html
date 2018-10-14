@@ -17,23 +17,6 @@
 			
 		<div class="panel-body">
 			
-			<form method="POST" th:action="@{/simio/search/id}" class="form-horizontal">
-				<div class="form-group">
-					<div class="col-sm-3">
-						<div class="input-group">
-							<input class="form-control" placeholder="Search" autofocus="autofocus"
-								name="name"></input>
-							<span class="input-group-btn">
-								<button type="submit" class="btn btn-default">
-									<i class="glyphicon glyphicon-search"></i>
-								</button>
-							</span>
-						</div>
-					</div>
-					<div class="col-sm-9"></div>
-				</div>
-			</form>
-			
 			<form method="POST" th:action="@{/simio/new}" class="form-horizontal" th:object="${simio}">
 				<div layout:include="Alert"></div>
 				<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
@@ -43,25 +26,26 @@
 				</div>
 				<div class="form-group">
 					<div class="col-md-1">
+						<label for="id" th:classappend="${isEdit} ? show : hide" class="control-label pull-left"> #</label>
    					</div>
 					<div class="col-md-4">
-						<label for="descricao" class="control-label"> Name</label>
+						<label for="name" class="control-label"> Name</label>
 					</div>
 					<div class="col-md-2">
-						<label for="descricao" class="control-label"> Gender</label>
+						<label for="gender" class="control-label"> Gender</label>
 					</div>
 					<div class="col-md-1">
-						<label for="descricao" class="control-label"> Age</label>
+						<label for="age" class="control-label"> Age</label>
 					</div>
 					<div class="col-md-2">
-						<label for="descricao" class="control-label"> Group</label>
+						<label for="group" class="control-label"> Group</label>
 					</div>
 					<div class="col-md-2">
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-md-1">
-	    				<input type="hidden" th:field="*{id}"/>
+	    				<input th:classappend="${isEdit} ? show : hide" class="form-control" th:field="*{id}"/>
    					</div>
 					<div class="col-md-4" th:classappend="${#fields.hasErrors('name')} ? has-error">
 						<input type="text" class="form-control" id="name" name="name" th:field="*{name}"/>

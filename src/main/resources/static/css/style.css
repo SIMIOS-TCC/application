@@ -4,7 +4,9 @@
 .label {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
-
+.hide {
+	display: hidden !important; }
+	
 #graphCanvas {
 	border : 1px solid #000000;
 }
