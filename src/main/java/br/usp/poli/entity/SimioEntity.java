@@ -36,4 +36,5 @@ public class SimioEntity {
 	private String name;
 	
 	private int temperature;
+	
 }

@@ -1,5 +1,8 @@
 package br.usp.poli.controller;
 
+import static br.usp.poli.utils.ConstantsFile.SIMIO_REGISTER;
+import static br.usp.poli.utils.ConstantsFile.SIMIO_SEARCH;
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -14,17 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.google.gson.Gson;
-
 import br.usp.poli.entity.SimioEntity;
 import br.usp.poli.model.Simio;
 import br.usp.poli.service.SimioService;
 import br.usp.poli.utils.Graph;
-import br.usp.poli.utils.GraphUtil;
-
-import static br.usp.poli.utils.ConstantsFile.SIMIO_SEARCH;
-import static br.usp.poli.utils.ConstantsFile.SIMIO_REGISTER;
-import static br.usp.poli.utils.ConstantsFile.SIMIO_GRAPH;
 
 @Controller
 @RequestMapping("/simio")
@@ -35,19 +31,19 @@ public class SimioController {
 	
 	@Autowired
 	private Graph graph;
-	@Autowired
-	private GraphUtil graphUtil;
-	
-	@RequestMapping("/graph/{id}")
-	public ModelAndView graph(@PathVariable("id") SimioEntity simioEntity) {
-		ModelAndView mav = new ModelAndView(SIMIO_GRAPH);
-		
-		Gson gson = new Gson();
-		graphUtil.createGraph(simioService.entityToModel(simioEntity));
-		String json = gson.toJson(graph);
-		mav.addObject("mapping", json);
-		return mav;
-	}
+//	@Autowired
+//	private GraphUtil graphUtil;
+//	
+//	@RequestMapping("/graph/{id}")
+//	public ModelAndView graph(@PathVariable("id") SimioEntity simioEntity) {
+//		ModelAndView mav = new ModelAndView(SIMIO_GRAPH);
+//		
+//		Gson gson = new Gson();
+//		graphUtil.createGraph(simioService.entityToModel(simioEntity));
+//		String json = gson.toJson(graph);
+//		mav.addObject("mapping", json);
+//		return mav;
+//	}
 	
 	@RequestMapping("/new")
 	public ModelAndView insert() {
