@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,19 +46,17 @@ public class SimioController {
 //		return mav;
 //	}
 	
-	@RequestMapping("/new")
-	public ModelAndView insert() {
-		ModelAndView mav = new ModelAndView(SIMIO_REGISTER);
-		mav.addObject("simio", new SimioEntity());
-		return mav;
-	}
-	
 	//TODO:implementar nome dos macacos e filtro por nome
 	@RequestMapping("/search")
-	public ModelAndView pesquisar(@RequestParam(defaultValue = "%") String name) {
+	public ModelAndView pesquisar(@RequestParam(defaultValue = "%") String name, Simio simio) {
 		ModelAndView mav = new ModelAndView(SIMIO_SEARCH);
 		List<Simio> allSimios = simioService.readByName(name);
 		mav.addObject("allSimios",allSimios);
+		
+		if(simio == null) {
+			simio = new Simio();
+		}
+		mav.addObject("simio", simio);
 		return mav;
 	}
 	
@@ -65,22 +64,32 @@ public class SimioController {
 	//---------------- CRUD -------------------------
 	
 	@RequestMapping(value="/new", method=RequestMethod.POST)
-	public String create(@Valid Simio simio, BindingResult result, RedirectAttributes attributes) {
+	public String create(@Valid Simio simio, BindingResult result, RedirectAttributes attributes, Model model) {
 		if(result.hasErrors()) {
-			return SIMIO_REGISTER;
+			model.addAttribute("simio", simio);
+			
+			List<Simio> allSimios = simioService.readByName("%");
+			model.addAttribute("allSimios",allSimios);
+			
+			return SIMIO_SEARCH;
 		}
 		
 		simioService.create(simio);
 		
 		attributes.addFlashAttribute("message", "Simio was successfully saved!");
 		
-		return "redirect:/simio/new";
+		return "redirect:/simio/search";
 	}
 	
 	@RequestMapping("/new/{id}")
 	public ModelAndView update(@PathVariable("id") SimioEntity simio) {
-		ModelAndView mav = new ModelAndView(SIMIO_REGISTER);
+		ModelAndView mav = new ModelAndView(SIMIO_SEARCH);
 		mav.addObject("simio", simio);
+		
+		List<Simio> allSimios = simioService.readByName("%");
+		mav.addObject("allSimios",allSimios);
+		
+		mav.addObject("isEdit", true);
 		return mav;
 	}
 	
