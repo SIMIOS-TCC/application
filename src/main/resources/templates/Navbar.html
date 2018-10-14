@@ -7,27 +7,27 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" th:href="@{/home}">
-               	<img alt="SIMIO" th:src="@{/images/simios-logo.png}" height="42" width="63" />
+               	<img alt="SIMIOS" th:src="@{/images/simios-logo.png}" height="42" width="63" />
             </a>
             <a class="navbar-brand" th:href="@{/simio/data}">
-					<span class="glyphicon glyphicon-signal"> DATA</span>
+					<i class="fa fa-chart-line" aria-hidden="true"></i> DATA
             </a>
             <a class="navbar-brand" th:href="@{/simio/graph}">
-					<span class="glyphicon glyphicon-map-marker"> MAP</span>
+					<i class="fa fa-mountain" aria-hidden="true"></i> MAP
             </a>
             <a class="navbar-brand" th:href="@{/simio/search}">
-					<span class="glyphicon glyphicon-piggy-bank"> MONKEYS</span>
+					<i class="fa fa-paw" aria-hidden="true"></i> MONKEYS
             </a>
             <a class="navbar-brand" th:href="@{/user/search}">
-					<span class="glyphicon glyphicon-user"> USERS</span>
+					<i class="fa fa-users-cog" aria-hidden="true"></i> USERS
             </a>
             
             
-            <a class="navbar-brand" th:href="@{/login}">
-					<span class="glyphicon glyphicon-user"></span>
+            <a class="navbar-brand pull-right" th:href="@{/profile}">
+					<i class="fa fa-user" aria-hidden="true"></i>
             </a>
-            <a class="navbar-brand" th:href="@{/logout}">
-					<span class="glyphicon glyphicon-log-out"></span>
+            <a class="navbar-brand pull-right" th:href="@{/logout}">
+					<i class="fa fa-sign-out-alt" aria-hidden="true"></i>
             </a>
         </div>
     </div>

@@ -36,13 +36,15 @@
  border-top: 1px solid #058840; }
 .navbar span {
   color: black; }
+.navbar .navbar-header {
+	width: 100%; }
 .navbar .navbar-brand {
-  font-size: 20px;
+  font-size: 18px;
+  color: black;
   line-height: 50px;
   text-align: center;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  padding: 0 15p;
-  font-weight: 300; }
+  font-family: "Oswald", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  padding: 5px 15px; }
 .navbar li > a > i {
   margin-right: 2px;
   color: #87c587; }

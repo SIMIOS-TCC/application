@@ -49,7 +49,7 @@
 							<th class="text-center col-md-2">Email</th>
 							<th class="text-center col-md-1">Active</th>
 							<th class="text-center col-md-2">Roles</th>
-							<th class="col-md-1"></th>
+							<th class="text-center col-md-1">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -86,7 +86,7 @@
 							</td>
 						</tr>
 						<tr th:if="${#lists.isEmpty(allUsers)}">
-							<td colspan="6">No users were found</td>						
+							<td colspan="7">No users were found</td>						
 						</tr>
 					</tbody>
 				</table>
