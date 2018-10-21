@@ -12,17 +12,23 @@
     <form class="form-horizontal" method="POST" th:action="@{/user/new}" th:object="${user}">
     	
     	<div layout:include="Alert"></div>
-    	
     	<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
 	 		<div th:each="error : ${#fields.detailedErrors()}">
 	 			<span th:text="${error.message}"></span>
 	 		</div>
 		</div>
+		
+		<div class="alert alert-danger" th:if="${errorMessages}">
+	 		<div th:each="error : ${errorMessages}">
+	 			<span th:text="${error}"></span>
+	 		</div>
+		</div>
     	
     	<div class="panel panel-default">
     		<div class="panel-heading clearfix">
-				<h1 class="panel-title aw-titulo-panel">User</h1>
-				<a class="btn btn-link aw-link-panel" th:href="@{/user/search}">Back</a>
+				<h1 class="panel-title aw-titulo-panel">
+					<i class="fa fa-users-cog" aria-hidden="true"></i> USERS
+				</h1>
 			</div>
     		
     		<div class="panel-body">

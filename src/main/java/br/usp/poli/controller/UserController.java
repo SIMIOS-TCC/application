@@ -3,6 +3,7 @@ package br.usp.poli.controller;
 import static br.usp.poli.utils.ConstantsFile.USER_REGISTER;
 import static br.usp.poli.utils.ConstantsFile.USER_SEARCH;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,7 +58,7 @@ public class UserController {
 	
 	//---------------- CRUD -------------------------
 	@RequestMapping(value="/new", method= RequestMethod.POST)
-	public ModelAndView save(@ModelAttribute @Valid UserModel user, final BindingResult result, RedirectAttributes attributes){
+	public String save(@Valid UserModel user, final BindingResult result, RedirectAttributes attributes, Model model){
 		if(result.hasErrors()){
 			List<Role> roles = roleService.readAll();			
 			roles.forEach(role ->{
@@ -72,15 +72,22 @@ public class UserController {
 				}
 			});
 			
-			return newUser(user, roles);	
+			model.addAttribute("user", user);
+			model.addAttribute("roles", roles);
+			
+			List<String> errorMessages = new ArrayList<String>();
+			result.getAllErrors().forEach(e -> {
+				errorMessages.add(e.getDefaultMessage());
+			});
+			model.addAttribute("errorMessages", errorMessages);
+			return USER_REGISTER;	
 		}
 		
 		userService.create(user);
  
-		ModelAndView modelAndView = new ModelAndView("redirect:/user/new");
 		attributes.addFlashAttribute("message", "User was successfully registered!");
 		
-		return modelAndView;
+		return "redirect:/user/search";
 	}
 	
 	@RequestMapping(value="/new/{id}", method= RequestMethod.GET)		

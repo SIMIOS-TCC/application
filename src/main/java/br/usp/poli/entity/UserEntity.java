@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -60,6 +61,7 @@ public class UserEntity {
 			inverseJoinColumns = {@JoinColumn(name = "id_role", referencedColumnName = "id_role")}
 		        )
 	@ManyToMany(fetch = FetchType.EAGER)
+	@NotNull(message = "Please provide user roles")
 	private List<RoleEntity> roles;
  
 	public boolean isActive() {
