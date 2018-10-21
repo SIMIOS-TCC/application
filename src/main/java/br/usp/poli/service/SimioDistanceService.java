@@ -29,7 +29,7 @@ public class SimioDistanceService implements BaseService<SimioDistance>{
 	private AccessPointService accessPointService;
 	
 	//Create
-	public Long create(SimioDistance simioDistance) {
+	public Long save(SimioDistance simioDistance) {
 		try {
 			SimioDistanceEntity simioDistanceEntity = modelToEntity(simioDistance);
 			simioDistanceRepository.save(simioDistanceEntity);

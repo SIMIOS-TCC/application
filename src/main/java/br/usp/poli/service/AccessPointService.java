@@ -32,7 +32,7 @@ public class AccessPointService implements BaseService<AccessPoint>{
 	}
 
 	//Create
-	public Long create(AccessPoint accessPoint) {
+	public Long save(AccessPoint accessPoint) {
 		try {
 			AccessPointEntity accessPointEntity = modelToEntity(accessPoint);
 			accessPointRepository.save(accessPointEntity);

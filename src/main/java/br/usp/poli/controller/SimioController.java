@@ -74,7 +74,7 @@ public class SimioController {
 			return SIMIO_SEARCH;
 		}
 		
-		simioService.create(simio);
+		simioService.save(simio);
 		
 		attributes.addFlashAttribute("message", "Simio was successfully saved!");
 		

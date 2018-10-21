@@ -33,7 +33,7 @@ public class SimioRepoTests {
 	public void loadContext() {
 		simio.setName("Simio");
 		simio.setTemperature(35);
-		simio.setId(simioService.create(simio));
+		simio.setId(simioService.save(simio));
 	}
 	
 	@After
@@ -44,13 +44,6 @@ public class SimioRepoTests {
 	//Create
 	@Test
 	public void createSimioTest() {
-		//Assert.assertEquals(simio, simioService.readById(simio.getId()));
-	}
-	//Update
-	@Test
-	public void updateSimioTest() {
-		simio.setTemperature(40);
-		simioService.update(simio);		
 		//Assert.assertEquals(simio, simioService.readById(simio.getId()));
 	}
 	//Read

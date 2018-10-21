@@ -25,7 +25,7 @@ public class SimioService implements BaseService<Simio>{
 	}
 
 	//Create
-	public Long create(Simio simio) {
+	public Long save(Simio simio) {
 		try {
 			SimioEntity simioEntity = modelToEntity(simio);
 			simioRepository.save(simioEntity);
@@ -73,15 +73,6 @@ public class SimioService implements BaseService<Simio>{
 		});
 		
 		return simios;
-	}
-	
-	//Update
-	public void update(Simio simio) {
-		try {
-			simioRepository.save(modelToEntity(simio));
-		} catch (DataIntegrityViolationException e) {
-			throw new IllegalArgumentException("Invalid simio - cannot be updated on db");
-		}
 	}
 	
 	//Delete
