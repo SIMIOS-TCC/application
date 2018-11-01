@@ -9,6 +9,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,13 +35,15 @@ public class UserController {
  
 	@Autowired 
 	private UserService userService;
-
+	
 	//TODO: inserir dois campos de password com verificação de match em JS
 	@RequestMapping(value="/new", method= RequestMethod.GET)	
-	public ModelAndView newUser(UserModel user, List<Role> roles) {
+	public ModelAndView newUser(UserModel user) {
 		ModelAndView mav = new ModelAndView(USER_REGISTER);
 		mav.addObject("user", user);
-		roles = roleService.readAll();
+		
+		List<Role> roles = roleService.readAll();
+		
 		mav.addObject("roles", roles);
 	    return mav;
 	}
@@ -91,9 +95,19 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/new/{id}", method= RequestMethod.GET)		
-	public ModelAndView update(@PathVariable Long id) {
+	public ModelAndView update(@PathVariable Long id, Model model) {
  
-		UserModel user = this.userService.readById(id);
+		UserModel user;
+		
+		try {
+			user = this.userService.readById(id);
+		} catch (BadCredentialsException e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return search(model);
+		} catch (DisabledException e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return search(model);
+		}
  
 		List<Role> roles = roleService.readAll();			
 		roles.forEach(role ->{
@@ -106,15 +120,21 @@ public class UserController {
 				});				
 			}
 		});
- 
-	    return newUser(user, roles);
+		
+		ModelAndView mav = new ModelAndView(USER_REGISTER);
+		mav.addObject("user", user);
+		
+		roles = roleService.readAll();
+		
+		mav.addObject("roles", roles);
+	    return mav;
 	 }
 	
-	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
+	@RequestMapping(value="/delete/{id}", method=RequestMethod.POST)
 	public String delete(@PathVariable Long id, RedirectAttributes attributes) {
 		userService.delete(id);
 		attributes.addFlashAttribute("message", "User was successfully deleted.");
 		return "redirect:/user/search";
 	}
- 
+	
 }

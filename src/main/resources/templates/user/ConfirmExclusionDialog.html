@@ -5,7 +5,10 @@
 
 <div class="modal fade" id="confirmExclusionModal" tabindex="-1" data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog">
-		<form th:attr="data-url-base=@{/user/delete}" method="DELETE">
+		<form th:attr="data-url-base=@{/user/delete}" method="POST">
+			<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+			<input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}"/>
+			
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title">Are you sure you want to delete this user?</h4>
@@ -17,7 +20,7 @@
 				
 				<div class="modal-footer">
 					<button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
-					<button id="js-confirm-exclusion" type="button" class="btn btn-primary">Delete</button>
+					<button type="submit" class="btn btn-primary">Delete</button>
 				</div>
 			</div>
 		</form>

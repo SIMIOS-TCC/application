@@ -23,7 +23,10 @@
 		<div class="panel-body">
 		
 			<div layout:include="Alert"></div>
-
+			<div class="alert alert-danger" th:if="${errorMessage}">
+	 			<span th:text="${errorMessage}"></span>
+			</div>
+				
 			<div class="row">
 				<div class="col-md-11"></div>
 				<div class="col-md-1">
