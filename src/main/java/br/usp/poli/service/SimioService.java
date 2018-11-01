@@ -1,6 +1,7 @@
 package br.usp.poli.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.usp.poli.entity.SimioEntity;
+import br.usp.poli.exception.UnsuitedBirthYearException;
 import br.usp.poli.model.Simio;
 import br.usp.poli.repository.SimioRepository;
 
@@ -32,6 +34,8 @@ public class SimioService implements BaseService<Simio>{
 			return simioEntity.getId();
 		} catch (DataIntegrityViolationException e) {
 			throw new IllegalArgumentException("Invalid simio - cannot be created on db");
+		} catch (UnsuitedBirthYearException e) {
+			throw e;
 		}
 	}
 	
@@ -51,17 +55,6 @@ public class SimioService implements BaseService<Simio>{
 		SimioEntity simioEntity = simioRepository.findOne(id);
 		if(simioEntity != null) return entityToModel(simioEntity);
 		return null;
-	}
-	
-	public List<Simio> readTemperatureGreaterThan(int temperature) {
-		
-		List<Simio> simios = new ArrayList<Simio>();
-		
-		simioRepository.findByTemperatureGreaterThan(temperature).forEach(simioEntity -> {
-			simios.add(entityToModel(simioEntity));
-		});
-		
-		return simios;
 	}
 	
 	public List<Simio> readByName(String name) {
@@ -86,11 +79,20 @@ public class SimioService implements BaseService<Simio>{
 	
 	//Model - Entity
 	public Simio entityToModel(SimioEntity simioEntity) {
+		
 		Simio simio = Simio.builder()
 				.id(simioEntity.getId())
 				.name(simioEntity.getName())
-				.temperature(simioEntity.getTemperature())
+				.gender(simioEntity.getGender())
 				.build();
+		
+		if(simioEntity.getBirthYear() != null) {
+			Integer currentYear = (Integer)(Calendar.getInstance().get(Calendar.YEAR));
+			Integer age = currentYear - simioEntity.getBirthYear();
+			
+			simio.setBirthYear(simioEntity.getBirthYear());
+			simio.setAge(age);
+		}
 
 		return simio;
 	}
@@ -99,8 +101,17 @@ public class SimioService implements BaseService<Simio>{
 		SimioEntity simioEntity = SimioEntity.builder()
 				.id(simio.getId())
 				.name(simio.getName())
-				.temperature(simio.getTemperature())
+				.gender(simio.getGender())
 				.build();
+		
+		if(simio.getBirthYear() != null) {
+			Integer currentYear = (Integer)(Calendar.getInstance().get(Calendar.YEAR));
+			if(simio.getBirthYear() > currentYear) {
+				throw new UnsuitedBirthYearException("Existing simio cannot be born in the future!");
+			}
+			
+			simioEntity.setBirthYear(simio.getBirthYear());
+		}
 		
 		return simioEntity;
 	}

@@ -29,21 +29,19 @@
 	    				<input th:classappend="${isEdit} ? show : hide" class="form-control" th:field="*{id}"/>
    					</div>
 					<div class="col-md-4" th:classappend="${#fields.hasErrors('name')} ? has-error">
-						<input type="text" class="form-control" id="name" name="name" th:field="*{name}" placeholder="Insert monkey's name..."/>
+						<input type="text" class="form-control" id="name" name="name" th:field="*{name}" placeholder="Name..."/>
 					</div>
-					<!-- 
 					<div class="col-md-2" th:classappend="${#fields.hasErrors('gender')} ? has-error">
-						<input type="text" class="form-control" id="gender" name="gender" th:field="*{gender}" placeholder="Select monkey's gender..."/>
+						<select class="form-control" id="gender" name="gender" th:field="*{gender}">
+							<option value="">Gender...</option>
+	                       <option th:each="gender : ${genders}" th:value="${gender}" th:text="${gender.description}"></option>
+	                    </select>
 					</div>
-					<div class="col-md-1" th:classappend="${#fields.hasErrors('age')} ? has-error">
-						<input type="text" class="form-control" id="age" name="age" th:field="*{age}" placeholder="Insert monkey's age..."/>
+					
+					<div class="col-md-2" th:classappend="${#fields.hasErrors('birthYear')} ? has-error">
+						<input type="text" class="form-control" id="birthYear" name="birthYear" th:field="*{birthYear}" placeholder="Birth Year..."/>
 					</div>
-					<div class="col-md-2" th:classappend="${#fields.hasErrors('group')} ? has-error">
-						<input type="text" class="form-control" id="group" name="group" th:field="*{group}" placeholder="Select monkey's group..."/>
-					</div>
-					 -->
-					<div class="col-md-5"> ---- </div>
-					<div class="col-md-2">
+					<div class="col-md-3">
 						<button type="submit" th:unless="${isEdit}" class="btn btn-primary pull-right"><i class="fa fa-plus" aria-hidden="true"></i> Add Monkey</button>
 						<button type="submit" th:if="${isEdit}" class="btn btn-primary pull-right"><span class="glyphicon glyphicon-pencil"></span> Edit Monkey</button>
 					</div>
@@ -56,19 +54,17 @@
 						<tr>
 							<th class="text-center col-md-1">#</th>
 							<th class="text-left col-md-4">Name</th>
-							<th class="text-left col-md-2">Gender</th>
-							<th class="text-left col-md-1">Age</th>
-							<th class="text-left col-md-2">Group</th>
-							<th class="text-center col-md-2">Actions</th>
+							<th class="text-center col-md-2">Gender</th>
+							<th class="text-center col-md-2">Age (years)</th>
+							<th class="text-center col-md-3">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="simio : ${allSimios}">
 							<td class="text-center" th:text="${simio.id}"></td>
 							<td class="text-left" th:text="${simio.name}"></td>
-							<td class="text-center" th:text="M"></td>
-							<td class="text-center" th:text="1"></td>
-							<td class="text-center" th:text="1"></td>
+							<td class="text-center" th:text="${simio.gender.description}"></td>
+							<td class="text-center" th:text="${simio.age}"></td>
 							<td class="text-center" >
 								<a class="btn btn-link btn-xs" th:href="@{/simio/new/{id}(id=${simio.id})}"
 									title="Edit" rel="tooltip" data-placement="top">

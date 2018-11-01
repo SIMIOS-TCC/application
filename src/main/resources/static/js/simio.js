@@ -10,22 +10,10 @@ $('#confirmExclusionModal').on('show.bs.modal', function(event) {
 		action += '/';
 	}
 	form.attr('action', action + id);
-});
-
-$('#js-confirm-exclusion').on('click', function(event) {
-	var modal = $('#confirmExclusionModal');
-	var form = modal.find('form');
-	var action = form.attr('action');
-	var method = form.attr('method');
 	
-	var token = $("meta[name='_csrf']").attr("content");
-	var header = $("meta[name='_csrf_header']").attr("content");
-
-	var response = $.ajax({
-		url: action,
-		type: 'DELETE',
-		beforeSend: function(xhr) { xhr.setRequestHeader(header, token); }
-	});
+	var simioName = button.data('name');
+	var title = "Delete <strong>" + simioName + "</strong> from the registers?";
+	modal.find('.modal-title').html(title);
 });
 
 $('.js-toggle-active').on('click', function(event){

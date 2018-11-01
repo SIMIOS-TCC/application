@@ -1,5 +1,7 @@
 package br.usp.poli.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,5 +43,9 @@ public class SimioDistanceEntity {
 	@JoinColumn(name = "simio_id", nullable = false)
 	private SimioEntity simioEntity;
 	
+	@NotNull
 	private Double distance;
+	
+	@NotNull
+	private Date timestamp;
 }

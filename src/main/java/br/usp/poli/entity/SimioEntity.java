@@ -6,10 +6,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import br.usp.poli.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,6 +37,8 @@ public class SimioEntity {
 	@Size(max=15, message="Name cannot contain more than 15 characters.")
 	private String name;
 	
-	private int temperature;
+	@NotNull
+	private Gender gender;
 	
+	private Integer birthYear;
 }

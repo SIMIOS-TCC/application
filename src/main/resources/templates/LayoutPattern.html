@@ -17,6 +17,9 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
+	<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+	<input type="hidden" name="_csrf_header" th:value="${_csrf.headerName}"/>
+
 	<header layout:include="Navbar"></header>
     
 	<section layout:fragment="content">

@@ -1,12 +1,18 @@
 package br.usp.poli.model;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Builder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SimioDistance {
 
 	private Long id;
@@ -17,24 +23,9 @@ public class SimioDistance {
 	@NotNull
 	private Simio simio;
 	
+	@NotNull
 	private Double distance;
 	
-	//Constructors
-	public SimioDistance(Long id, AccessPoint accessPoint, Simio simio, Double distance) {
-		super();
-		this.id = id;
-		this.accessPoint = accessPoint;
-		this.simio = simio;
-		this.distance = distance;
-	}
-	
-	public SimioDistance(Long id, Double distance) {
-		super();
-		this.id = id;
-		this.distance = distance;
-	}
-
-	public SimioDistance() {
-		super();
-	}
+	@NotNull
+	private Date timestamp;
 }

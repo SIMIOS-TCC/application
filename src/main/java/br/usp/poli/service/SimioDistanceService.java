@@ -112,6 +112,7 @@ public class SimioDistanceService implements BaseService<SimioDistance>{
 					.accessPoint(accessPoint)
 					.simio(simio)
 					.distance(simioDistanceEntity.getDistance())
+					.timestamp(simioDistanceEntity.getTimestamp())
 					.build();
 
 			return simioDistance;
@@ -127,6 +128,7 @@ public class SimioDistanceService implements BaseService<SimioDistance>{
 					.accessPointEntity(accessPointEntity)
 					.simioEntity(simioEntity)
 					.distance(simioDistance.getDistance())
+					.timestamp(simioDistance.getTimestamp())
 					.build();
 			
 			return simioDistanceEntity;
