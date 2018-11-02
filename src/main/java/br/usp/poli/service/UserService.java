@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import br.usp.poli.entity.PermissionEntity;
 import br.usp.poli.entity.RoleEntity;
 import br.usp.poli.entity.UserEntity;
+import br.usp.poli.exception.NoRolesUserException;
 import br.usp.poli.model.Role;
 import br.usp.poli.model.SecurityUser;
 import br.usp.poli.model.UserModel;
@@ -56,6 +57,18 @@ public class UserService implements UserDetailsService{
  
 	//Create
 	public void create(UserModel user){
+		
+		List<Role> allUserRoles = new ArrayList<Role>();
+		user.getRoles().forEach(role -> {
+			if(role.getId() != null) {
+				allUserRoles.add(role);
+			}
+		});
+		if(allUserRoles.isEmpty()) {
+			throw new NoRolesUserException("There was a problem! Please reselect user's roles.");
+		}
+		user.setRoles(allUserRoles);
+		
 		if(user.getId() != null) update(user);
 		else
 			userRepository.save(modelToEntity(null, user));

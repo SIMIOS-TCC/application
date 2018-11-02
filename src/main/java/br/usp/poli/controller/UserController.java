@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.usp.poli.exception.NoRolesUserException;
 import br.usp.poli.model.Role;
 import br.usp.poli.model.UserModel;
 import br.usp.poli.service.RoleService;
@@ -64,30 +65,17 @@ public class UserController {
 	@RequestMapping(value="/new", method= RequestMethod.POST)
 	public String save(@Valid UserModel user, final BindingResult result, RedirectAttributes attributes, Model model){
 		if(result.hasErrors()){
-			List<Role> roles = roleService.readAll();			
-			roles.forEach(role ->{
-				if(user.getRoles() != null && user.getRoles().size() > 0){
-					user.getRoles().forEach(selectedRole->{
-						if(selectedRole!= null){
-							if(role.getId().equals(selectedRole.getId()))
-								role.setChecked(true);
-						}					
-					});				
-				}
-			});
-			
-			model.addAttribute("user", user);
-			model.addAttribute("roles", roles);
-			
-			List<String> errorMessages = new ArrayList<String>();
-			result.getAllErrors().forEach(e -> {
-				errorMessages.add(e.getDefaultMessage());
-			});
-			model.addAttribute("errorMessages", errorMessages);
+			setRejectModelAndView(model, user, result);
 			return USER_REGISTER;	
 		}
 		
-		userService.create(user);
+		try {
+			userService.create(user);
+		} catch (NoRolesUserException e) {
+			result.rejectValue("roles", e.getMessage(), e.getMessage());
+			setRejectModelAndView(model, user, result);
+			return USER_REGISTER;
+		}
  
 		attributes.addFlashAttribute("message", "User was successfully registered!");
 		
@@ -124,8 +112,6 @@ public class UserController {
 		ModelAndView mav = new ModelAndView(USER_REGISTER);
 		mav.addObject("user", user);
 		
-		roles = roleService.readAll();
-		
 		mav.addObject("roles", roles);
 	    return mav;
 	 }
@@ -135,6 +121,30 @@ public class UserController {
 		userService.delete(id);
 		attributes.addFlashAttribute("message", "User was successfully deleted.");
 		return "redirect:/user/search";
+	}
+	
+	private Model setRejectModelAndView(Model model, UserModel user, BindingResult result) {
+		List<Role> roles = roleService.readAll();			
+		roles.forEach(role ->{
+			if(user.getRoles() != null && user.getRoles().size() > 0){
+				user.getRoles().forEach(selectedRole->{
+					if(selectedRole!= null){
+						if(role.getId().equals(selectedRole.getId()))
+							role.setChecked(true);
+					}					
+				});				
+			}
+		});
+		
+		model.addAttribute("user", user);
+		model.addAttribute("roles", roles);
+		
+		List<String> errorMessages = new ArrayList<String>();
+		result.getAllErrors().forEach(e -> {
+			errorMessages.add(e.getDefaultMessage());
+		});
+		model.addAttribute("errorMessages", errorMessages);
+		return model;
 	}
 	
 }
