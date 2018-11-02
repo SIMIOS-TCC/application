@@ -24,6 +24,18 @@
 	}
 }
 
+.subtitle {
+  font-weight: 100;
+  margin-bottom: 20px;
+  font-size: 25px; }
+  .subtitle:first-child {
+    margin-top: 0; }
+    
+.error-title-panel {
+    margin: 0;
+    font-size: 40px;
+    font-weight: 100; }
+
 .aw-titulo-panel {
 	float : left;
 	padding-top : 2px;
