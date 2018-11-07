@@ -22,12 +22,16 @@
 
 	<header layout:include="Navbar"></header>
     
-	<section layout:fragment="content">
-		<p>Main Content</p>
-	</section>
-
+    <div class="screen-container">
+		<section layout:fragment="content">
+			<p>Main Content</p>
+		</section>
+	</div>
+	
 	<script th:src="@{/js/bootstrap.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/material.js}"></script>
 	<script th:src="@{/js/simio.js}"></script>
+	
+	<footer layout:include="Footer"></footer>
 </body>
 </html>

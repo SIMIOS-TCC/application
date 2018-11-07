@@ -46,6 +46,10 @@
 	padding : 0px;
 }
 
+.screen-container {
+	height: 70vh;
+}
+
 .form-horizontal .form-group {
 	margin-right: 0px;
     margin-left: 0px; }
