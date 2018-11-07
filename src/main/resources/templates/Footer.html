@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org">
+	
+<body>
+ <footer>
+        <div class="container-fluid" th:fragment="layout-footer">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    2018 USP - Escola Politécnica. Grupo SIMIOS.
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                   	<span th:text="${projetoVersao}"></span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

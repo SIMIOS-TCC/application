@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <nav class="navbar navbar-ontop navbar-default navbar-static-top">
     <div class="container-fluid">
@@ -9,24 +10,35 @@
             <a class="navbar-brand" th:href="@{/home}">
                	<img alt="SIMIOS" th:src="@{/images/simios-logo.png}" height="42" width="63" />
             </a>
-            <a class="navbar-brand" th:href="@{/simio/data}" th:classappend="${activeData} ? active">
+            <a class="navbar-brand" th:href="@{/simio/data}" 
+            	sec:authorize="isAuthenticated()"
+            	th:classappend="${activeData} ? active">
 					<i class="fa fa-chart-line" aria-hidden="true"></i> DATA
             </a>
-            <a class="navbar-brand" th:href="@{/simio/graph}" th:classappend="${activeMap} ? active">
+            <a class="navbar-brand" th:href="@{/simio/graph}" 
+            	sec:authorize="isAuthenticated()"
+            	th:classappend="${activeMap} ? active">
 					<i class="fa fa-mountain" aria-hidden="true"></i> MAP
             </a>
-            <a class="navbar-brand" th:href="@{/simio/search}" th:classappend="${activeMonkeys} ? active">
+            <a class="navbar-brand" th:href="@{/simio/search}" 
+            	sec:authorize="isAuthenticated()"
+            	th:classappend="${activeMonkeys} ? active">
 					<i class="fa fa-paw" aria-hidden="true"></i> MONKEYS
             </a>
-            <a class="navbar-brand" th:href="@{/user/search}" th:classappend="${activeUsers} ? active">
+            <a class="navbar-brand" th:href="@{/user/search}" 
+            	sec:authorize="hasAuthority('Administrator')"
+            	th:classappend="${activeUsers} ? active">
 					<i class="fa fa-users-cog" aria-hidden="true"></i> USERS
             </a>
             
-            
-            <a class="navbar-brand pull-right" th:href="@{/profile}">
+            <a class="navbar-brand pull-right"
+            	sec:authorize="isAuthenticated()">
 					<i class="fa fa-user" aria-hidden="true"></i>
+					<span sec:authentication="name" ></span> 
             </a>
-            <a class="navbar-brand pull-right" th:href="@{/logout}">
+            <a class="navbar-brand pull-right" 
+            	sec:authorize="isAuthenticated()"
+            	th:href="@{/logout}">
 					<i class="fa fa-sign-out-alt" aria-hidden="true"></i>
             </a>
         </div>
