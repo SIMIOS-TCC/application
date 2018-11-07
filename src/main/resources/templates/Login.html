@@ -16,20 +16,20 @@
            <div class="container login-container screen-container">
                <div class="row mg-top-50">
                    <div class="col-md-4 col-md-offset-4 col-centered">
-                       <h4 class="subtitle text-center">Preencha seu usuário e senha</h4>
-                       <div class="alert alert-danger alert-dismissable error-alert" role="alert" th:if="${errorMessage != null}" >
-					  		<strong>Erro!</strong> <span class="error-message" th:text="${errorMessage}"> Invalid credentials</span>
+                       <h4 class="subtitle text-center">Insert your credentials</h4>
+                       <div class="alert alert-danger alert-dismissable error-alert" role="alert" th:if="${errorMessage}" >
+					  		<strong>Error!</strong> <span class="error-message" th:text="${errorMessage}"> Invalid credentials</span>
 						</div>
                        <div class="form-group">
 						<form class="form" th:action="@{/login}" method="POST">
-                               <label for="user">Usuário</label>
-                               <input class="form-control" type="text" name="username" placeholder="Preencha seu usuário..." />
+                               <label class="control-label" for="user">Username</label>
+                               <input class="form-control" type="text" name="username" placeholder="Insert your username..." />
 
-                               <label for="pass">Senha</label>
-                               <input class="form-control" type="password" name="password" placeholder="Preencha sua senha..."/>
+                               <label class="control-label" for="pass">Password</label>
+                               <input class="form-control" type="password" name="password" placeholder="Insert your password..."/>
 
 								<br />
-                               <button type="submit" class="btn btn-lg btn-primary btn-block"><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i> Acessar conta</button>
+                               <button type="submit" class="btn btn-lg btn-primary btn-block"><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Confirm</button>
                            </form>
 
                        </div>

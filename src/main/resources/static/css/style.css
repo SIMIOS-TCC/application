@@ -50,6 +50,10 @@
 	height: 70vh;
 }
 
+.control-label {
+	padding-top: 5px;
+}
+
 .form-horizontal .form-group {
 	margin-right: 0px;
     margin-left: 0px; }
