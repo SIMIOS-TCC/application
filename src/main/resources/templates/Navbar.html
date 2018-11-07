@@ -10,7 +10,7 @@
             <a class="navbar-brand" th:href="@{/home}">
                	<img alt="SIMIOS" th:src="@{/images/simios-logo.png}" height="42" width="63" />
             </a>
-            <a class="navbar-brand" th:href="@{/simio/data}" 
+            <a class="navbar-brand" th:href="@{/data}" 
             	sec:authorize="isAuthenticated()"
             	th:classappend="${activeData} ? active">
 					<i class="fa fa-chart-line" aria-hidden="true"></i> DATA
@@ -26,11 +26,10 @@
 					<i class="fa fa-paw" aria-hidden="true"></i> MONKEYS
             </a>
             <a class="navbar-brand" th:href="@{/user/search}" 
-            	sec:authorize="hasAuthority('Administrator')"
+            	sec:authorize="hasAuthority('ADMIN')"
             	th:classappend="${activeUsers} ? active">
 					<i class="fa fa-users-cog" aria-hidden="true"></i> USERS
             </a>
-            
             <a class="navbar-brand pull-right"
             	sec:authorize="isAuthenticated()">
 					<i class="fa fa-user" aria-hidden="true"></i>

@@ -1,6 +1,7 @@
 package br.usp.poli.controller;
 
 import static br.usp.poli.utils.ConstantsFile.SIMIO_SEARCH;
+import static br.usp.poli.utils.ConstantsFile.GRAPH_MAIN;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -48,7 +50,20 @@ public class SimioController {
 //		return mav;
 //	}
 	
-	//TODO:implementar nome dos macacos e filtro por nome
+	@RequestMapping("/graph")
+	public ModelAndView graph(@RequestParam(required=false) String id) {
+		
+		ModelAndView mav = new ModelAndView(GRAPH_MAIN);
+		
+		Simio simio = new Simio();
+		if(id != null) {
+			simio = simioService.readById(Long.valueOf(id));
+		}
+		
+		mav.addObject("simio", simio);
+		return mav;
+	}
+	
 	@RequestMapping("/search")
 	public ModelAndView search(Simio simio) {
 		ModelAndView mav = new ModelAndView(SIMIO_SEARCH);

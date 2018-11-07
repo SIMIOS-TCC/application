@@ -6,7 +6,8 @@ public class ConstantsFile {
 	
 	public static final String SIMIO_SEARCH = "simio/SearchSimio";
 	public static final String SIMIO_REGISTER = "simio/RegisterSimio";
-	public static final String SIMIO_GRAPH = "simio/Graph";
+	
+	public static final String GRAPH_MAIN = "graph/Graph";
 	
 	public static final String USER_SEARCH = "user/SearchUser";
 	public static final String USER_REGISTER = "user/RegisterUser";
