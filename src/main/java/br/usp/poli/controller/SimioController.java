@@ -9,6 +9,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +31,9 @@ import br.usp.poli.utils.Graph;
 @Controller
 @RequestMapping("/simio")
 public class SimioController {
+	
+	@Value("${projeto.versao}")
+	private String projetoVersao;
 	
 	@Autowired
 	private SimioService simioService;
@@ -130,6 +134,11 @@ public class SimioController {
 	@ModelAttribute("genders")
 	public List<Gender> todosStatusTitulo(){
 		return Arrays.asList(Gender.values());
+	}
+	
+	@ModelAttribute("projetoVersao")
+	public String getProjetoVersao() {
+		return "Versão " + projetoVersao;
 	}
 	
 }

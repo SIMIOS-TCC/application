@@ -1,14 +1,19 @@
 package br.usp.poli.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController {
+	
+	@Value("${projeto.versao}")
+	private String projetoVersao;
 	
 	@RequestMapping(value={"/", "/home"})
 	public ModelAndView home(){
@@ -42,5 +47,10 @@ public class LoginController {
 	public String acessoNegado(){
  
 		return "access-denied";
+	}
+	
+	@ModelAttribute("projetoVersao")
+	public String getProjetoVersao() {
+		return "Versão " + projetoVersao;
 	}
 }

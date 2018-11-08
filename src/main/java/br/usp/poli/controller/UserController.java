@@ -9,11 +9,13 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +33,9 @@ import br.usp.poli.service.UserService;
 @RequestMapping("/user") 
 public class UserController {
  
+	@Value("${projeto.versao}")
+	private String projetoVersao;
+	
 	@Autowired
 	private RoleService roleService;
  
@@ -145,6 +150,11 @@ public class UserController {
 		});
 		model.addAttribute("errorMessages", errorMessages);
 		return model;
+	}
+	
+	@ModelAttribute("projetoVersao")
+	public String getProjetoVersao() {
+		return "Versão " + projetoVersao;
 	}
 	
 }
