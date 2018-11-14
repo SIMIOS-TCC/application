@@ -1,6 +1,7 @@
 package br.usp.poli.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,16 +73,16 @@ public class SimioDistanceService implements BaseService<SimioDistance>{
 //		return null;
 //	}
 //	
-//	public List<SimioDistance> readBySimioId(Long simioId) {
-//		
-//		List<SimioDistance> simioDistances = new ArrayList<SimioDistance>();
-//				
-//		simioDistanceRepository.findBySimioId1OrSimioId2(simioId, simioId).forEach(simioDistanceEntity -> {
-//			simioDistances.add(entityToModel(simioDistanceEntity));
-//		});
-//		
-//		return simioDistances;
-//	}
+	public List<SimioDistance> readByTimestamp(Date timestamp) {
+		
+		List<SimioDistance> simioDistances = new ArrayList<SimioDistance>();
+				
+		simioDistanceRepository.findByTimestampOrderByDistanceAsc(timestamp).forEach(simioDistanceEntity -> {
+			simioDistances.add(entityToModel(simioDistanceEntity));
+		});
+		
+		return simioDistances;
+	}
 	
 	//Update
 	public void update(SimioDistance simioDistance) {

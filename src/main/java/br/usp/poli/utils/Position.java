@@ -1,4 +1,4 @@
-package br.usp.poli.model;
+package br.usp.poli.utils;
 
 import java.util.Date;
 
@@ -13,9 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Position {
 
-	private Double x;
-	
-	private Double y;
+	private Point point;
 	
 	private Date timestamp;
 }

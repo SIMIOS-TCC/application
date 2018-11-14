@@ -6,6 +6,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
 import br.usp.poli.enums.Gender;
+import br.usp.poli.utils.Position;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -2,6 +2,7 @@ package br.usp.poli.model;
 
 import java.util.List;
 
+import br.usp.poli.utils.Point;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,7 +12,7 @@ public class AccessPoint {
 
 	private Long id;
 	
-	private Long position;
+	private Point position;
 	
 	public List<SimioDistance> distances; 
 	
@@ -24,13 +25,13 @@ public class AccessPoint {
 		super();
 	}
 
-	public AccessPoint(Long id, Long position) {
+	public AccessPoint(Long id, Point position) {
 		super();
 		this.id = id;
 		this.position = position;
 	}
 	
-	public AccessPoint(Long id, Long position, List<SimioDistance> distances) {
+	public AccessPoint(Long id, Point position, List<SimioDistance> distances) {
 		super();
 		this.id = id;
 		this.position = position;

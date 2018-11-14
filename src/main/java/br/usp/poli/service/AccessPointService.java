@@ -15,6 +15,7 @@ import br.usp.poli.entity.SimioDistanceEntity;
 import br.usp.poli.model.AccessPoint;
 import br.usp.poli.model.SimioDistance;
 import br.usp.poli.repository.AccessPointRepository;
+import br.usp.poli.utils.Point;
 
 
 @Service
@@ -87,9 +88,10 @@ public class AccessPointService implements BaseService<AccessPoint>{
 			distances.add(simioDistance);
 		});
 		
+		Point position = new Point(accessPointEntity.getX(), accessPointEntity.getY());
 		AccessPoint accessPoint = AccessPoint.builder()
 				.id(accessPointEntity.getId())
-				.position(accessPointEntity.getPosition())
+				.position(position)
 				.distances(distances)
 				.build();
 
@@ -106,7 +108,8 @@ public class AccessPointService implements BaseService<AccessPoint>{
 		
 		AccessPointEntity accessPointEntity = AccessPointEntity.builder()
 				.id(accessPoint.getId())
-				.position(accessPoint.getPosition())
+				.x(accessPoint.getPosition().x)
+				.y(accessPoint.getPosition().y)
 				.distances(distances)
 				.build();
 		

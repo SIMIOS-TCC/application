@@ -35,7 +35,10 @@ public class AccessPointEntity {
 	private Long id;
 	
 	@NotNull
-	private Long position;
+	private Double x;
+	
+	@NotNull
+	private Double y;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="accessPointEntity", cascade=CascadeType.ALL )
 	public Set<SimioDistanceEntity> distances; 
