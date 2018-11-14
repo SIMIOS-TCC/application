@@ -16,4 +16,6 @@ public class ConstantsFile {
 	
 	public static final String USER_SEARCH = "user/SearchUser";
 	public static final String USER_REGISTER = "user/RegisterUser";
+	
+	public static final String AP_SEARCH = "ap/SearchAccessPoint";
 }

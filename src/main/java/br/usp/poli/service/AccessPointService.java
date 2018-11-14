@@ -82,37 +82,42 @@ public class AccessPointService implements BaseService<AccessPoint>{
 	//Model - Entity
 	public AccessPoint entityToModel(AccessPointEntity accessPointEntity) {
 		
-		List<SimioDistance> distances = new ArrayList<SimioDistance>();
-		accessPointEntity.distances.forEach(simioDistanceEntity -> {
-			SimioDistance simioDistance = simioDistanceService.entityToModel(simioDistanceEntity);
-			distances.add(simioDistance);
-		});
-		
 		Point position = new Point(accessPointEntity.getX(), accessPointEntity.getY());
 		AccessPoint accessPoint = AccessPoint.builder()
 				.id(accessPointEntity.getId())
 				.position(position)
-				.distances(distances)
+				.x(accessPointEntity.getX())
+				.y(accessPointEntity.getY())
 				.build();
+		
+		if(accessPoint.distances != null) {
+			List<SimioDistance> distances = new ArrayList<SimioDistance>();
+			accessPointEntity.distances.forEach(simioDistanceEntity -> {
+				SimioDistance simioDistance = simioDistanceService.entityToModel(simioDistanceEntity);
+				distances.add(simioDistance);
+			});
+			accessPoint.setDistances(distances);
+		}
 
 		return accessPoint;
 	}
 	
 	public AccessPointEntity modelToEntity(AccessPoint accessPoint) {
 		
-		Set<SimioDistanceEntity> distances = new HashSet<SimioDistanceEntity>();
-		accessPoint.distances.forEach(simioDistance -> {
-			SimioDistanceEntity simioDistanceEntity = simioDistanceService.modelToEntity(simioDistance);
-			distances.add(simioDistanceEntity);
-		});
-		
 		AccessPointEntity accessPointEntity = AccessPointEntity.builder()
 				.id(accessPoint.getId())
-				.x(accessPoint.getPosition().x)
-				.y(accessPoint.getPosition().y)
-				.distances(distances)
+				.x(accessPoint.getX())
+				.y(accessPoint.getY())
 				.build();
 		
+		if(accessPoint.distances != null) {
+			Set<SimioDistanceEntity> distances = new HashSet<SimioDistanceEntity>();
+			accessPoint.distances.forEach(simioDistance -> {
+				SimioDistanceEntity simioDistanceEntity = simioDistanceService.modelToEntity(simioDistance);
+				distances.add(simioDistanceEntity);
+			});
+			accessPointEntity.setDistances(distances);
+		}
 		return accessPointEntity;
 	}
 }

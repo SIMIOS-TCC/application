@@ -30,6 +30,11 @@
             	th:classappend="${activeUsers} ? active">
 					<i class="fa fa-users-cog" aria-hidden="true"></i> USERS
             </a>
+            <a class="navbar-brand" th:href="@{/ap/search}" 
+            	sec:authorize="hasAuthority('ADMIN')"
+            	th:classappend="${activeUsers} ? active">
+					<i class="fa fa-map-marked-alt" aria-hidden="true"></i> ACCESS POINT
+            </a>
             <a class="navbar-brand pull-right"
             	sec:authorize="isAuthenticated()">
 					<i class="fa fa-user" aria-hidden="true"></i>
