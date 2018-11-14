@@ -12,6 +12,8 @@
 //import org.springframework.test.context.web.WebAppConfiguration;
 //
 //import br.usp.poli.extended.AssertExtended;
+//import br.usp.poli.model.AccessPoint;
+//import br.usp.poli.model.SimioDistance;
 //import br.usp.poli.utils.GraphUtil;
 //import br.usp.poli.utils.Point;
 //
@@ -38,17 +40,7 @@
 //		refListExpected.add(p3);	
 //	}
 //	
-//	@Test
-//	public void getReferenceTriangleTest() {
-//		
-//		//{ a, b, c }
-//		Double[] sidesArray = new Double[] {10D, 10D, sqrt200};
-//		List<Double> sidesList = Arrays.asList(sidesArray);
-//		List<Point> referenceActual = GraphUtil.getReferenceTriangle(sidesList);
-//		
-//		AssertExtended.assertPointListEquals(refListExpected, referenceActual);
-//	}
-//	
+//	//Relative Position
 //	@Test
 //	public void getRelativePositionTest_Quadrant1() {
 //		
@@ -89,6 +81,77 @@
 //		Point pxActual = GraphUtil.getRelativePosition(refListExpected, distancesList);
 //		
 //		AssertExtended.assertPointEquals(pxExpected, pxActual);
+//	}
+//	
+//	//Possible Positions
+//	@Test
+//	public void getPossiblePositionsTest_Quadrant1() {
+//		
+//		List<Point> pxsExpected = Arrays.asList(new Point[] {new Point(5D,5D), new Point(5D,5D), new Point(5D,5D)});
+//
+//		//{ d1, d2, d3, d4 }
+//		AccessPoint ap = AccessPoint.builder().position(new Point(0D,0D)).build();
+//		SimioDistance d1 = SimioDistance.builder()
+//				.distance(sqrt200)
+//				.accessPoint(ap)
+//				.build();
+//		
+//		ap = AccessPoint.builder().position(new Point(10D,0D)).build();
+//		SimioDistance d2 = SimioDistance.builder()
+//				.distance(sqrt200)
+//				.accessPoint(ap)
+//				.build();
+//		
+//		ap = AccessPoint.builder().position(new Point(10D,10D)).build();
+//		SimioDistance d3 = SimioDistance.builder()
+//				.distance(sqrt200)
+//				.accessPoint(ap)
+//				.build();
+//		
+//		ap = AccessPoint.builder().position(new Point(0D,10D)).build();
+//		SimioDistance d4 = SimioDistance.builder()
+//				.distance(sqrt200)
+//				.accessPoint(ap)
+//				.build();
+//		
+//		List<Point> pxsActual = GraphUtil.getPossiblePositions(Arrays.asList(new SimioDistance[] {d1, d2, d3, d4}));
+//		
+//		AssertExtended.assertPointListEquals(pxsExpected, pxsActual);
+//	}
+//	
+//	@Test
+//	public void getPossiblePositionsTest_Quadrant2() {
+//		
+//		List<Point> pxsExpected = Arrays.asList(new Point[] {new Point(-5D,5D), new Point(-5D,5D), new Point(-5D,5D)});
+//
+//		//{ d1, d2, d3, d4 }
+//		AccessPoint ap = AccessPoint.builder().position(new Point(0D,0D)).build();
+//		SimioDistance d1 = SimioDistance.builder()
+//				.distance(sqrt200)
+//				.accessPoint(ap)
+//				.build();
+//		
+//		ap = AccessPoint.builder().position(new Point(-10D,0D)).build();
+//		SimioDistance d2 = SimioDistance.builder()
+//				.distance(sqrt200)
+//				.accessPoint(ap)
+//				.build();
+//		
+//		ap = AccessPoint.builder().position(new Point(-10D,10D)).build();
+//		SimioDistance d3 = SimioDistance.builder()
+//				.distance(sqrt200)
+//				.accessPoint(ap)
+//				.build();
+//		
+//		ap = AccessPoint.builder().position(new Point(0D,10D)).build();
+//		SimioDistance d4 = SimioDistance.builder()
+//				.distance(sqrt200)
+//				.accessPoint(ap)
+//				.build();
+//		
+//		List<Point> pxsActual = GraphUtil.getPossiblePositions(Arrays.asList(new SimioDistance[] {d1, d2, d3, d4}));
+//		
+//		AssertExtended.assertPointListEquals(pxsExpected, pxsActual);
 //	}
 //	
 //}

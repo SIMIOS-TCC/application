@@ -12,7 +12,6 @@ import lombok.Data;
 public class Graph {
 	
 	private List<Simio> simios;
-	private List<Point> positions;
 	
 	public Graph() {
 		super();
