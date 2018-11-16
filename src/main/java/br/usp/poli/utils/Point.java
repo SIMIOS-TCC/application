@@ -19,6 +19,8 @@ public class Point {
 	}
 	
 	private Double round(Double value, int digits) {
+		value = value + 0D;
+		
 		boolean isNegative = false;
 		Double rounded;
 		
@@ -40,7 +42,7 @@ public class Point {
 	    
 	    rounded /= (Math.pow(10, digits));
 	    
-	    if(isNegative && rounded != 0) { rounded = -rounded; }
+	    if(isNegative) { rounded = -rounded; }
 	    
 	    return rounded;
 	}
