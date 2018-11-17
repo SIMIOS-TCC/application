@@ -13,13 +13,16 @@
 	
 	<div class="panel panel-default">
 		<div class="panel-heading clearfix">
-			<h1 class="panel-title aw-titulo-panel">Localization Map</h1>
-			<a class="btn btn-link aw-link-panel" th:href="@{/menu/search}">Back</a>
+			<h1 class="panel-title aw-titulo-panel">
+				<i class="fa fa-mountain" aria-hidden="true"></i> MAP
+			</h1>
 		</div>
-			
+		
 		<div class="panel-body">
-			<div id="graphDiv" th:attr="data-mapping=${mapping}">			
-				<canvas id="graphCanvas" width="800" height="400" ></canvas>
+            <div id="canvasDiv" class="col-md-8 col-md-offset-2 col-centered">
+				<div id="graphDiv" th:attr="data-mapping=${mapping}, data-reference=${reference}, data-scale=${scale}">			
+					<canvas id="graphCanvas" width="800" height="400" ></canvas>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -12,5 +12,5 @@ import br.usp.poli.entity.SimioDistanceEntity;
 @Repository
 public interface SimioDistanceRepository extends JpaRepository<SimioDistanceEntity, Long> {
 	List<SimioDistanceEntity> findByTimestampOrderByDistanceAsc(Date timestamp);
-//	List<SimioDistanceEntity> findBySimioId1AndSimioId2(Long simioId1, Long simioId2);
+	List<SimioDistanceEntity> findAllByOrderByTimestampDesc();
 }

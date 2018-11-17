@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import br.usp.poli.entity.SimioDistanceEntity;
 import br.usp.poli.entity.SimioEntity;
 import br.usp.poli.exception.UnsuitedBirthYearException;
 import br.usp.poli.model.Simio;
+import br.usp.poli.repository.SimioDistanceRepository;
 import br.usp.poli.repository.SimioRepository;
 
 
@@ -21,6 +23,8 @@ public class SimioService implements BaseService<Simio>{
 	
 	@Autowired
 	private SimioRepository simioRepository;
+	@Autowired
+	private SimioDistanceRepository simioDistanceRepository;
 	
 	public SimioService() {
 		super();
@@ -71,6 +75,11 @@ public class SimioService implements BaseService<Simio>{
 	//Delete
 	public void delete(Long id) {
 		try {
+			List<SimioDistanceEntity> distances = simioDistanceRepository.findAll();
+			distances.stream().filter(d -> d.getSimioEntity().getId() == id);
+			distances.forEach(d -> {
+				simioDistanceRepository.delete(d);
+			});
 			simioRepository.delete(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new IllegalArgumentException("Invalid simio - cannot be deleted on db");

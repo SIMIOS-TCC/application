@@ -101,12 +101,29 @@ public class LocationTests {
 	}
 	
 	@Test
-	public void getAbsolutePositionTest_Obtuse() throws Exception {//obtuse
+	public void getAbsolutePositionTest_Obtuse() throws Exception {
 		
 		Point pxExpected = new Point(-10D,10D);
 
 		//{ r1, r2, r3 }
 		Double[] distancesArray = new Double[] {20D, 10D, sqrt200};
+		List<Double> distancesList = Arrays.asList(distancesArray);
+		
+		Point p1 = new Point(10D,10D);
+		Point p2 = new Point(0D,10D);
+		Point p3 = new Point(0D,0D);
+		Point pxActual = GraphUtil.getAbsolutePosition(Arrays.asList(new Point[] {p1,p2,p3}), distancesList);
+		
+		AssertExtended.assertPointEquals(pxExpected, pxActual);
+	}
+	
+	@Test
+	public void getAbsolutePositionTest_OnAP() throws Exception {
+		
+		Point pxExpected = new Point(10D,10D);
+
+		//{ r1, r2, r3 }
+		Double[] distancesArray = new Double[] {0D, 10D, sqrt200};
 		List<Double> distancesList = Arrays.asList(distancesArray);
 		
 		Point p1 = new Point(10D,10D);

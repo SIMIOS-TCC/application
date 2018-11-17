@@ -16,6 +16,8 @@ import br.usp.poli.model.Simio;
 import br.usp.poli.model.SimioDistance;
 import br.usp.poli.repository.SimioDistanceRepository;
 
+import static br.usp.poli.utils.ConstantsFile.SAMPLING_TAX;
+
 
 @Service
 public class SimioDistanceService implements BaseService<SimioDistance>{
@@ -58,21 +60,6 @@ public class SimioDistanceService implements BaseService<SimioDistance>{
 		return null;
 	}
 	
-//	public SimioDistance readBySimioPair(Long simioId1, Long simioId2){
-//		if(simioId2 < simioId1) {
-//			Long aux = simioId1;
-//			simioId1 = simioId2;
-//			simioId2 = aux;
-//		}	
-//		List<SimioDistanceEntity> simioDistances = simioDistanceRepository.findBySimioId1AndSimioId2(simioId1, simioId2);
-//		if (simioDistances.size() > 1) {
-//			//TODO: log ("More than one match found for simio distance");
-//		}
-//		SimioDistanceEntity simioDistanceEntity = simioDistances.get(0);
-//		if(simioDistanceEntity != null) return entityToModel(simioDistanceEntity);
-//		return null;
-//	}
-//	
 	public List<SimioDistance> readByTimestamp(Date timestamp) {
 		
 		List<SimioDistance> simioDistances = new ArrayList<SimioDistance>();
@@ -84,6 +71,31 @@ public class SimioDistanceService implements BaseService<SimioDistance>{
 		return simioDistances;
 	}
 	
+	public List<SimioDistance> readByNewestTimestamp() {
+		
+		List<SimioDistance> simioDistances = new ArrayList<SimioDistance>();
+		
+		List<SimioDistanceEntity> allDistances = simioDistanceRepository.findAllByOrderByTimestampDesc();
+		if(allDistances.isEmpty()) {
+			return simioDistances;
+		}
+		
+		Date newestTimestamp = allDistances.get(0).getTimestamp();
+		
+		List<SimioDistanceEntity> filteredDistances = new ArrayList<SimioDistanceEntity>();
+		allDistances.forEach(d -> {
+			if(d.getTimestamp().getTime() > (newestTimestamp.getTime()-SAMPLING_TAX)) {
+				filteredDistances.add(d);
+			}
+		});
+		
+		filteredDistances.forEach(simioDistanceEntity -> {
+			simioDistances.add(entityToModel(simioDistanceEntity));
+		});
+		
+		return simioDistances;
+	}
+
 	//Update
 	public void update(SimioDistance simioDistance) {
 		try {
