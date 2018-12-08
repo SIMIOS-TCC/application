@@ -10,11 +10,12 @@
             <a class="navbar-brand" th:href="@{/home}">
                	<img alt="SIMIOS" th:src="@{/images/simios-logo.png}" height="42" width="63" />
             </a>
+            <!-- 
             <a class="navbar-brand" th:href="@{/data}" 
             	sec:authorize="isAuthenticated()"
             	th:classappend="${activeData} ? active">
 					<i class="fa fa-chart-line" aria-hidden="true"></i> DATA
-            </a>
+            </a> -->
             <a class="navbar-brand" th:href="@{/simio/graph}" 
             	sec:authorize="isAuthenticated()"
             	th:classappend="${activeMap} ? active">

@@ -1,5 +1,35 @@
+var mapping = $('#graphDiv').data('mapping');
+var referencePoint = $('#graphDiv').data('reference');
+var scale = $('#graphDiv').data('scale');
+var id = new URL(window.location.href).searchParams.get("id");
+
+var canvas = document.getElementById("graphCanvas");
+var context = canvas.getContext("2d");
+
+var updateGraph = function(){
+	var token = $("input[name='_csrf']").val();
+	var header = $("input[name='_csrf_header']").val();
+	
+	$.ajax({
+        type: "POST",
+        contentType : 'application/json; charset=utf-8',
+        url: "/simio/update-graph",
+        beforeSend: function(xhr) { xhr.setRequestHeader(header, token); },
+        data: id,
+        success: function (json) {
+        	var data = JSON.parse(json);
+        	mapping = data["mapping"];
+        	referencePoint = data["reference"];
+        	scale = data["scale"];
+        	drawGraph();
+        }
+    });
+	
+    setTimeout(updateGraph, 5000);
+};
+
 window.onload = function(){
-	drawGraph();
+	updateGraph();
 };
 
 $(window).on('resize',function(){
@@ -7,14 +37,11 @@ $(window).on('resize',function(){
 });
 
 var drawGraph = function() {
-	var canvas = document.getElementById("graphCanvas");
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	
 	var canvasFrame = $('#canvasDiv')[0];
 	canvas.width = canvasFrame.offsetWidth;
 	canvas.height = window.innerHeight*0.5;
-	
-	var mapping = $('#graphDiv').data('mapping');
-	var referencePoint = $('#graphDiv').data('reference');
-	var scale = $('#graphDiv').data('scale');
 	
 	mapping.forEach(function(simio) {
 		drawSimio(simio, referencePoint, scale);
@@ -23,9 +50,6 @@ var drawGraph = function() {
 
 var drawSimio = function(simio, referencePoint, scale) {
 	var point = simio.position.point;
-	
-	var canvas = document.getElementById("graphCanvas");
-	var context = canvas.getContext("2d");
 	
 	var image = document.getElementById("icon-simio");
 	
@@ -46,8 +70,7 @@ var drawSimio = function(simio, referencePoint, scale) {
 	
 	context.drawImage(image, x-10, y-10, 20 ,20);
 	
-	var options = { minimumSignificantDigits : 2, maximumSignificantDigits : 2 };
-	var distance = new Intl.NumberFormat(options).format(getDistanceToOrigin(originX, originY, x, y)/10);
+	var distance = (getDistanceToOrigin(originX, originY, x, y)/10).toFixed(2);
 	context.font = "10px Arial";
 	context.fillText(simio.name + " " + point.x + "," + point.y, x, y-12); //escala
 }

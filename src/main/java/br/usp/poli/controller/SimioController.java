@@ -15,9 +15,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -92,6 +94,47 @@ public class SimioController {
 		mav.addObject("scale", scale);
 		
 		return mav;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/update-graph", method=RequestMethod.POST, consumes="application/json")
+	public String updateGraph(@RequestBody(required=false) String id) {
+		
+		StringBuilder json = new StringBuilder();
+		
+		List<Simio> allSimios = simioService.readAll();
+		List<SimioDistance> allDistances = simioDistanceService.readByNewestTimestamp();
+
+		List<Simio> graph = graphUtil.createGraph(allSimios, allDistances);
+		String graphJson = gson.toJson(graph);
+		json.append("{ \"mapping\": ").append(graphJson).append(", ");
+		
+		Point reference = new Point(0D, 0D);
+		if(id != null) {
+			for(int i = 0; i < graph.size(); i++) {
+				Simio s = graph.get(i);
+				if(s.getId() == Long.valueOf(id)) {
+					reference = s.getPosition().getPoint();
+					continue;
+				}
+			}
+		}
+		
+		String referenceJson = gson.toJson(reference);
+		json.append("\"reference\": ").append(referenceJson).append(", ");
+		
+		Double scale = 1D;
+		for(int i = 0; i < graph.size(); i++) {
+			Double distance = GraphUtil.getDistance(reference, graph.get(i).getPosition().getPoint());
+			if(distance > scale) {
+				scale = distance;
+			}
+		}
+		scale *= 1.1;
+		
+		json.append("\"scale\": ").append(scale).append(" }");
+		
+		return json.toString();
 	}
 	
 	@RequestMapping("/search")

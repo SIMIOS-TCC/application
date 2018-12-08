@@ -21,8 +21,8 @@ $('.js-toggle-active').on('click', function(event){
 	var button = $(event.currentTarget);
 	var urlBase = button.attr('href');
 	
-	var token = $("meta[name='_csrf']").attr("content");
-	var header = $("meta[name='_csrf_header']").attr("content");
+	var token = $("input[name='_csrf']").val();
+	var header = $("input[name='_csrf_header']").val();
 	
 	var response = $.ajax({
 		url: urlBase,
