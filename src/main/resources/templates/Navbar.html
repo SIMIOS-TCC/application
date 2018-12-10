@@ -36,6 +36,11 @@
             	th:classappend="${activeUsers} ? active">
 					<i class="fa fa-map-marked-alt" aria-hidden="true"></i> ACCESS POINT
             </a>
+            <a class="navbar-brand pull-right"
+            	sec:authorize="isAnonymous()"
+            	th:href="@{/login}">
+					<i class="fa fa-sign-in-alt" aria-hidden="true"></i>
+            </a>
             <a class="navbar-brand pull-right" 
             	sec:authorize="isAuthenticated()"
             	th:href="@{/logout}">

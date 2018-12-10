@@ -24,10 +24,15 @@
 	}
 }
 
-.subtitle {
+h4.subtitle {
   font-weight: 100;
-  margin-bottom: 20px;
+  margin-top: 50px;
   font-size: 25px; }
+    
+h5.subtitle {
+  font-weight: 400;
+  margin-bottom: 20px;
+  font-size: 17px; }
   .subtitle:first-child {
     margin-top: 0; }
     

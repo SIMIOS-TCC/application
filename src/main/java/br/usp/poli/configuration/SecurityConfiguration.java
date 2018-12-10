@@ -27,6 +27,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		
 		http.authorizeRequests()
 				.antMatchers("/home").permitAll()
+				.antMatchers("/").permitAll()
 				
 				.antMatchers("/user/**").hasAuthority("ADMIN")
 				
@@ -34,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				
 				.and()			
 					.formLogin()
-					.loginPage("/login").defaultSuccessUrl("/menu")
+					.loginPage("/login").defaultSuccessUrl("/home")
 					.permitAll()
 				.and()
 					.logout()

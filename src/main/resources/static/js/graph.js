@@ -25,10 +25,11 @@ var updateGraph = function(){
         }
     });
 	
-    setTimeout(updateGraph, 5000);
+    setTimeout(updateGraph, 2000);
 };
 
 window.onload = function(){
+	drawGraph();
 	updateGraph();
 };
 

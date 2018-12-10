@@ -4,7 +4,7 @@ public class ConstantsFile {
 	
 	//Physics
 	public static final Double MAX_RANGE = 30D;
-	public static final long SAMPLING_TAX = 15*60*1000;
+	public static final long SAMPLING_TAX = 2*1000;
 	
 	//Pages
 	public static final String SIMIO_SEARCH = "simio/SearchSimio";

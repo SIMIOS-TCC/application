@@ -10,16 +10,134 @@
 
 <section layout:fragment="content">
 	
-	<div class="panel panel-default">
-		<div class="panel-heading clearfix">
-			<h1 class="panel-title aw-titulo-panel">Home Page</h1>
-		</div>
-			
-		<div class="panel-body">			
-			<div class="panel-heading clearfix">
-				<a class="btn btn-link aw-link-panel" th:href="@{/login}">Login</a>
-			</div>
-		</div>
-	</div>
+	<br />
+	<section class="main-content grey-back">
+           <div class="container login-container screen-container">
+               <div class="row mg-top-50">
+                   <div class="col-md-10 col-md-offset-1 col-centered">
+                       <h4 class="subtitle text-center">SIMIOS</h4>
+                       <h4 class="subtitle text-center">Sistema de Monitoramento de Interação Oragânica Entre Símios</h4>
+                   		
+                   		<div class="panel panel-default">
+							<div class="panel-body">			
+		                   		<div class="row">
+				                   <div class="col-md-4">
+				                       <h5 class="subtitle">Colaboração com a comunidade científica veterinária.</h5>
+				                   		<h5 class="subtitle">Tecnologia leve e eficiente energeticamente.</h5>
+				                   </div>
+				                   <div class="col-md-8">
+				                       <img alt="SIMIOS" th:src="@{/images/esquematico_aux.png}" height="371" width="569" />
+				                   </div>
+		               			</div>
+	               			</div>
+               			</div>
+               			
+               			<div class="row">
+		                   <div class="col-md-4">
+		                   		<div class="panel panel-default">
+		                   			<div class="panel-heading clearfix">
+										<h1 class="panel-title aw-titulo-panel">
+											<i class="fa fa-book" aria-hidden="true"></i> INTRODUÇÃO
+										</h1>
+									</div>
+									<div class="panel-body">
+										As alternativas atuais de monitoramento de animais em reservas biológicas são caras ou invasivas. A presença de humanos afeta seu comportamento cotidiano e impede asserções acerca de seus hábitos.
+									</div>
+								</div>
+		                   </div>
+		                   <div class="col-md-4">
+		                   		<div class="panel panel-default">
+		                   			<div class="panel-heading clearfix">
+										<h1 class="panel-title aw-titulo-panel">
+											<i class="fa fa-fist-raised" aria-hidden="true"></i> MOTIVAÇÃO
+										</h1>
+									</div>
+									<div class="panel-body">
+										É de interesse dos biólogos do Instituto Butantan a coleta de dados sobre o comportamento de primatas em sua reserva. A vigilância contínua é difícil por falta de aparelhos e técnicas adequados.
+									</div>
+								</div>
+		                   </div>
+		                   <div class="col-md-4">
+		                   		<div class="panel panel-default">
+		                   			<div class="panel-heading clearfix">
+										<h1 class="panel-title aw-titulo-panel">
+											<i class="fa fa-map-signs" aria-hidden="true"></i> OBJETIVOS
+										</h1>
+									</div>
+									<div class="panel-body">
+										Observação constante e remota dos animais, mesmo durante períodos sensíveis como acasalamento e amamentação onde a presença humana perturba.
+									</div>
+								</div>
+		                   </div>
+               			</div>
+               			
+               			<div class="panel panel-default">
+               				<div class="panel-heading clearfix">
+								<h1 class="panel-title aw-titulo-panel">
+									<i class="fa fa-cogs" aria-hidden="true"></i> COMPONENTES DO SISTEMA
+								</h1>
+							</div>
+							<div class="panel-body">			
+		                   		<div class="row">
+				                   <div class="col-md-3">
+				                   		<h6>TARGET</h6>
+				                   		<span>Um grupo de placas sensores (SensorTags) colocadas em cada macaco, que realizam broadcast  utilizando o protocolo proprietário da Texas Instruments.</span>
+				                   </div>
+				                   <div class="col-md-3">
+				                   		<h6>PONTOS DE ACESSO</h6>
+				                   		<span>Um grupo de placas similares, acopladas às árvores da reserva, que consegue receber os pacotes de dados enviadas pelas primeira e inferir a distância  entre os macacos e as árvores através da intensidade do sinal.</span>
+				                   </div>
+				                   <div class="col-md-3">
+				                   		<h6>CONTROLADOR</h6>
+				                   		<span>Um módulo coletor responsável por enviar todas as informações agrupadas pelas placas nas árvores para um banco de dados em um servidor remoto.</span>
+				                   </div>
+				                   <div class="col-md-3">
+				                   		<h6>APLICAÇÃO</h6>
+				                   		<span>Uma aplicação capaz de acessar, organizar e disponibilizar os dados em forma de mapas visando facilitar a pesquisa acadêmica e o registro dos comportamentos animais.</span>
+				                   </div>
+		               			</div>
+	               			</div>
+               			</div>
+               			
+               			<div class="panel panel-default">
+               				<div class="panel-heading clearfix">
+								<h1 class="panel-title aw-titulo-panel">
+									<i class="fa fa-user" aria-hidden="true"></i> INTEGRANTES
+								</h1>
+							</div>
+							<div class="panel-body">			
+		                   		<div class="row">
+				                   <div class="col-md-6">
+				                   		<div><strong>Larissa Mangolim Amaral</strong></div>
+				                   		<div><u>larissa95.amaral@gmail.com</u></div>
+				                   		<div>+55 (11) 94578-5058</div>
+				                   		<br />
+				                   		<div><strong>Luciana Da Costa Marques</strong></div>
+				                   		<div><u>lucianadacostamarques@gmail.com</u></div>
+				                   		<div>+55 (11) 96308-8698</div>
+				                   		<br />
+				                   		<div><strong>Pedro Oscar Gallo Vaz</strong></div>
+				                   		<div><u>pedro_o99@hotmail.com</u></div>
+				                   		<div>+55 (11) 99953-9151</div>
+				                   </div>
+				                   <div class="col-md-6 text-right">
+				                   		<div><strong>Professor Orientador</strong></div>
+				                   		<div>Carlos Eduardo Cugnasca</div>
+				                   		<br />
+				                   		<div><strong>Professor Co-orientador</strong></div>
+				                   		<div>Bruno de Carvalho Albertini</div>
+				                   		<br />
+				                   		<br />
+				                   		<div><strong>Mais Conteúdo</strong></div>
+				                   		<div><a href="https://github.com/SIMIOS-TCC/">https://github.com/SIMIOS-TCC/</a></div>
+				                   </div>
+		               			</div>
+	               			</div>
+               			</div>
+                   </div>
+               </div>
+           </div>
+       </section>
+       
 </section>  
 </html>
