@@ -56,7 +56,7 @@ public class GraphUtil {
 		return distances;
 	}
 	
-	public static Point getAbsolutePosition(List<Point> reference, List<Double> distances) throws Exception {
+	public static Point getTripleCircIntersection(List<Point> reference, List<Double> distances) throws Exception {
 		Double a = reference.get(0).x;
 		Double b = reference.get(0).y;
 		Double c = reference.get(1).x;
@@ -117,6 +117,53 @@ public class GraphUtil {
 		return px;
 	}
 	
+	public static List<Point> getDoubleCircIntersection(List<Point> reference, List<Double> distances) throws Exception {
+		Double a = reference.get(0).x;
+		Double b = reference.get(0).y;
+		Double c = reference.get(1).x;
+		Double d = reference.get(1).y;
+		
+		Double d1 = distances.get(0);
+		Double d2 = distances.get(1);
+		
+		Double x1;
+		Double y1;
+		Double x2;
+		Double y2;
+		
+		if(a - c != 0D) {
+			
+			Double arg0 = Math.pow(c, 2) - Math.pow(a, 2);
+			Double arg1 = Math.pow(d, 2) - Math.pow(b, 2);
+			Double arg2 = Math.pow(d1, 2) - Math.pow(d2, 2);
+			
+			Double alpha = (arg0 + arg1 + arg2)/(2*(c - a));
+			Double beta = (b - d)/(c - a);
+			
+			Double gama = 2*(alpha*beta - a*beta - b);
+			Double phi = Math.pow(d1, 2) - Math.pow(a, 2) - Math.pow(b, 2) - Math.pow(alpha, 2) + 2*a*alpha;
+			
+			Double delta = Math.pow(gama, 2) - 4*(1 - Math.pow(beta, 2))*phi;
+			
+			if(delta < 0) {
+				throw new Exception("No existing intersection point for provided values");
+			}
+			
+			y1 = ((-1)*b + Math.sqrt(delta))/(2*(1 - Math.pow(beta, 2)));
+			y2 = ((-1)*b - Math.sqrt(delta))/(2*(1 - Math.pow(beta, 2)));
+			
+			x1 = alpha + beta*y1;
+			x2 = alpha + beta*y2;
+			
+		} else {
+			throw new Exception("No existing intersection point for provided values");
+		}
+		
+		Point px1 = new Point(x1, y1).trimPointToPrecision();
+		Point px2 = new Point(x2, y2).trimPointToPrecision();
+		return Arrays.asList(new Point[] {px1, px2});
+	}
+	
 	public static List<Point> getPossiblePositions(List<SimioDistance> distances) throws Exception {
 		List<Point> points = new ArrayList<Point>();
 		
@@ -132,7 +179,7 @@ public class GraphUtil {
 				Point p2 = distances.get(j).getAccessPoint().getPosition();
 				Point p3 = distances.get(j+1).getAccessPoint().getPosition();
 				
-				Point point = getAbsolutePosition(Arrays.asList(new Point[] {p1, p2, p3}), refDistances);
+				Point point = getTripleCircIntersection(Arrays.asList(new Point[] {p1, p2, p3}), refDistances);
 				points.add(point);
 			}
 		}
