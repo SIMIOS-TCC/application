@@ -28,6 +28,7 @@ public class GraphUtil {
 		}
 		
 		Date timestamp = allDistances.get(0).getTimestamp();
+		List<Simio> filteredSimios = new ArrayList<Simio>();
 		allSimios.forEach(simio -> {
 			List<SimioDistance> distances = filterDistancesBySimio(allDistances, simio);
 			List<Point> points = new ArrayList<Point>();
@@ -38,12 +39,15 @@ public class GraphUtil {
 				return;
 			}
 			
-			Point averagePoint = getAveragePoint(points);
-			Position position = Position.builder().point(averagePoint).timestamp(timestamp).build();
-			simio.setPosition(position);
+			if(!points.isEmpty()) {
+				Point averagePoint = getAveragePoint(points);
+				Position position = Position.builder().point(averagePoint).timestamp(timestamp).build();
+				simio.setPosition(position);
+				filteredSimios.add(simio);
+			}
 		});
 		
-		return allSimios;
+		return filteredSimios;
 	}
 	
 	private static List<SimioDistance> filterDistancesBySimio(List<SimioDistance> allDistances, Simio simio) {
