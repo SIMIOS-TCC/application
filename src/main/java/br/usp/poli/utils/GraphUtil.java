@@ -3,15 +3,20 @@ package br.usp.poli.utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.usp.poli.exception.NoIntersectionPointsException;
 import br.usp.poli.model.Simio;
 import br.usp.poli.model.SimioDistance;
 import br.usp.poli.service.SimioDistanceService;
 import br.usp.poli.service.SimioService;
+
+import static br.usp.poli.utils.ConstantsFile.ERROR_METERS;
 
 @Component
 public class GraphUtil {
@@ -23,14 +28,17 @@ public class GraphUtil {
 	
 	public List<Simio> createGraph(List<Simio> allSimios, List<SimioDistance> allDistances) {
 		
+		List<Simio> filteredSimios = new ArrayList<Simio>();
+		
 		if(allDistances.isEmpty()) {
-			return allSimios;
+			return filteredSimios;
 		}
 		
 		Date timestamp = allDistances.get(0).getTimestamp();
-		List<Simio> filteredSimios = new ArrayList<Simio>();
+		
 		allSimios.forEach(simio -> {
 			List<SimioDistance> distances = filterDistancesBySimio(allDistances, simio);
+			
 			List<Point> points = new ArrayList<Point>();
 			try {
 				points = getPossiblePositions(distances);
@@ -60,7 +68,7 @@ public class GraphUtil {
 		return distances;
 	}
 	
-	public static Point getTripleCircIntersection(List<Point> reference, List<Double> distances) throws Exception {
+	public static Point getTripleCircIntersection(List<Point> reference, List<Double> distances) throws NoIntersectionPointsException {
 		Double a = reference.get(0).x;
 		Double b = reference.get(0).y;
 		Double c = reference.get(1).x;
@@ -81,7 +89,7 @@ public class GraphUtil {
 			Double beta = 2 * ( ( f - b ) +  ( d - b ) * alpha );
 			
 			if(beta == 0D) {
-				throw new Exception("No existing intersection point for provided values");
+				throw new NoIntersectionPointsException("No existing intersection point for provided values");
 			}
 			
 			Double arg0 = Math.pow(e, 2) - Math.pow(a, 2);
@@ -100,7 +108,7 @@ public class GraphUtil {
 			Double beta = 2 * ( ( f - b ) +  ( d - f ) * alpha );
 			
 			if(beta == 0D) {
-				throw new Exception("No existing intersection point for provided values");
+				throw new NoIntersectionPointsException("No existing intersection point for provided values");
 			}
 			
 			Double arg0 = Math.pow(e, 2) - Math.pow(a, 2);
@@ -114,14 +122,14 @@ public class GraphUtil {
 			x = ( 2 * y * ( d - f ) + arg2 + arg3 + arg4 ) / ( 2 * ( e - c ) );
 			
 		} else {
-			throw new Exception("No existing intersection point for provided values");
+			throw new NoIntersectionPointsException("No existing intersection point for provided values");
 		}
 		
 		Point px = new Point(x, y).trimPointToPrecision();
 		return px;
 	}
 	
-	public static List<Point> getDoubleCircIntersection(List<Point> reference, List<Double> distances) throws Exception {
+	public static List<Point> getDoubleCircIntersection(List<Point> reference, List<Double> distances) throws NoIntersectionPointsException {
 		Double a = reference.get(0).x;
 		Double b = reference.get(0).y;
 		Double c = reference.get(1).x;
@@ -134,7 +142,7 @@ public class GraphUtil {
 		if(distance > (d1 + d2) ||
 				d1 > (distance + d2) ||
 				d2 > (distance + d1)) {
-			throw new Exception("No existing intersection point for provided values");
+			throw new NoIntersectionPointsException("No existing intersection point for provided values");
 		}
 		
 		Double arg0 = Math.pow(c, 2) - Math.pow(a, 2);
@@ -157,7 +165,7 @@ public class GraphUtil {
 			delta = Math.pow(gama, 2) - 4*(1 - Math.pow(beta, 2))*phi;
 			
 			if(delta < 0) {
-				throw new Exception("No existing intersection point for provided values");
+				throw new NoIntersectionPointsException("No existing intersection point for provided values");
 			}
 			
 		} else if(d - b != 0D) {
@@ -171,11 +179,11 @@ public class GraphUtil {
 			delta = Math.pow(gama, 2) - 4*(1 + Math.pow(beta, 2))*phi;
 			
 			if(delta < 0) {
-				throw new Exception("No existing intersection point for provided values");
+				throw new NoIntersectionPointsException("No existing intersection point for provided values");
 			}
 			
 		} else {
-			throw new Exception("No existing intersection point for provided values");
+			throw new NoIntersectionPointsException("No existing intersection point for provided values");
 		}
 		
 		Double y1 = ((-1)*gama + Math.sqrt(delta))/(2*(1 + Math.pow(beta, 2)));
@@ -189,8 +197,21 @@ public class GraphUtil {
 		return Arrays.asList(new Point[] {px1, px2});
 	}
 	
-	public static List<Point> getPossiblePositions(List<SimioDistance> distances) throws Exception {
+	public static List<Point> getPossiblePositions(List<SimioDistance> distances) throws NoIntersectionPointsException {
 		List<Point> points = new ArrayList<Point>();
+		
+		Map<Integer, List<Circumference>> apCircumferences = new HashMap<Integer, List<Circumference>>();
+		Integer apIndex = 0;
+		for(SimioDistance d : distances) {
+			Point center = d.getAccessPoint().getPosition();
+			Double minusRadius = d.getDistance()-ERROR_METERS < 0 ? 0.5D : d.getDistance()-ERROR_METERS;
+			List<Circumference> circumferences = Arrays.asList(new Circumference[] {
+					Circumference.builder().center(center).radius(d.getDistance()+ERROR_METERS).build(),
+					Circumference.builder().center(center).radius(minusRadius).build()
+			});
+			
+			apCircumferences.put(apIndex++, circumferences);
+		}
 		
 		List<Double> refDistances;
 		for(int i = 0; i < distances.size() - 2; i++) {

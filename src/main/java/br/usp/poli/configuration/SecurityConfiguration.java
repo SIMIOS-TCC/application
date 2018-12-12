@@ -47,7 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 					.invalidSessionUrl("/login")
 					.maximumSessions(1)
 			        .maxSessionsPreventsLogin(true)
-			        .sessionRegistry(sessionRegistry());;
+			        .sessionRegistry(sessionRegistry());
 		
 		http.exceptionHandling().accessDeniedPage("/acess-denied");
 		
