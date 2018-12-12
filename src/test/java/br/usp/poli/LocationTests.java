@@ -40,9 +40,49 @@ public class LocationTests {
 		refListExpected.add(p3);	
 	}
 	
+	//Double Circ Intersection
+	@Test
+	public void getDoubleCircIntersectionTest_Quadrant2_3() throws Exception {
+		
+		List<Point> pxsExpected = Arrays.asList(new Point[] {
+				new Point(-5D,5D),
+				new Point(-5D,-5D)
+		});
+		
+		//{ r1, r2 }
+		Double[] distancesArray = new Double[] {sqrt200/2, sqrt200/2};
+		List<Double> distancesList = Arrays.asList(distancesArray);
+		
+		List<Point> reference = Arrays.asList(new Point[] {
+				new Point(0D,0D),
+				new Point(-10D,0D)
+		});
+		
+		List<Point> pxsActual = GraphUtil.getDoubleCircIntersection(reference, distancesList);
+		
+		AssertExtended.assertPointListEquals(pxsExpected, pxsActual);
+	}
+	
+	@Test
+	public void getDoubleCircIntersectionTest_Quadrant1_4() throws Exception {
+		
+		List<Point> pxsExpected = Arrays.asList(new Point[] {
+				new Point(5D,5D),
+				new Point(5D,-5D)
+		});
+		
+		//{ r1, r2 }
+		Double[] distancesArray = new Double[] {sqrt200/2, sqrt200/2};
+		List<Double> distancesList = Arrays.asList(distancesArray);
+		
+		List<Point> pxsActual = GraphUtil.getDoubleCircIntersection(refListExpected, distancesList);
+		
+		AssertExtended.assertPointListEquals(pxsExpected, pxsActual);
+	}
+	
 	//Absolute Position
 	@Test
-	public void getAbsolutePositionTest_Quadrant1() throws Exception {
+	public void getTripleCircIntersectionTest_Quadrant1() throws Exception {
 		
 		Point pxExpected = new Point(0D,10D);
 
@@ -50,13 +90,13 @@ public class LocationTests {
 		Double[] distancesArray = new Double[] {10D, sqrt200, 10D};
 		List<Double> distancesList = Arrays.asList(distancesArray);
 		
-		Point pxActual = GraphUtil.getAbsolutePosition(refListExpected, distancesList);
+		Point pxActual = GraphUtil.getTripleCircIntersection(refListExpected, distancesList);
 		
 		AssertExtended.assertPointEquals(pxExpected, pxActual);
 	}
 	
 	@Test
-	public void getAbsolutePositionTest_Quadrant2() throws Exception {
+	public void getTripleCircIntersectionTest_Quadrant2() throws Exception {
 		
 		Point pxExpected = new Point(-10D,10D);
 
@@ -64,13 +104,13 @@ public class LocationTests {
 		Double[] distancesArray = new Double[] {sqrt200, sqrt500, 20D};
 		List<Double> distancesList = Arrays.asList(distancesArray);
 		
-		Point pxActual = GraphUtil.getAbsolutePosition(refListExpected, distancesList);
+		Point pxActual = GraphUtil.getTripleCircIntersection(refListExpected, distancesList);
 		
 		AssertExtended.assertPointEquals(pxExpected, pxActual);
 	}
 	
 	@Test
-	public void getAbsolutePositionTest_Quadrant3() throws Exception {
+	public void getTripleCircIntersectionTest_Quadrant3() throws Exception {
 		
 		Point pxExpected = new Point(0D,-10D);
 
@@ -78,13 +118,13 @@ public class LocationTests {
 		Double[] distancesArray = new Double[] {10D, sqrt200, sqrt500};
 		List<Double> distancesList = Arrays.asList(distancesArray);
 		
-		Point pxActual = GraphUtil.getAbsolutePosition(refListExpected, distancesList);
+		Point pxActual = GraphUtil.getTripleCircIntersection(refListExpected, distancesList);
 		
 		AssertExtended.assertPointEquals(pxExpected, pxActual);
 	}
 	
 	@Test
-	public void getAbsolutePositionTest_Origin() throws Exception {
+	public void getTripleCircIntersectionTest_Origin() throws Exception {
 		
 		Point pxExpected = new Point(0D,0D);
 
@@ -95,13 +135,13 @@ public class LocationTests {
 		Point p1 = new Point(10D,10D);
 		Point p2 = new Point(-10D,-10D);
 		Point p3 = new Point(10D,-10D);
-		Point pxActual = GraphUtil.getAbsolutePosition(Arrays.asList(new Point[] {p1,p2,p3}), distancesList);
+		Point pxActual = GraphUtil.getTripleCircIntersection(Arrays.asList(new Point[] {p1,p2,p3}), distancesList);
 		
 		AssertExtended.assertPointEquals(pxExpected, pxActual);
 	}
 	
 	@Test
-	public void getAbsolutePositionTest_Obtuse() throws Exception {
+	public void getTripleCircIntersectionTest_Obtuse() throws Exception {
 		
 		Point pxExpected = new Point(-10D,10D);
 
@@ -112,13 +152,13 @@ public class LocationTests {
 		Point p1 = new Point(10D,10D);
 		Point p2 = new Point(0D,10D);
 		Point p3 = new Point(0D,0D);
-		Point pxActual = GraphUtil.getAbsolutePosition(Arrays.asList(new Point[] {p1,p2,p3}), distancesList);
+		Point pxActual = GraphUtil.getTripleCircIntersection(Arrays.asList(new Point[] {p1,p2,p3}), distancesList);
 		
 		AssertExtended.assertPointEquals(pxExpected, pxActual);
 	}
 	
 	@Test
-	public void getAbsolutePositionTest_OnAP() throws Exception {
+	public void getTripleCircIntersectionTest_OnAP() throws Exception {
 		
 		Point pxExpected = new Point(10D,10D);
 
@@ -129,7 +169,7 @@ public class LocationTests {
 		Point p1 = new Point(10D,10D);
 		Point p2 = new Point(0D,10D);
 		Point p3 = new Point(0D,0D);
-		Point pxActual = GraphUtil.getAbsolutePosition(Arrays.asList(new Point[] {p1,p2,p3}), distancesList);
+		Point pxActual = GraphUtil.getTripleCircIntersection(Arrays.asList(new Point[] {p1,p2,p3}), distancesList);
 		
 		AssertExtended.assertPointEquals(pxExpected, pxActual);
 	}

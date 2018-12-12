@@ -126,38 +126,59 @@ public class GraphUtil {
 		Double d1 = distances.get(0);
 		Double d2 = distances.get(1);
 		
-		Double x1;
-		Double y1;
-		Double x2;
-		Double y2;
+		Double distance = getDistance(reference.get(0),reference.get(1));
+		if(distance > (d1 + d2) ||
+				d1 > (distance + d2) ||
+				d2 > (distance + d1)) {
+			throw new Exception("No existing intersection point for provided values");
+		}
+		
+		Double arg0 = Math.pow(c, 2) - Math.pow(a, 2);
+		Double arg1 = Math.pow(d, 2) - Math.pow(b, 2);
+		Double arg2 = Math.pow(d1, 2) - Math.pow(d2, 2);
+		
+		Double alpha;
+		Double beta;
+		Double gama;
+		Double delta;
 		
 		if(a - c != 0D) {
 			
-			Double arg0 = Math.pow(c, 2) - Math.pow(a, 2);
-			Double arg1 = Math.pow(d, 2) - Math.pow(b, 2);
-			Double arg2 = Math.pow(d1, 2) - Math.pow(d2, 2);
+			alpha = (arg0 + arg1 + arg2)/(2*(c - a));
+			beta = (b - d)/(c - a);
 			
-			Double alpha = (arg0 + arg1 + arg2)/(2*(c - a));
-			Double beta = (b - d)/(c - a);
+			gama = 2*(alpha*beta - a*beta - b);
+			Double phi = Math.pow(a, 2) + Math.pow(b, 2) - Math.pow(d1, 2) + Math.pow(alpha, 2) - 2*a*alpha;
 			
-			Double gama = 2*(alpha*beta - a*beta - b);
-			Double phi = Math.pow(d1, 2) - Math.pow(a, 2) - Math.pow(b, 2) - Math.pow(alpha, 2) + 2*a*alpha;
-			
-			Double delta = Math.pow(gama, 2) - 4*(1 - Math.pow(beta, 2))*phi;
+			delta = Math.pow(gama, 2) - 4*(1 - Math.pow(beta, 2))*phi;
 			
 			if(delta < 0) {
 				throw new Exception("No existing intersection point for provided values");
 			}
 			
-			y1 = ((-1)*b + Math.sqrt(delta))/(2*(1 - Math.pow(beta, 2)));
-			y2 = ((-1)*b - Math.sqrt(delta))/(2*(1 - Math.pow(beta, 2)));
+		} else if(d - b != 0D) {
 			
-			x1 = alpha + beta*y1;
-			x2 = alpha + beta*y2;
+			alpha = (arg0 + arg1 + arg2)/(2*(d - b));
+			beta = (c - a)/(b - d);
+			
+			gama = 2*(alpha*beta - b*beta - a);
+			Double phi = Math.pow(a, 2) + Math.pow(b, 2) - Math.pow(d1, 2) + Math.pow(alpha, 2) - 2*b*beta;
+			
+			delta = Math.pow(gama, 2) - 4*(1 + Math.pow(beta, 2))*phi;
+			
+			if(delta < 0) {
+				throw new Exception("No existing intersection point for provided values");
+			}
 			
 		} else {
 			throw new Exception("No existing intersection point for provided values");
 		}
+		
+		Double y1 = ((-1)*gama + Math.sqrt(delta))/(2*(1 + Math.pow(beta, 2)));
+		Double y2 = ((-1)*gama - Math.sqrt(delta))/(2*(1 + Math.pow(beta, 2)));
+		
+		Double x1 = alpha + beta*y1;
+		Double x2 = alpha + beta*y2;
 		
 		Point px1 = new Point(x1, y1).trimPointToPrecision();
 		Point px2 = new Point(x2, y2).trimPointToPrecision();
