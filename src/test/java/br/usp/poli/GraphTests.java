@@ -76,10 +76,10 @@ public class GraphTests {
 	
 	private void insertDistances(List<AccessPointEntity> aps, SimioEntity simio, List<Double> distances) {
 		
-		Date timestamp1 = new Date(2018, 5, 3, 0, 16);
-		Date timestamp2 = new Date(2018, 5, 3, 0, 17);
-		Date timestamp3 = new Date(2018, 5, 3, 0, 18);
-		Date timestamp4 = new Date(2018, 5, 3, 0, 0);
+		Date timestamp1 = new Date(118, 5, 3, 0, 16);
+		Date timestamp2 = new Date(118, 5, 3, 0, 16);
+		Date timestamp3 = new Date(118, 5, 3, 0, 16);
+		Date timestamp4 = new Date(118, 5, 3, 0, 0);
 		List<Date> timestamps = Arrays.asList(new Date[] {timestamp1, timestamp2, timestamp3, timestamp4});
 		
 		for(int i = 0; i < 4; i++) {
