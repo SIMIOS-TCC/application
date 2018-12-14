@@ -43,12 +43,12 @@ public class GraphTests {
 	public void loadContext() {
 		List<AccessPointEntity> aps = readOrInsertAPs();
 		
-		//Simio 1
+		//Simio 1 (0,0)
 		SimioEntity simio1 = readOrInsertSimio("Nanica");
 		
-		Double d1 = Math.sqrt(10);
-		Double d2 = Math.sqrt(8);
-		Double d3 = Math.sqrt(4);
+		Double d1 = Math.sqrt(1);
+		Double d2 = Math.sqrt(1);
+		Double d3 = Math.sqrt(5);
 		Double d4 = Math.sqrt(1);
 		
 		List<Double> distances = Arrays.asList(new Double[] {d1, d2, d3, d4});
@@ -58,9 +58,9 @@ public class GraphTests {
 		//Simio 2
 		SimioEntity simio2 = readOrInsertSimio("Prata");
 		
-		d1 = Math.sqrt(2);
-		d2 = Math.sqrt(0);
-		d3 = Math.sqrt(4);
+		d1 = 2D;//Math.sqrt(0.5);
+		d2 = Math.sqrt(2);
+		d3 = Math.sqrt(2);
 		d4 = Math.sqrt(3);
 		
 		distances = Arrays.asList(new Double[] {d1, d2, d3, d4});

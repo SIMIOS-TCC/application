@@ -46,4 +46,8 @@ public class Point {
 	    
 	    return rounded;
 	}
+	
+	public String toString() {
+		return "(" + x + "," + y + ")";
+	}
 }

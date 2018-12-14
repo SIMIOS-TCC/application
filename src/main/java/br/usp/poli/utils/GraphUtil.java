@@ -39,15 +39,10 @@ public class GraphUtil {
 		allSimios.forEach(simio -> {
 			List<SimioDistance> distances = filterDistancesBySimio(allDistances, simio);
 			
-			List<Point> points = new ArrayList<Point>();
-			try {
-				points = getPossiblePositions(distances);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return;
-			}
-			
+			List<Point> points = getPossiblePositions(distances);
+			Point averagePoint2 = getAveragePoint(points);
 			if(!points.isEmpty()) {
+			//if(points.size() == 12) {
 				Point averagePoint = getAveragePoint(points);
 				Position position = Position.builder().point(averagePoint).timestamp(timestamp).build();
 				simio.setPosition(position);
@@ -197,7 +192,7 @@ public class GraphUtil {
 		return Arrays.asList(new Point[] {px1, px2});
 	}
 	
-	public static List<Point> getPossiblePositions(List<SimioDistance> distances) throws NoIntersectionPointsException {
+	public static List<Point> getPossiblePositions(List<SimioDistance> distances) {
 		List<Point> points = new ArrayList<Point>();
 		
 		Map<Integer, List<Circumference>> apCircumferences = new HashMap<Integer, List<Circumference>>();
@@ -206,34 +201,43 @@ public class GraphUtil {
 			Point center = d.getAccessPoint().getPosition();
 			Double minusRadius = d.getDistance()-ERROR_METERS < 0 ? 0.5D : d.getDistance()-ERROR_METERS;
 			List<Circumference> circumferences = Arrays.asList(new Circumference[] {
-					Circumference.builder().center(center).radius(d.getDistance()+ERROR_METERS).build(),
-					Circumference.builder().center(center).radius(minusRadius).build()
+					Circumference.builder().center(center).radius(d.getDistance()+ERROR_METERS).build(), //external circle
+					Circumference.builder().center(center).radius(minusRadius).build() //internal circle
 			});
 			
 			apCircumferences.put(apIndex++, circumferences);
 		}
 		
-		List<Double> refDistances;
-		for(int i = 0; i < distances.size() - 2; i++) {
-			for(int j = i + 1; j < distances.size() - 1; j++) {
-				Double d1 = distances.get(i).getDistance();
-				Double d2 = distances.get(j).getDistance();
-				Double d3 = distances.get(j+1).getDistance();
-				refDistances = Arrays.asList(new Double[] {d1, d2, d3});
+		for(Integer ap1 = 0; ap1 < apCircumferences.keySet().size(); ap1++) {
+			Circumference externalA = apCircumferences.get(ap1).get(0);
+			
+			for(Integer ap2 = 0; ap2 < apCircumferences.keySet().size(); ap2++) {
+				if(ap1 == ap2) {
+					continue;
+				}
 				
-				Point p1 = distances.get(i).getAccessPoint().getPosition();
-				Point p2 = distances.get(j).getAccessPoint().getPosition();
-				Point p3 = distances.get(j+1).getAccessPoint().getPosition();
+				Circumference internalB = apCircumferences.get(ap2).get(0);
 				
-				Point point = getTripleCircIntersection(Arrays.asList(new Point[] {p1, p2, p3}), refDistances);
-				points.add(point);
+				List<Point> refPoints = Arrays.asList(new Point[] {
+						externalA.center, internalB.center
+				});
+						
+				List<Double> refDistances = Arrays.asList(new Double[] {
+						externalA.radius, internalB.radius
+				});
+				
+				try {
+					points.addAll(getDoubleCircIntersection(refPoints, refDistances));
+				} catch(NoIntersectionPointsException e) {
+					System.out.println("Circumferences with no point intersection: " + refPoints.get(0).toString() + " & " + refPoints.get(1).toString());
+				}
 			}
 		}
 		
 		return points;
 	}
 	
-	private static Point getAveragePoint(List<Point> points) {
+	public static Point getAveragePoint(List<Point> points) {
 		Point p = new Point(0D, 0D);
 		points.forEach(point -> {
 			p.x += point.x;

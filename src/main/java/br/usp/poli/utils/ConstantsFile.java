@@ -3,7 +3,7 @@ package br.usp.poli.utils;
 public class ConstantsFile {
 	
 	//Physics
-	public static final Double ERROR_METERS = 2D;
+	public static final Double ERROR_METERS = 1D;
 	public static final long SAMPLING_TAX = 2*1000;
 	
 	//Pages

@@ -174,7 +174,7 @@ public class LocationTests {
 		AssertExtended.assertPointEquals(pxExpected, pxActual);
 	}
 	
-	//Possible Positions
+	/*
 	@Test
 	public void getPossiblePositionsTest_Quadrant1() throws Exception {
 		
@@ -278,8 +278,161 @@ public class LocationTests {
 		List<Point> pxsActual = GraphUtil.getPossiblePositions(Arrays.asList(new SimioDistance[] {d1, d2, d3, d4}));
 		
 		AssertExtended.assertPointListEquals(pxsExpected, pxsActual);
+	}*/
+	
+	//Possible Positions
+	@Test
+	public void getPossiblePositionsTest_Quadrant1() throws Exception {
+		
+		Point pxExpected = new Point(5D,5D);
+		
+		//{ d1, d2, d3, d4 }
+		AccessPoint ap = AccessPoint.builder().position(new Point(0D,0D)).build();
+		SimioDistance d1 = SimioDistance.builder()
+				.distance(sqrt200)
+				.accessPoint(ap)
+				.build();
+		
+		ap = AccessPoint.builder().position(new Point(10D,0D)).build();
+		SimioDistance d2 = SimioDistance.builder()
+				.distance(sqrt200)
+				.accessPoint(ap)
+				.build();
+		
+		ap = AccessPoint.builder().position(new Point(10D,10D)).build();
+		SimioDistance d3 = SimioDistance.builder()
+				.distance(sqrt200)
+				.accessPoint(ap)
+				.build();
+		
+		List<Point> pxsActual = GraphUtil.getPossiblePositions(Arrays.asList(new SimioDistance[] {d1, d2, d3}));
+		
+		Point pxActual = GraphUtil.getAveragePoint(pxsActual);
+		
+		AssertExtended.assertPointEquals(pxExpected, pxActual);
 	}
 	
-	//Create Graph
+	@Test
+	public void getPossiblePositionsTest_NotExact() throws Exception {
+		
+		Point pxExpected = new Point(5D,5D);
+		
+		//{ d1, d2, d3, d4 }
+		AccessPoint ap = AccessPoint.builder().position(new Point(0D,0D)).build();
+		SimioDistance d1 = SimioDistance.builder()
+				.distance(sqrt200+0.8D)
+				.accessPoint(ap)
+				.build();
+		
+		ap = AccessPoint.builder().position(new Point(10D,0D)).build();
+		SimioDistance d2 = SimioDistance.builder()
+				.distance(sqrt200-0.5D)
+				.accessPoint(ap)
+				.build();
+		
+		ap = AccessPoint.builder().position(new Point(10D,10D)).build();
+		SimioDistance d3 = SimioDistance.builder()
+				.distance(sqrt200+0.4D)
+				.accessPoint(ap)
+				.build();
+		
+		List<Point> pxsActual = GraphUtil.getPossiblePositions(Arrays.asList(new SimioDistance[] {d1, d2, d3}));
+		
+		Point pxActual = GraphUtil.getAveragePoint(pxsActual);
+		
+		AssertExtended.assertPointIsPrecise(pxExpected, pxActual);
+	}
 	
+	@Test
+	public void getPossiblePositionsTest_LilCritic() throws Exception {
+		
+		Point pxExpected = new Point(5D,5D);
+		
+		//{ d1, d2, d3, d4 }
+		AccessPoint ap = AccessPoint.builder().position(new Point(0D,0D)).build();
+		SimioDistance d1 = SimioDistance.builder()
+				.distance(sqrt200+1.5D)
+				.accessPoint(ap)
+				.build();
+		
+		ap = AccessPoint.builder().position(new Point(10D,0D)).build();
+		SimioDistance d2 = SimioDistance.builder()
+				.distance(sqrt200-0.5D)
+				.accessPoint(ap)
+				.build();
+		
+		ap = AccessPoint.builder().position(new Point(10D,10D)).build();
+		SimioDistance d3 = SimioDistance.builder()
+				.distance(sqrt200+1.4D)
+				.accessPoint(ap)
+				.build();
+		
+		List<Point> pxsActual = GraphUtil.getPossiblePositions(Arrays.asList(new SimioDistance[] {d1, d2, d3}));
+		
+		Point pxActual = GraphUtil.getAveragePoint(pxsActual);
+		
+		AssertExtended.assertPointIsPrecise(pxExpected, pxActual);
+	}
+	
+	@Test
+	public void getPossiblePositionsTest_SuperCritic() throws Exception {
+		
+		Point pxExpected = new Point(5D,5D);
+		
+		//{ d1, d2, d3, d4 }
+		AccessPoint ap = AccessPoint.builder().position(new Point(0D,0D)).build();
+		SimioDistance d1 = SimioDistance.builder()
+				.distance(sqrt200+2.5D)
+				.accessPoint(ap)
+				.build();
+		
+		ap = AccessPoint.builder().position(new Point(10D,0D)).build();
+		SimioDistance d2 = SimioDistance.builder()
+				.distance(sqrt200-5D)
+				.accessPoint(ap)
+				.build();
+		
+		ap = AccessPoint.builder().position(new Point(10D,10D)).build();
+		SimioDistance d3 = SimioDistance.builder()
+				.distance(sqrt200+1.4D)
+				.accessPoint(ap)
+				.build();
+		
+		List<Point> pxsActual = GraphUtil.getPossiblePositions(Arrays.asList(new SimioDistance[] {d1, d2, d3}));
+		
+		Point pxActual = GraphUtil.getAveragePoint(pxsActual);
+		
+		AssertExtended.assertPointIsPrecise(pxExpected, pxActual);
+	}
+	
+	@Test
+	public void getPossiblePositionsTest_Broken() throws Exception {
+		
+		Point pxExpected = new Point(5D,5D);
+		
+		//{ d1, d2, d3, d4 }
+		AccessPoint ap = AccessPoint.builder().position(new Point(0D,0D)).build();
+		SimioDistance d1 = SimioDistance.builder()
+				.distance(sqrt200)
+				.accessPoint(ap)
+				.build();
+		
+		ap = AccessPoint.builder().position(new Point(10D,0D)).build();
+		SimioDistance d2 = SimioDistance.builder()
+				.distance(sqrt200-10D)
+				.accessPoint(ap)
+				.build();
+		
+		ap = AccessPoint.builder().position(new Point(10D,10D)).build();
+		SimioDistance d3 = SimioDistance.builder()
+				.distance(sqrt200+1.4D)
+				.accessPoint(ap)
+				.build();
+		
+		List<Point> pxsActual = GraphUtil.getPossiblePositions(Arrays.asList(new SimioDistance[] {d1, d2, d3}));
+		
+		Point pxActual = GraphUtil.getAveragePoint(pxsActual);
+		
+		AssertExtended.assertPointIsNotPrecise(pxExpected, pxActual);
+	}
 }
