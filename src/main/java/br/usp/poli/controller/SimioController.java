@@ -65,7 +65,7 @@ public class SimioController {
 		mav.addObject("simio", simio);
 		
 		List<Simio> allSimios = simioService.readAll();
-		List<SimioDistance> allDistances = simioDistanceService.readByNewestTimestamp();
+		List<SimioDistance> allDistances = simioDistanceService.readDistancesForMap();
 
 		List<Simio> graph = graphUtil.createGraph(allSimios, allDistances);
 		String json = gson.toJson(graph);
@@ -103,7 +103,7 @@ public class SimioController {
 		StringBuilder json = new StringBuilder();
 		
 		List<Simio> allSimios = simioService.readAll();
-		List<SimioDistance> allDistances = simioDistanceService.readByNewestTimestamp();
+		List<SimioDistance> allDistances = simioDistanceService.readDistancesForMap();
 
 		List<Simio> graph = graphUtil.createGraph(allSimios, allDistances);
 		String graphJson = gson.toJson(graph);

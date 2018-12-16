@@ -1,9 +1,7 @@
 package br.usp.poli.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -11,9 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import br.usp.poli.entity.AccessPointEntity;
-import br.usp.poli.entity.SimioDistanceEntity;
 import br.usp.poli.model.AccessPoint;
-import br.usp.poli.model.SimioDistance;
 import br.usp.poli.repository.AccessPointRepository;
 import br.usp.poli.utils.Point;
 
@@ -24,9 +20,6 @@ public class AccessPointService implements BaseService<AccessPoint>{
 	
 	@Autowired
 	private AccessPointRepository accessPointRepository;
-	
-	@Autowired
-	private SimioDistanceService simioDistanceService;
 	
 	public AccessPointService() {
 		super();
@@ -90,15 +83,6 @@ public class AccessPointService implements BaseService<AccessPoint>{
 				.y(accessPointEntity.getY())
 				.build();
 		
-		if(accessPoint.distances != null) {
-			List<SimioDistance> distances = new ArrayList<SimioDistance>();
-			accessPointEntity.distances.forEach(simioDistanceEntity -> {
-				SimioDistance simioDistance = simioDistanceService.entityToModel(simioDistanceEntity);
-				distances.add(simioDistance);
-			});
-			accessPoint.setDistances(distances);
-		}
-
 		return accessPoint;
 	}
 	
@@ -110,14 +94,6 @@ public class AccessPointService implements BaseService<AccessPoint>{
 				.y(accessPoint.getY())
 				.build();
 		
-		if(accessPoint.distances != null) {
-			Set<SimioDistanceEntity> distances = new HashSet<SimioDistanceEntity>();
-			accessPoint.distances.forEach(simioDistance -> {
-				SimioDistanceEntity simioDistanceEntity = simioDistanceService.modelToEntity(simioDistance);
-				distances.add(simioDistanceEntity);
-			});
-			accessPointEntity.setDistances(distances);
-		}
 		return accessPointEntity;
 	}
 }

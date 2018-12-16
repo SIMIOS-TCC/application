@@ -1,8 +1,13 @@
 package br.usp.poli.service;
 
+import static br.usp.poli.utils.ConstantsFile.SAMPLING_TAX;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -15,8 +20,7 @@ import br.usp.poli.model.AccessPoint;
 import br.usp.poli.model.Simio;
 import br.usp.poli.model.SimioDistance;
 import br.usp.poli.repository.SimioDistanceRepository;
-
-import static br.usp.poli.utils.ConstantsFile.SAMPLING_TAX;
+import br.usp.poli.repository.SimioRepository;
 
 
 @Service
@@ -27,6 +31,9 @@ public class SimioDistanceService implements BaseService<SimioDistance>{
 	
 	@Autowired
 	private SimioService simioService;
+	
+	@Autowired 
+	private SimioRepository simioRepository;
 	
 	@Autowired
 	private AccessPointService accessPointService;
@@ -90,6 +97,58 @@ public class SimioDistanceService implements BaseService<SimioDistance>{
 		});
 		
 		filteredDistances.forEach(simioDistanceEntity -> {
+			simioDistances.add(entityToModel(simioDistanceEntity));
+		});
+			
+		return simioDistances;
+	}
+	
+	public List<SimioDistance> readDistancesForMap() {
+		
+		List<SimioDistance> simioDistances = new ArrayList<SimioDistance>();
+		
+		List<SimioDistanceEntity> allDistances = simioDistanceRepository.findAllByOrderByTimestampDesc();
+		if(allDistances.isEmpty()) {
+			return simioDistances;
+		}
+		
+		List<SimioDistanceEntity> finalDistances = new ArrayList<SimioDistanceEntity>();
+		
+		List<SimioEntity> allSimios = simioRepository.findAll();
+		
+		//para cada simio, achar o trio de Simio Distances dentro do tempo discreto sem repetir AP
+		for(SimioEntity simio : allSimios) {
+			List<SimioDistanceEntity> distances = allDistances.stream()
+					.filter(d -> d.getSimioEntity().getId() == simio.getId())
+					.collect(Collectors.toList());
+			
+			long currentTimestamp = distances.get(0).getTimestamp().getTime();
+			Map<Long,SimioDistanceEntity> discreteDistances = new HashMap<Long,SimioDistanceEntity>();
+			List<SimioDistanceEntity> storedDistances = new ArrayList<SimioDistanceEntity>();
+			
+			int i = 0;
+			while(i < distances.size() && discreteDistances.keySet().size() < 3) {
+				SimioDistanceEntity d = distances.get(i++);
+				
+				if(d.getTimestamp().getTime() < currentTimestamp-SAMPLING_TAX) {
+					currentTimestamp -= SAMPLING_TAX;
+					discreteDistances = new HashMap<Long,SimioDistanceEntity>();
+					storedDistances = new ArrayList<SimioDistanceEntity>();
+				} else {
+					if(!discreteDistances.containsKey(d.getAccessPointEntity().getId())) {
+						storedDistances.add(d);
+						discreteDistances.put(d.getAccessPointEntity().getId(), d);
+					}
+				}
+			}
+			
+			if(discreteDistances.keySet().size() >= 3) {
+				finalDistances.addAll(storedDistances);
+				continue;
+			}
+		}
+		
+		finalDistances.forEach(simioDistanceEntity -> {
 			simioDistances.add(entityToModel(simioDistanceEntity));
 		});
 		

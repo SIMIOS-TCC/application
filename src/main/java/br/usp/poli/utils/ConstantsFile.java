@@ -3,8 +3,8 @@ package br.usp.poli.utils;
 public class ConstantsFile {
 	
 	//Physics
-	public static final Double ERROR_METERS = 1D;
-	public static final long SAMPLING_TAX = 2*1000;
+	public static final Double ERROR_METERS = 0.5D;
+	public static final long SAMPLING_TAX = 4*1000;
 	
 	//Pages
 	public static final String SIMIO_SEARCH = "simio/SearchSimio";

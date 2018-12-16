@@ -40,7 +40,6 @@ public class GraphUtil {
 			List<SimioDistance> distances = filterDistancesBySimio(allDistances, simio);
 			
 			List<Point> points = getPossiblePositions(distances);
-			Point averagePoint2 = getAveragePoint(points);
 			if(!points.isEmpty()) {
 			//if(points.size() == 12) {
 				Point averagePoint = getAveragePoint(points);
@@ -229,7 +228,8 @@ public class GraphUtil {
 				try {
 					points.addAll(getDoubleCircIntersection(refPoints, refDistances));
 				} catch(NoIntersectionPointsException e) {
-					System.out.println("Circumferences with no point intersection: " + refPoints.get(0).toString() + " & " + refPoints.get(1).toString());
+					System.out.println(distances.get(0).getSimio().getName() + ": Circumferences with no point intersection: " + refPoints.get(0).toString() + 
+							" r1=" + refDistances.get(0) + " & " + refPoints.get(1).toString() + " r2=" + refDistances.get(1));
 				}
 			}
 		}

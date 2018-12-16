@@ -1,7 +1,5 @@
 package br.usp.poli.model;
 
-import java.util.List;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -31,8 +29,6 @@ public class AccessPoint {
 	private Double y;
 	
 	private Point position;
-	
-	public List<SimioDistance> distances; 
 	
 	public String getCode() {
 		return id.toString();
