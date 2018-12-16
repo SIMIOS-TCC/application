@@ -10,7 +10,7 @@
 
 <section layout:fragment="content">
 	<img id="icon-simio" th:src="@{/images/icon-simio.jpg}" height="40" width="40" style="display: none;"/>
-	
+	<img id="ap-icon" th:src="@{/images/ap-icon.png}" height="40" width="40" style="display: none;"/>
 	<div class="panel panel-default">
 		<div class="panel-heading clearfix">
 			<h1 class="panel-title aw-titulo-panel">
@@ -20,7 +20,7 @@
 		
 		<div class="panel-body">
             <div id="canvasDiv" class="col-md-8 col-md-offset-2 col-centered">
-				<div id="graphDiv" th:attr="data-mapping=${mapping}, data-reference=${reference}, data-scale=${scale}">			
+				<div id="graphDiv" th:attr="data-mapping=${mapping}, data-reference=${reference}, data-scale=${scale}, data-aps=${aps}">			
 					<canvas id="graphCanvas" width="800" height="400" ></canvas>
 				</div>
 			</div>

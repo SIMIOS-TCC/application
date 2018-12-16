@@ -40,9 +40,6 @@ public class AccessPointEntity {
 	@NotNull
 	private Double y;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="accessPointEntity", cascade=CascadeType.ALL )
-	public Set<SimioDistanceEntity> distances; 
-	
 	public String getCode() {
 		return id.toString();
 	}

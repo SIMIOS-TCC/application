@@ -1,4 +1,5 @@
 var mapping = $('#graphDiv').data('mapping');
+var aps = $('#graphDiv').data('aps');
 var referencePoint = $('#graphDiv').data('reference');
 var scale = $('#graphDiv').data('scale');
 var id = new URL(window.location.href).searchParams.get("id");
@@ -21,11 +22,12 @@ var updateGraph = function(){
         	mapping = data["mapping"];
         	referencePoint = data["reference"];
         	scale = data["scale"];
+        	aps = data["aps"];
         	drawGraph();
         }
     });
 	
-    setTimeout(updateGraph, 2000);
+    //setTimeout(updateGraph, 2000);
 };
 
 window.onload = function(){
@@ -44,6 +46,10 @@ var drawGraph = function() {
 	canvas.width = canvasFrame.offsetWidth;
 	canvas.height = window.innerHeight*0.5;
 	
+	aps.forEach(function(ap) {
+		drawAP(ap, referencePoint, scale);
+	});
+	
 	mapping.forEach(function(simio) {
 		drawSimio(simio, referencePoint, scale);
 	});
@@ -51,6 +57,7 @@ var drawGraph = function() {
 
 var drawSimio = function(simio, referencePoint, scale) {
 	var point = simio.position.point;
+	var timestamp = simio.position.timestamp;
 	
 	var image = document.getElementById("icon-simio");
 	
@@ -73,7 +80,30 @@ var drawSimio = function(simio, referencePoint, scale) {
 	
 	var distance = (getDistanceToOrigin(originX, originY, x, y)/10).toFixed(2);
 	context.font = "10px Arial";
-	context.fillText(simio.name + " " + point.x + "," + point.y, x, y-12); //escala
+	context.fillText(simio.name + " " + point.x + "," + point.y, x, y-23);
+	context.fillText(timestamp, x, y-12);
+}
+
+var drawAP = function(ap, referencePoint, scale) {
+	var image = document.getElementById("ap-icon");
+	
+	var originX = canvas.width/2;
+	var originY = canvas.height/2;
+	
+	var scale = originY/scale;
+	
+	//*10 para correção da escala de pixels - corrigir
+	var x = originX + (ap.x - referencePoint.x)*scale;
+	var y = originY - (ap.y - referencePoint.y)*scale;
+	
+	context.beginPath();
+	context.moveTo(originX, originY);
+	
+	context.drawImage(image, x-10, y-10, 15, 15);
+	
+	var distance = (getDistanceToOrigin(originX, originY, x, y)/10).toFixed(2);
+	context.font = "10px Arial";
+	context.fillText("AP" + ap.id + " " + ap.x + "," + ap.y, x, y-12);
 }
 
 var getDistanceToOrigin = function(originX, originY, x, y) {

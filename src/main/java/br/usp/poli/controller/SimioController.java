@@ -28,8 +28,10 @@ import com.google.gson.Gson;
 import br.usp.poli.entity.SimioEntity;
 import br.usp.poli.enums.Gender;
 import br.usp.poli.exception.UnsuitedBirthYearException;
+import br.usp.poli.model.AccessPoint;
 import br.usp.poli.model.Simio;
 import br.usp.poli.model.SimioDistance;
+import br.usp.poli.service.AccessPointService;
 import br.usp.poli.service.SimioDistanceService;
 import br.usp.poli.service.SimioService;
 import br.usp.poli.utils.GraphUtil;
@@ -42,6 +44,8 @@ public class SimioController {
 	@Value("${projeto.versao}")
 	private String projetoVersao;
 	
+	@Autowired
+	private AccessPointService apService;
 	@Autowired
 	private SimioService simioService;
 	@Autowired
@@ -83,9 +87,19 @@ public class SimioController {
 		}
 		mav.addObject("reference", gson.toJson(reference));
 		
+		List<AccessPoint> aps = apService.readAll();
+		mav.addObject("aps", gson.toJson(aps));
+		
 		Double scale = 1D;
 		for(int i = 0; i < graph.size(); i++) {
 			Double distance = GraphUtil.getDistance(reference, graph.get(i).getPosition().getPoint());
+			if(distance > scale) {
+				scale = distance;
+			}
+		}
+		for(int i = 0; i < aps.size(); i++) {
+			Point point = new Point(aps.get(i).getX(), aps.get(i).getY());
+			Double distance = GraphUtil.getDistance(reference, point);
 			if(distance > scale) {
 				scale = distance;
 			}
@@ -123,9 +137,19 @@ public class SimioController {
 		String referenceJson = gson.toJson(reference);
 		json.append("\"reference\": ").append(referenceJson).append(", ");
 		
+		List<AccessPoint> aps = apService.readAll();
+		json.append("\"aps\": ").append(gson.toJson(aps)).append(", ");
+		
 		Double scale = 1D;
 		for(int i = 0; i < graph.size(); i++) {
 			Double distance = GraphUtil.getDistance(reference, graph.get(i).getPosition().getPoint());
+			if(distance > scale) {
+				scale = distance;
+			}
+		}
+		for(int i = 0; i < aps.size(); i++) {
+			Point point = new Point(aps.get(i).getX(), aps.get(i).getY());
+			Double distance = GraphUtil.getDistance(reference, point);
 			if(distance > scale) {
 				scale = distance;
 			}
